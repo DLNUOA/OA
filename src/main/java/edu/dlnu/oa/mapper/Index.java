@@ -1,5 +1,6 @@
 package edu.dlnu.oa.mapper;
 
+import edu.dlnu.oa.dept.pojo.Dept;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -26,4 +27,9 @@ public interface Index {
 
     @Select("select count(*) from dept")
     int getCount();
+
+    @Select("select * from dept")
+    List<Dept> getAllDept();
+//    @Select("select dept_id deptID,dept_name deptName,dept_address deptAddress from dept")
+//    List<Dept> getAllDept();
 }

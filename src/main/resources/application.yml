@@ -1,6 +1,5 @@
 server:
   port: 8080
-
 spring:
   mvc:
     view:
@@ -33,3 +32,6 @@ spring:
 #  file:
 #    path: ../logs/hello.log
 #  level: debug
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
