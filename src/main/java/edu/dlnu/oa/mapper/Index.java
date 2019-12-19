@@ -23,4 +23,7 @@ public interface Index {
 
     @Select("SELECT uid,score from rank")
     List<Map<String, String>> getRankList();
+
+    @Select("select count(*) from dept")
+    int getCount();
 }
