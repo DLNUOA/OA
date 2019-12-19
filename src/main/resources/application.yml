@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static/
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false
+    username: root
+    password: root
+  #    hikari:
+  #      maximum-pool-size: 10
+  #      connection-timeout: 10000
+  #    type: com.zaxxer.hikari.HikariDataSource
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    prefix: classpath:/templates/
+#logging:
+#  file:
+#    path: ../logs/hello.log
+#  level: debug
