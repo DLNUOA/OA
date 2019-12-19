@@ -17,7 +17,7 @@ class OaApplicationTests {
     }
     @Test
     void get(){
-        System.out.printf("-----------"+index.getRankList().size());
+        System.out.print("-----------" + index.getCount());
     }
 
 }
