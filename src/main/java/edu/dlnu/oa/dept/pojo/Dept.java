@@ -8,7 +8,7 @@ package edu.dlnu.oa.dept.pojo;
 public class Dept {
     private Integer deptId;
     private String deptName;
-    private String deptAddress;
+    private String deptLoc;
     public Integer getDeptId() {
         return deptId;
     }
@@ -25,23 +25,23 @@ public class Dept {
         this.deptName = deptName;
     }
 
-    public String getDeptAddress() {
-        return deptAddress;
+    public String getDeptLoc() {
+        return deptLoc;
     }
 
-    public void setDeptAddress(String deptAddress) {
-        this.deptAddress = deptAddress;
+    public void setDeptLoc(String deptLoc) {
+        this.deptLoc = deptLoc;
     }
 
-    public Dept(String deptName, String deptAddress) {
+    public Dept(String deptName, String deptLoc) {
         this.deptName = deptName;
-        this.deptAddress = deptAddress;
+        this.deptLoc = deptLoc;
     }
 
-    public Dept(Integer deptId, String deptName, String deptAddress) {
+    public Dept(Integer deptId, String deptName, String deptLoc) {
         this.deptId = deptId;
         this.deptName = deptName;
-        this.deptAddress = deptAddress;
+        this.deptLoc = deptLoc;
     }
 
     public Dept() {
@@ -51,7 +51,7 @@ public class Dept {
         return "Dept{" +
                 "deptId=" + deptId +
                 ", deptName='" + deptName + '\'' +
-                ", deptLoc='" + deptAddress + '\'' +
+                ", deptLoc='" + deptLoc + '\'' +
                 '}';
     }
 }

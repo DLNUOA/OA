@@ -30,6 +30,13 @@ public interface Index {
 
     @Select("select * from dept")
     List<Dept> getAllDept();
+
+    @Select("select count(*) from dept")
+    int getCountAA();
+
+
+
+
 //    @Select("select dept_id deptID,dept_name deptName,dept_address deptAddress from dept")
 //    List<Dept> getAllDept();
 }
