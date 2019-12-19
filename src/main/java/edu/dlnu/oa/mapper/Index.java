@@ -30,6 +30,9 @@ public interface Index {
 
     @Select("select * from dept")
     List<Dept> getAllDept();
+
+    @Select("select * from job")
+    List<Dept> getAllJob();
 //    @Select("select dept_id deptID,dept_name deptName,dept_address deptAddress from dept")
 //    List<Dept> getAllDept();
 }
