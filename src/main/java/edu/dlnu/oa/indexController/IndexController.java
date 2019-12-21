@@ -1,4 +1,4 @@
-package edu.dlnu.oa.controller;
+package edu.dlnu.oa.indexController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,5 +17,10 @@ public class IndexController {
     @RequestMapping("/login")
     public String login(){
         return "login";
+    }
+
+    @RequestMapping("/AddDept")
+    public String AddDept(){
+        return "AddDept";
     }
 }

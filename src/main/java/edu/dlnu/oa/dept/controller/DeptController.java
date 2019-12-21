@@ -27,7 +27,6 @@ public class DeptController {
     @Autowired
     private DeptService deptService;
 
-
     @RequestMapping(value = "/dept",method = GET)
     public List<Dept> getAllDept(){
         log.info("Dept被访问了");
