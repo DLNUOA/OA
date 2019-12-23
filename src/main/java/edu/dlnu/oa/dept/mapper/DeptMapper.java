@@ -1,4 +1,4 @@
-package edu.dlnu.oa.mapper;
+package edu.dlnu.oa.dept.mapper;
 
 import edu.dlnu.oa.dept.pojo.Dept;
 import org.apache.ibatis.annotations.*;

@@ -2,7 +2,7 @@ package edu.dlnu.oa.dept.service.serviceImpl;
 
 import edu.dlnu.oa.dept.pojo.Dept;
 import edu.dlnu.oa.dept.service.DeptService;
-import edu.dlnu.oa.mapper.DeptMapper;
+import edu.dlnu.oa.dept.mapper.DeptMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
