@@ -14,7 +14,7 @@ spring:
       additional-paths: src/main/java
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/snack?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/oa?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false
     username: root
     password: root
   #    hikari:

@@ -1,30 +1,39 @@
 package edu.dlnu.oa;
 
 import edu.dlnu.oa.dept.pojo.Dept;
-import edu.dlnu.oa.mapper.Index;
+import edu.dlnu.oa.dept.service.DeptService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 class OaApplicationTests {
+    @Autowired
+    private DeptService deptService;
 
-    @Resource
-    Index index;
     @Test
     void contextLoads() {
     }
     @Test
     void get(){
-//        System.out.print("-----------" + index.getCount());
-        List<Dept> allDept = index.getAllDept();
+        Dept dept = new Dept("客服部","大连市","客服小姐姐");
+        int i = deptService.insertDept(dept);
+        System.out.print(i);
+    }
+    @Test
+    void findAllDept(){
+        List<Dept> allDept = deptService.findAllDept();
         for (Dept dept : allDept) {
-            System.out.println(dept.toString());
+            System.out.printf(dept.toString());
         }
+    }
+    @Test
+    void deleteDeptById(){
+        int i = 1;
+        int i1 = deptService.deleteDeptById(i);
+        System.out.println(i1);
     }
 
 }
