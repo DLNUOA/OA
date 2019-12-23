@@ -7,7 +7,6 @@ import java.util.Map;
 
 @Mapper
 public interface LoginValidMapper {
-    kkk
     @Select("SELECT COUNT(*) FROM emp WHERE login_name = #{loginName} AND PASSWORD = #{password} ")
     int loginValid(Map<String,String> loginInfo);
 }
