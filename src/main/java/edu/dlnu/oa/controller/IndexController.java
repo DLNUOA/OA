@@ -18,4 +18,9 @@ public class IndexController {
     public String login(){
         return "login";
     }
+
+    @RequestMapping("/dataTable")
+    public String dataTable(){
+        return "datatableExample";
+    }
 }
