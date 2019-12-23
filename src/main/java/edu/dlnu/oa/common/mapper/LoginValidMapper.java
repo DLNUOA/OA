@@ -9,4 +9,5 @@ import java.util.Map;
 public interface LoginValidMapper {
     @Select("SELECT COUNT(*) FROM emp WHERE login_name = #{loginName} AND PASSWORD = #{password} ")
     int loginValid(Map<String,String> loginInfo);
+    gai
 }
