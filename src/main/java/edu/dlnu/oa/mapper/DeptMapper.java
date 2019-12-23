@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface DeptMapper {
-    @Insert("insert into dept values(default, #{dept.name},#{dept.address},#{dept.describe},0)")
+    @Insert("insert into dept values(default, #{dept.name},#{dept.address})")
     int insertDept(@Param("dept")Dept dept);
 
     @Select("select * from dept")

@@ -132,7 +132,7 @@
 <body>
 
 <div  class="login-form">
-    <h1>OA Login</h1>
+    <h1><a href="/">OA Login</a></h1>
 
     <div class="txtb">
         <input type="text" id="userName">
@@ -156,7 +156,7 @@
 
     function login(){
         if ($("#userName").val() ==='' || $("#password").val() === ''){
-            alert("登录信息不能为空");
+            toastr.error("登录信息不能为空！");
             return;
         }
         $.ajax({
