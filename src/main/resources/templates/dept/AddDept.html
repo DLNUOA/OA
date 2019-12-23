@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>增加部门</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+</head>
+<body>
+    <div class="container">
+
+        <div class="masthead">
+            <h3 class="text-muted">Project name</h3>
+            <nav>
+                <ul class="nav nav-justified">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Downloads</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">首页</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+
+                        <li class="active"><a href="#">增加部门 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">一些其他的</a></li>
+                        <li class="dropdown">
+
+                    </ul>
+
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <h2 class="page-header">增加新部门</h2>
+        <div class="input-group">
+            <span class="input-group-addon " id="basic-addon1">部门名字</span>
+            <input id="bmmz" type="text" class="form-control " placeholder="Department name" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon2">部门地址</span>
+            <input id="bmdz" type="text" class="form-control" placeholder="Dept Address" aria-describedby="basic-addon1">
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon3">部门描述</span>
+            <input id="bmms" type="text" class="form-control" placeholder="Department describe" aria-describedby="basic-addon1">
+        </div>
+        <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+        <button type="button" class="btn btn-primary " onclick="addDept()">添加部门</button>
+
+
+
+
+    </div>
+</body>
+<script src="./js/jquery-3.4.1.js"></script>
+<script src="./js/bootstrap.js"></script>
+<script src="./js/toastr.min.js"></script>
+<script src="./js/dept.js"></script>
+
+
+</html>
