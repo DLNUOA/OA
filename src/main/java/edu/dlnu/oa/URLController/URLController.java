@@ -37,4 +37,9 @@ public class URLController {
     public String welcome(){
         return "welcome";
     }
+
+    @RequestMapping("/contactUs")
+    public String contactUs(){
+        return "contactUs";
+    }
 }

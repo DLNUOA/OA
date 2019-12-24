@@ -17,6 +17,12 @@
 
     <!-- Custom styles for this template -->
     <link href="css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+    </style>
 
 </head>
 
@@ -30,15 +36,39 @@
 
             <div class="masthead clearfix">
                 <div class="inner">
-                    <h3 class="masthead-brand">DLNU - OA</h3>
+                    <h3 class="masthead-brand"><a href="/welcome">DLNU - OA</a></h3>
                     <nav>
-                        <ul class="nav masthead-nav">
-                            <li class="active"><a href="/newIndex">主页</a></li>
+                        <ul class="nav masthead-nav ">
+                            <li class="active"><a href="/welcome">主页</a></li>
                             <li><a href="#">部门管理</a></li>
                             <li><a href="#">员工管理</a></li>
                             <li><a href="#">职称管理</a></li>
                             <li><a href="#">个人信息管理</a></li>
-                            <li><a href="#">吴焓</a></li>
+                            <li class="dropdown">
+                                <a href="#"  class="dropdown-toggle" data-toggle="dropdown" ondblclick="test()">吴焓
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a id="action-1" href="#">功能</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">功能</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">功能</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">切换用户</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="#">退出</a>
+                                    </li>
+                                </ul>
+                            </li>
+
 
 
                         </ul>
@@ -77,6 +107,15 @@
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+    $(function() {
+        $(".dropdown-toggle").dropdown('toggle');
+    });
+
+    function test() {
+        alert("sd");
+    }
+</script>
 <!--<script src="js/uikit.js"></script>-->
 </body>
 </html>
