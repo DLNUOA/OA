@@ -7,7 +7,7 @@ spring:
       suffix: .html
     static-path-pattern: /**
   resources:
-    static-locations: classpath:/static/
+    static-locations: classpath:/static/,classpath:/templates
   devtools:
     restart:
       enabled: true
