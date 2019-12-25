@@ -40,5 +40,9 @@ public class DeptController {
     public int postADept(@RequestBody Dept dept ){
         return deptService.insertDept(dept);
     }
+    @RequestMapping(value = "/adept" ,method = POST)
+    public int updateDept(@RequestBody Dept dept){
+        return deptService.updateDept(dept);
+    }
 
 }
