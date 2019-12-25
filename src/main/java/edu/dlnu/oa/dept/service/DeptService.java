@@ -8,5 +8,6 @@ public interface DeptService {
      int insertDept(Dept dept);
      List<Dept> findAllDept();
      int deleteDeptById(int id);
+     int updateDept(Dept dept);
 
 }

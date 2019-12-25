@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>获取部门信息测试</title>
+    <script src="./js/vue.js"></script>
+    <script src="./js/axios.js"></script>
+	<script src="js/common.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+</head>
+<body>
+<div id="deptInfoList">
+    <h1> 部门列表</h1>
+    <div v-for="dept in depts">
+		<hr>
+        <p>部门名：{{ dept.name }}</p>
+		<p>部门ID：{{ dept.id }}</p>
+		<p>部门地址:{{ dept.address }}</p>
+		<p>部门描述:{{ dept.describe }}</p>
+		<hr>
+    </div>
+</div>
+<div id="app-6">
+  <p>{{ message }}</p>
+  <input v-model="message">
+</div>
+<div id="app">
+  {{ message }}
+</div>
+<div id="app-5">
+  <p>{{ message }}</p>
+  <button v-on:click="reverseMessage">反转消息</button>
+</div>
+
+<div id="app-7">
+  <ol>
+    <!--
+      现在我们为每个 todo-item 提供 todo 对象
+      todo 对象是变量，即其内容可以是动态的。
+      我们也需要为每个组件提供一个“key”，稍后再
+      作详细解释。
+    -->
+    <todo-item
+      v-for="item in groceryList"
+      v-bind:todo="item"
+      v-bind:key="item.id"
+    ></todo-item>
+  </ol>
+</div>
+
+<div id="watch-example">
+  <p>
+    Ask a yes/no question:
+    <input v-model="question">
+  </p>
+  <p>{{ answer }}</p>
+</div>
+
+
+
+<script type = "text/javascript">
+	
+	var watchExampleVM = new Vue({
+	  el: '#watch-example',
+	  data: {
+	    question: '',
+	    answer: 'I cannot give you an answer until you ask a question!'
+	  },
+	  watch: {
+	    // 如果 `question` 发生改变，这个函数就会运行
+	    question: function (newQuestion, oldQuestion) {
+	      this.answer = 'Waiting for you to stop typing...'
+	      this.debouncedGetAnswer()
+	    }
+	  },
+	  created: function () {
+	    // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+	    // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+	    // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+	    // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+	    // 请参考：https://lodash.com/docs#debounce
+	    this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
+	  },
+	  methods: {
+	    getAnswer: function () {
+	      if (this.question.indexOf('?') === -1) {
+	        this.answer = 'Questions usually contain a question mark. ;-)'
+	        return
+	      }
+	      this.answer = 'Thinking...'
+	      var vm = this
+	      axios.get('https://yesno.wtf/api')
+	        .then(function (response) {
+	          vm.answer = _.capitalize(response.data.answer)
+	        })
+	        .catch(function (error) {
+	          vm.answer = 'Error! Could not reach the API. ' + error
+	        })
+	    }
+	  }
+	})
+	
+	
+	Vue.component('todo-item', {
+	  // todo-item 组件现在接受一个
+	  // "prop"，类似于一个自定义特性。
+	  // 这个 prop 名为 todo。
+	  props: ['todo'],
+	  template: '<li>{{ todo.text }}</li>'
+	})
+	
+	var app7 = new Vue({
+	  el: '#app-7',
+	  data: {
+	    groceryList: [
+	      { id: 0, text: '蔬菜' },
+	      { id: 1, text: '奶酪' },
+	      { id: 2, text: '随便其它什么人吃的东西' }
+	    ]
+	  }
+	})
+	
+	var app5 = new Vue({
+	  el: '#app-5',
+	  data: {
+	    message: 'Hello Vue.js!'
+	  },
+	  methods: {
+	    reverseMessage: function () {
+		  alert(this.$el);
+	      this.message = this.message.split('').reverse().join('')
+	    }
+	  }
+	})
+	
+	var app = new Vue({
+	  el: '#app',
+	  data: {
+	    message: 'Hello Vue!'
+	  }
+	})
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	var app6 = new Vue({
+	  el: '#app-6',
+	  data: {
+	    message: 'Hello Vue!'
+	  }
+	})
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+var a=  new Vue({
+        el: '#deptInfoList',
+        data () {
+            return {
+                depts: null
+            }
+        },
+        mounted () {
+            axios
+                .get(host+'/api/dept')
+                .then(response => (this.depts = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        }
+    })
+</script>
+</body>
+</html>

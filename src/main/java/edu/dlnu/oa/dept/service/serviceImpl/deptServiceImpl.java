@@ -31,4 +31,8 @@ public class deptServiceImpl implements DeptService {
     public int deleteDeptById(int id) {
         return deptMapper.deleteDeptById(id);
     }
+
+    public int updateDept(Dept dept){
+        return deptMapper.updateDept(dept);
+    }
 }

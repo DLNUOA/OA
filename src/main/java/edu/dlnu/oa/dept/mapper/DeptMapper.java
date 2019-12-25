@@ -16,4 +16,8 @@ public interface DeptMapper {
     @Delete("delete from dept where dept_id = #{id} ")
     int deleteDeptById(int id);
 
+    @Update("UPDATE dept SET dept.dept_name= #{deptName},dept.dept_loc=#{deptLoc} ,dept.dept_intro=#{deptIntro} \n" +
+            "WHERE dept.dept_id = #{deptId}")
+    int updateDept(Dept dept);
+
 }
