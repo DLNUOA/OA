@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no">
+	<!--手机设备显示-->
+	<link href="./cloud_oa/css/common.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">	
+	<link href="./cloud_oa/css/style.css" rel="stylesheet" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+	
+	<script type="text/javascript">
+
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	
+	$(document).ready(function(e) {
+	
+		$('.pic').each(function(index, pic){
+			
+			var carId = $(this).parent().prev().children().text();
+			
+			var url = '/cloud_oa/car/queryPic2.action?carId=' + carId ;
+			
+			var picObj = $(this).find('img');
+						
+			$.get(url,function(data){
+				
+				picObj.prop("src","data:image/jpeg;base64,"+data);
+				
+			});
+									
+		});
+	
+	});
+		
+	function getCarId(carId){
+		
+		$(window.parent.document).find('#carId').val(carId);
+		parent.layer.close(index);
+		
+	}
+		
+	</script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top" style="height:30px">
+			<table  class="table">
+					<tr>
+						<th style="width:50%;font-size:20px"><span style="margin-left:30px">车辆信息</span></th>
+						<th style="font-size:20px"><span style="float:right;margin-right:140px">车辆图片</span></th>
+					</tr>
+			</table>
+		</nav>
+		<table style="margin-top:50px" class="table table-condensed table-hover">
+			<tbody>
+				
+					<tr onclick="getCarId(21);">
+						<td>
+							<div style="margin:15px 0 0 30px">
+								车辆编号：21
+								<br>
+								<br>
+								车辆类型：布加迪威龙 
+								<br>
+								<br>
+								车牌号：   辽B-A8965
+							</div>
+						</td>
+						<td><div style="display:none">21</div></td>
+						<td style="width:30%">
+						<div id=21 class="pic">
+							<img src="" alt="" class="img-responsive" style="float:right">		
+						</div>
+						</td>
+					</tr>
+				
+			</tbody>
+		</table>
+	</body>
+
+	</html>

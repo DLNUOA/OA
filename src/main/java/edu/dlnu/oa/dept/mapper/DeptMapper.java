@@ -7,13 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface DeptMapper {
-    @Insert("insert into dept values(default, #{dept.name},#{dept.address})")
-    int insertDept(@Param("dept")Dept dept);
+    @Insert("insert into dept values(default, #{deptName},#{deptLoc},#{deptIntro})")
+    int insertDept(Dept dept);
 
     @Select("select * from dept")
     List<Dept> findAllDept();
 
-    @Update("update dept set deleted = 1  where id = #{id}")
+    @Delete("delete from dept where dept_id = #{id} ")
     int deleteDeptById(int id);
 
 }
