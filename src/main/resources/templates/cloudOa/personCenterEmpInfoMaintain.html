@@ -1,21 +1,20 @@
-
-
-
-
 <!doctype html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no";>
 	<!--手机设备显示-->
-	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
-	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
-	<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
-	<link rel="stylesheet" type="text/css" href="./cloud_oa/css/common.css">
-	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
-	<link rel="stylesheet" type="text/css" href="./cloud_oa/css/style-bar.css">
+
+
+	<link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/js/jquery-3.4.1.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.js"></script>
+	<link href="/cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/cloud_oa/js/layer/layer.js"></script>
+	<link rel="stylesheet" type="text/css" href="/cloud_oa/css/common.css">
+	<script type="text/javascript" src="/cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+	<link rel="stylesheet" type="text/css" href="/cloud_oa/css/style-bar.css">
+
 	<script type="text/javascript">
 		function savePwd(){
 				
@@ -145,7 +144,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form id="loginform" class="form-horizontal" method="post" action="./cloud_oa/login/login.action">
+					<form id="loginform" class="form-horizontal" method="post" action="/cloud_oa/login/login.action">
 			        	<div class="form-group"> 
 			                <label for="userName" class="col-sm-4 control-label">账号</label>
 			                <div class="col-sm-6">
@@ -184,8 +183,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="./cloud_oa/pages/index.jsp" class="navbar-brand">
-					<img src="./cloud_oa/image/default-transparent.png" height="20"/>
+				<a href="/cloud_oa/pages/index.jsp" class="navbar-brand">
+					<img src="/cloud_oa/image/default-transparent.png" height="20"/>
 				</a>
 			</div>
 			<!--/.navbar-header-->
@@ -194,7 +193,7 @@
 			<div class="collapse navbar-collapse navbar-right" id="myCollapse1">
 				<ul class="nav navbar-nav nav-right">
 					<li class="dropdown">
-						<a href="./cloud_oa/empInfo/query.action" data-toggle="dropdown">
+						<a href="/cloud_oa/empInfo/query.action" data-toggle="dropdown">
 							当前用户：系统管理员
 							<span class="caret"></span>
 						</a>
@@ -208,7 +207,7 @@
 						</ul>
 					</li>
 					<li>
-						<a id="notice" href="./在线消息-未阅消息.html">
+						<a id="notice" href="/在线消息-未阅消息.html">
 							新消息：
 							<span id="infonotice" class="badge">0</span>
 						</a>
@@ -218,9 +217,9 @@
 						id="fuckhtml"
 						data-html="true" data-toggle="popover" 
 						data-content="<center>
-						<img width='30' src='./cloud_oa/image/ic_launcher.png'></img>&nbsp;
-						<a style='font-size:1.1em;color:black;text-decoration:none' href='./cloud_oa/app/cloud.apk'>点击直接下载</a>
-						<br><img width='200' src='./cloud_oa/appuser/getApkQRcode.do'></img>
+						<img width='30' src='/cloud_oa/image/ic_launcher.png'></img>&nbsp;
+						<a style='font-size:1.1em;color:black;text-decoration:none' href='/cloud_oa/app/cloud.apk'>点击直接下载</a>
+						<br><img width='200' src='/cloud_oa/appuser/getApkQRcode.do'></img>
 						<br>扫一扫二维码，下载安装客户端</center>"
 						data-placement="bottom"> 安卓客户端 </a></li>
 					
@@ -247,19 +246,19 @@
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner">
 			<div class="item active">
-				<div class="fill" style="background-image:url('./cloud_oa/image/100.jpg');"></div>
+				<div class="fill" style="background-image:url('/cloud_oa/image/100.jpg');"></div>
 				<div class="carousel-caption">
 					<h2>学JAVA开发，到中软国际。</h2>
 				</div>
 			</div>
 			<div class="item">
-				<div class="fill" style="background-image:url('./cloud_oa/image/101.jpg');"></div>
+				<div class="fill" style="background-image:url('/cloud_oa/image/101.jpg');"></div>
 				<div class="carousel-caption">
 					<h2>学iOS/Android开发，到中软国际。</h2>
 				</div>
 			</div>
 			<div class="item">
-				<div class="fill" style="background-image:url('./cloud_oa/image/102.jpg');"></div>
+				<div class="fill" style="background-image:url('/cloud_oa/image/102.jpg');"></div>
 				<div class="carousel-caption">
 					<h2>学C++开发，到中软国际。</h2>
 				</div>
@@ -283,7 +282,7 @@
 				<ul class="nav navbar-nav">
 				
 					<li>
-						<a href="./index.html">系统首页</a>
+						<a href="/index">系统首页</a>
 					</li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -292,13 +291,13 @@
 						</a>
 						<ul class="dropdown-menu ">
 							<li>
-								<a href="./个人中心-员工信息维护.html">员工信息维护</a>
+								<a href="/personCenter/EmpInfoMaintain">员工信息维护</a>
 							</li>
 							<li>
-								<a href="./个人中心-检索他人信息.html">检索他人信息</a>
+								<a href="/个人中心-检索他人信息.html">检索他人信息</a>
 							</li>
 							<li>
-								<a href="./个人中心-个人申请中心.html">个人申请中心</a>
+								<a href="/个人中心-个人申请中心.html">个人申请中心</a>
 							</li>
 						</ul>
 					</li>
@@ -498,7 +497,7 @@
 				<input id="toggle1" type="checkbox" checked>
 				<label for="toggle1"class="animate">个人中心<i class="fa fa-bars float-right"></i></label>
 				<ul class="animate">
-					<a href="./个人中心-员工信息维护.html">
+					<a href="/personCenterEmpInfoMaintain">
 						<li class="animate actived">员工信息维护<i class="fa fa-code float-right"></i></li>
 					</a>
 					<a href="./个人中心-检索他人信息.html">
@@ -640,7 +639,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form id="form" class="form-horizontal" method="post" action="./个人中心-员工信息维护.html">
+					<form id="form" class="form-horizontal" method="post" action="/personCenterEmpInfoMaintain">
 			        	<div class="form-group"> 			               
 			                <div class="col-sm-8 col-sm-offset-2">
 			                	<input type="password" datatype="*" name="newPwd" id="newPwd" class="form-control" placeholder="请输入新密码 ">               

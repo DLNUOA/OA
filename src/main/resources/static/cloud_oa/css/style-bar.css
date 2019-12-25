@@ -71,27 +71,27 @@ dropdown a:hover{
 	text-decoration: none;
 }
 
-.actived{
-	background-color: #E7E7E7;
-}
+/*.actived{*/
+/*	background-color: #E7E7E7;*/
+/*}*/
 
-$colors: #E74C3C, #0072B5, #2C3E50;
+/*$colors: #E74C3C, #0072B5, #2C3E50;*/
 
-@for $i from 1 through length($colors) {
-  dropdown ul li:nth-child(#{$i}) {
-    border-left: 4px solid nth($colors, $i);
-    .fa{
-      color: nth($colors, $i);
-    }
-    &:hover {
-        background: nth($colors, $i);
-        color: white;
-      .fa{
-        color: white; 
-      }
-    }
-  }
-}
+/*@for $i from 1 through length($colors) {*/
+/*  dropdown ul li:nth-child(#{$i}) {*/
+/*    border-left: 4px solid nth($colors, $i);*/
+/*    .fa{*/
+/*      color: nth($colors, $i);*/
+/*    }*/
+/*    &:hover {*/
+/*        background: nth($colors, $i);*/
+/*        color: white;*/
+/*      .fa{*/
+/*        color: white; */
+/*      }*/
+/*    }*/
+/*  }*/
+/*}*/
 
 .animate{
   -webkit-transition: all .3s;
