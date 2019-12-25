@@ -1,0 +1,233 @@
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<meta charset="utf-8">
+	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no";>
+	<!--手机设备显示-->
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<link href="./cloud_oa/css/common.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/popwin.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+	
+	<script type="text/javascript">
+	
+	function closeWin(){
+		$(window.parent.document).find('#popWinClose').click();
+	}
+	function returnPopValue() {		
+		
+		$(window.parent.document).find('#empId').val(empId);
+		$(window.parent.document).find('#empName').val(empName);	
+		$(window.parent.document).find('#popWinClose').click();
+	}
+	$(document).ready(function(e) {
+		$('input[name="ids"]').click(function(){
+			empId = $.trim( $(this).parent().parent().find('td').eq(1).text() );
+			empName = $.trim( $(this).parent().parent().find('td').eq(2).text() );	
+			$('#subBtn1').prop('disabled',false);
+		
+			  
+		
+			   
+	        });
+		while ($('tr[name="addtr"]').length<9)
+			
+		{
+			$('tr[name="addtr"]').last().after('<tr name="addtr"><td>&nbsp</td><td> </td><td> </td><td> </tr>');
+			
+		}
+	
+	});
+	</script>
+</head>
+<body>
+<table class=" table ">
+	<thead>
+		<tr>
+			<th>选择</th>
+			<th>员工编号</th>
+			<th>员工姓名</th>
+			<th>员工部门</th>
+
+		</tr>
+	</thead>
+
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >0</td>
+			<td height="24">
+				系统管理员
+			</td>
+			<td height="24">
+				管理员
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >1</td>
+			<td height="24">
+				田金川
+			</td>
+			<td height="24">
+				行政部
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >2</td>
+			<td height="24">
+				包芳松
+			</td>
+			<td height="24">
+				车队
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >3</td>
+			<td height="24">
+				林栋之
+			</td>
+			<td height="24">
+				财务部
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >4</td>
+			<td height="24">
+				殷建
+			</td>
+			<td height="24">
+				外派部
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >5</td>
+			<td height="24">
+				张炎
+			</td>
+			<td height="24">
+				经理部
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >6</td>
+			<td height="24">
+				李悦
+			</td>
+			<td height="24">
+				外派部
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >7</td>
+			<td height="24">
+				何建吾
+			</td>
+			<td height="24">
+				外派部
+			</td>
+
+		</tr>
+	
+		<tr name="addtr">
+			<td>
+				<input name="ids" type="radio"></td>
+			<td height="24" >20</td>
+			<td height="24">
+				张三
+			</td>
+			<td height="24">
+				人力资源部
+			</td>
+
+		</tr>
+	
+
+</table>
+<div class="text-center">
+	<input type="button" id="subBtn1" disabled="disabled" value="确定" class="btn btn-primary" onclick="returnPopValue();">
+	<input type="button" value="取消" class="btn" onclick="closeWin();"></div>
+
+
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+				
+					
+					
+						<li><a href="?pageNum=2">2</a></li>
+					
+				
+			
+			
+			
+				<li><a href="?pageNum=2">下页</a></li>
+			
+			
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+		<li class="disabled"><a href="#">共2页</a></li>
+	</ul>
+</nav>
+
+</body>
+
+</body>
+</html>

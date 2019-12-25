@@ -1,0 +1,143 @@
+
+
+
+    
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no";>
+	<!--手机设备显示-->
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+	<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/css/sb-admin.css" rel="stylesheet">
+
+	<script type="text/javascript">
+		
+	var index = parent.layer.getFrameIndex(window.name);
+	
+	$(document).ready(function(){
+		
+		$('#yes').on('click', function(){
+			$('#form1').submit();
+		});	
+		
+		$('#no').on('click', function(){
+			parent.layer.close(index);
+		});
+	});
+	</script>
+
+</head>
+
+<body>
+<form id="form1" method="post" action="./cloud_oa/emp/addRoleToEmp.action?empId=4">
+	<div class="row">
+		<div class="well">
+	        <div id="perms" class="row">
+	       			
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="2" name="roleId" value="2">行政主管
+		                </label>             
+		            </div>
+	        	</div>
+	        		
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="3" name="roleId" value="3">部门经理
+		                </label>             
+		            </div>
+	        	</div>
+	        		
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="4" name="roleId" value="4">车队管理
+		                </label>             
+		            </div>
+	        	</div>
+	        		
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="5" name="roleId" value="5">财务
+		                </label>             
+		            </div>
+	        	</div>
+	        		
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="0" name="roleId" value="0">系统管理员
+		                </label>             
+		            </div>
+	        	</div>
+	        		
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="7" name="roleId" value="7">会议发起人
+		                </label>             
+		            </div>
+	        	</div>
+	        		
+	        	<div class="col-xs-4">
+		        	<div class="checkbox">
+		             	<label for="checkbox1">
+		                	<input type="checkbox" id="1" name="roleId" value="1">总经理
+		                </label>             
+		            </div>
+	        	</div>
+	        	
+			</div>
+		</div>
+	</div>
+</form> 
+	<div class="row">
+        <!-- 包含分页 -->
+	   	
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+			
+			
+			
+				<li class="disabled"><a href="#">下页</a></li>
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+		<li class="disabled"><a href="#">共1页</a></li>
+	</ul>
+</nav>
+   
+	</div>
+    <div class="text-center">
+    	<input id="yes" type="button" value="确定" class="btn btn-primary">
+		<input id="no" type="button" value="取消" class="btn">
+    </div>           
+</body>
+
+</html>

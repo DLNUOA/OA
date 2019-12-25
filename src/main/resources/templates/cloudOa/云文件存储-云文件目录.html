@@ -1,0 +1,1113 @@
+
+
+
+    
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no">
+	<!--手机设备显示-->
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/js/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/zTree/js/jquery.ztree.all-3.5.js"></script>
+	<link rel="stylesheet" type="text/css" href="./cloud_oa/css/common.css">
+	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+	<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/css/sb-admin.css" rel="stylesheet">
+
+<script type="text/javascript">
+	var setting = {
+		view: {
+				selectedMulti: false
+			},
+		edit: {
+				enable: true,
+				showRemoveBtn: false,
+				showRenameBtn: false
+			},
+		data: {
+			keep: {
+				parent:true,
+				leaf:true
+			},
+			simpleData: {
+				enable: true
+			}
+		},
+		callback: {
+			beforeDrag: beforeDrag,
+			onClick: showContent
+		}
+	};
+
+	function showContent(event, treeId, treeNode, clickFlag) {
+		if(treeNode.id==1){
+			$('#currentFolder1').show();
+			$('#currentFolder2').hide();
+		}else{
+			$('#currentFolder2').show();
+			$('#currentFolder1').hide();
+		}
+		
+	}	
+		
+	function editFolder(folderId){
+		$('#folderNameDiv').removeClass("has-success has-feedback");
+		$('#folderNameDiv').removeClass("has-error has-feedback");
+		
+		$('#folderInfo').modal({
+			backdrop:'static', /*点击黑色区域不关闭*/
+			keyboard:false     /*ESC键不关闭*/
+		});
+		
+		$('#addBtn').hide();
+		$('#setBtn').show();
+		$('#folderInfo h4').text("修改目录信息");
+		$('#folderId').val(folderId);
+		$('#folderName').val($('#oriFolderName').val());
+		$('#folderDescription').val($('#oriFolderDescription').val());
+		if($('#oriFolderShare').val()==0){
+			$('#fs1').removeProp("selected");   
+			$('#fs0').prop("selected",true);   
+		}else{
+			$('#fs0').removeProp("selected");   
+			$('#fs1').prop("selected",true);    
+		}
+		
+		
+		
+		$('#folderSet').click(function(){
+			layer.load();
+			if($('#folderName').val()==null || $('#folderName').val()=='' || $('#folderName').val().length>255)
+			{
+				layer.closeAll('loading');
+				$('#folderNameDiv').addClass("form-group has-error has-feedback");
+			}
+			else if($('#folderName').val()!=null &&  $('#folderName').val().length<=255){
+				$('#folderNameDiv').addClass("form-group has-success has-feedback");
+				var folderName=$('#folderName').val();
+				
+					layer.msg('修改成功', {icon: 1});
+				$('#closeBtn').click();
+				$('#folderSet').unbind('click');
+			}
+		});
+	}
+	
+	
+	function editChildFolder(folderId){
+		$('#folderNameDiv').removeClass("has-success has-feedback");
+		$('#folderNameDiv').removeClass("has-error has-feedback");
+		
+		$('#folderInfo').modal({
+			backdrop:'static', /*点击黑色区域不关闭*/
+			keyboard:false     /*ESC键不关闭*/
+		});
+		
+		var folderName = $('#folder'+folderId).prev().prev().prev().val();
+		var folderDescription = $('#folder'+folderId).prev().val();
+		var folderShare = $('#folder'+folderId).prev().prev().val();
+		$('#addBtn').hide();
+		$('#setBtn').show();
+		$('#folderInfo h4').text("修改目录信息");
+		$('#folderId').val(folderId);
+		$('#folderName').val(folderName);
+		$('#folderDescription').val(folderDescription);
+		if(folderShare==0){
+			$('#fs1').removeProp("selected");   
+			$('#fs0').prop("selected",true);   
+		}else{
+			$('#fs0').removeProp("selected");   
+			$('#fs1').prop("selected",true);    
+		}
+		
+		$('#folderSet').click(function(){
+			layer.load();
+			if($('#folderName').val()==null || $('#folderName').val()=='' ||  $('#folderName').val().length>255)
+			{
+				layer.closeAll('loading');
+				$('#folderNameDiv').addClass("form-group has-error has-feedback");
+			}
+			else if($('#folderName').val()!=null &&  $('#folderName').val().length<=255){
+				$('#folderNameDiv').addClass("form-group has-success has-feedback");
+				id=$('#folderId').val();
+				folderName= $('#folderName').val();
+				
+					layer.msg('修改成功', {icon: 1});
+				
+				$('#closeBtn').click();
+				$('#folderSet').unbind('click');
+			}
+		});
+	}
+	
+	function loadDetail(folderId){
+		if(folderId==1){
+			$('#currentFolder1').show();
+			$('#currentFolder2').hide();
+		}else{
+			$('#currentFolder2').show();
+			$('#currentFolder1').hide();
+		}
+	}
+	function delFolder(folderId){
+		layer.confirm('你确定要删除此目录以及其下所有目录和文件吗？', {
+			btn: ['确定','取消'], //按钮
+			closeBtn:2,
+			icon: 3,
+			shade: false
+		}, function(){
+				layer.msg('删除成功！', {icon: 1});
+		});
+	}
+	
+	function editShare(folderId){
+		layer.confirm('你确定要修改此目录及其子目录共享状态吗？', {
+			btn: ['确定','取消'], //按钮
+			closeBtn:2,
+			icon: 3,
+			shade: false
+		}, function(){
+			if(folderId==22){
+				$('#yigongxiang').show();
+				$('#weigongxiang').hide();
+			} else{
+				$('#yigongxiang').hide();
+				$('#weigongxiang').show();
+			}
+				layer.msg('设置成功！', {icon: 1});
+				
+			});
+	
+	}
+	function addFolder(folderId){
+		$('#folderNameDiv').removeClass("has-success has-feedback");
+		$('#folderNameDiv').removeClass("has-error has-feedback");
+		
+		$('#folderInfo').modal({
+			backdrop:'static', /*点击黑色区域不关闭*/
+			keyboard:false     /*ESC键不关闭*/
+		});
+		
+		$('#folderInfo h4').text("增加新目录");
+		$('#folderId').val(folderId);
+		$('#setBtn').hide();
+		$('#addBtn').show();
+		
+		
+	}
+
+
+	function download(fileId){
+		$('#download'+fileId).submit();
+	}
+	
+	function editFile(fileId){
+		$('#fileNameDiv').removeClass("has-success has-feedback");
+		$('#fileNameDiv').removeClass("has-error has-feedback");
+		
+		$('#fileInfo').modal({
+			backdrop:'static', /*点击黑色区域不关闭*/
+			keyboard:false     /*ESC键不关闭*/
+		});
+		
+		var fileName = $('#file'+fileId).prev().val();
+		var index = fileName.lastIndexOf('.');
+		$('#fileId').val(fileId);
+		$('#fileName').val(fileName.substr(0,index));
+		$('#fileType').val(fileName.substring(index,fileName.length));
+	}
+	
+	function deleteFile(fileId){
+		var fileName = $('#file'+fileId).prev().val();
+		
+		layer.confirm('你确定要删除'+fileName+'吗？', {
+			btn: ['确定','取消'], //按钮
+			closeBtn:2,
+			icon: 3,
+			shade: false
+		}, function(){
+			layer.load();
+			
+				loadDetail($('#oriFolderId').val());
+				layer.closeAll('loading');
+				layer.msg('删除成功！', {icon: 1});
+			
+		});
+	}
+	
+	var finished = false; //上传是否结束
+	
+	function showStatus(){
+		if(finished){
+			layer.load();
+			layer.msg('正在处理中，请稍候');
+			finishActivity();
+		} else{
+			$.get('/cloud_oa/file/getProgress.action',function(data){
+				$('#bar').attr('style','width:'+data+'%');
+				$('#bar').attr('aria-valuenow',data);
+				$('#progressBar span').html(data+'%');
+				if((data+'%')=='100%'){
+					finished = true;
+				}
+				setTimeout(showStatus(),1000);
+			});
+		}
+	}
+	var ok=false;
+	function finishActivity(){
+		if(ok){
+			layer.closeAll('loading');
+			$('#closeBtn3').click();
+			layer.msg('上传成功！', {icon: 1});
+			loadDetail($('#fileFolder').val());
+		}else{
+			$.get('/cloud_oa/file/getOK.action',function(data){
+				if(data=="ok"){
+					ok=true;
+				}
+				setTimeout(finishActivity,1000);
+				
+			});
+		}
+		
+	}
+	
+	function upload(folderId){
+		finished=false;
+		$('#fileFolder').val(folderId);
+		$('#data').remove();
+		$('#files').append('<input type="file" name="data" id="data" class="form-control">');
+		$('#closeBtn3').show();
+		$('#progressBar').hide();
+		$('#fileDiv').show();
+		$('#fileUpload').modal({
+			backdrop:'static', /*点击黑色区域不关闭*/
+			keyboard:false     /*ESC键不关闭*/
+		});
+		
+	}
+	
+	function uploadClick(){
+		var file_field = document.getElementById('data');
+		if(file_field.value=="" || file_field.value==null){
+			layer.msg('请选择上传的文件！', {icon: 0});
+			return false;
+		}
+        
+		var filesize = file_field.files[0].size;
+		if(filesize<=52428800){
+		layer.msg('上传成功！', {icon: 1});
+		$('#closeBtn3').click();
+			
+		}else {
+			layer.msg('请不要上传超过50M的文件，请重新选择！', {icon: 0});
+			return false;
+		}
+	}
+
+	function beforeDrag(treeId, treeNodes) {
+		for (var i=0,l=treeNodes.length; i<l; i++) {
+			if (treeNodes[i].drag === false) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	$(document).ready(function(){
+		var data = [{"id":21,"open":true,"pId":1,"drag":false,"name":"2","isParent":true},{"id":1,"open":true,"pId":0,"drag":false,"name":"系统管理员的云存储","isParent":true}];
+		$.fn.zTree.init($("#tree"), setting, data);	
+		$('#tree_1_a').click();
+		$('#yigongxiang').show();
+		$('#weigongxiang').hide();
+		$('#closeBtn').click(function(){
+			$('#folderId').val('');
+			$('#folderName').val('');
+			$('#folderDescription').val('');
+			$('#fs0').attr("selected");   
+			$('#fs1').removeAttr("selected");   
+		});
+		
+		$('#folderAdd').click(function(){
+			layer.load();
+			if($('#folderName').val()==null || $('#folderName').val()=='' ||  $('#folderName').val().length>255)
+			{
+				layer.closeAll('loading');
+				$('#folderNameDiv').addClass("form-group has-error has-feedback");
+			}
+			else if($('#folderName').val()!=null &&  $('#folderName').val().length<=255){
+				$('#folderNameDiv').addClass("form-group has-success has-feedback");
+				id=$('#folderId').val();
+				folderName= $('#folderName').val();
+				
+					var zTree = $.fn.zTree.getZTreeObj("tree");
+					treeNode = zTree.getNodeByParam('id', id);
+					treeNode = zTree.addNodes(treeNode, {id:data, pId:id, isParent:true, name:folderName});
+					
+					layer.closeAll('loading');
+					layer.msg('新增成功！', {icon: 1});
+				
+				$('#closeBtn').click();
+			}
+		});
+		
+		$('#closeBtn2').click(function(){
+			$('#fileId').val('');
+			$('#fileName').val('');
+			$('#fileType').val('');
+		});
+		
+		$('#setFileBtn').click(function(){
+			layer.load();
+			if($('#fileName').val()==null || $('#fileName').val()=='' || $('#fileName').val().length>255)
+			{
+				layer.closeAll('loading');
+				$('#fileNameDiv').addClass("form-group has-error has-feedback");
+			}
+			else if($('#fileName').val()!=null && $('#fileName').val().length<=255){
+				$('#fileNameDiv').addClass("form-group has-success has-feedback");
+				
+					
+					layer.closeAll('loading');
+					layer.msg('修改成功', {icon: 1});
+				
+				$('#closeBtn2').click();
+			}
+		});
+		
+		$('#uploadBtn').click(uploadClick);
+	});
+</script>
+<title>云目录</title>
+
+</head>
+
+<body>
+
+	<!-- 网页头部-->
+
+	
+
+
+
+<script type="text/javascript">
+
+	//轮播时间间隔设置
+	$(document).ready(function(e) {
+		$('.carousel').carousel({
+        interval: 4000
+    });
+    $(document).ready(function(e) {
+        //初始化工具提示
+		$('a,button[data-toggle="tooltip"]').tooltip();		
+		$('#fuckhtml').popover();
+    	});
+	});
+
+	//消息提示整体亮度控制
+	$(document).ready(function(e) {		
+		//鼠标移上
+		$('#notice').mouseover(function(){
+			if($('#infonotice').text()!="0"){
+				$('#infonotice').addClass('noticeBg');	
+			}else{
+				$('#infonotice').css("background-color","#999");
+			}
+				
+		});		
+		//鼠标离开
+		$('#notice').mouseout(function(){
+			if($('#infonotice').text()!="0"){
+				$('#infonotice').removeClass('noticeBg');
+			}else{
+				$('#infonotice').css("background-color","#777");
+			}
+			
+		});						
+	});
+
+	//登陆界面模态层
+	$(document).ready(function(e) 
+	{        
+	/*单击按钮弹出模态层*/
+	$('#modalBtn').click(function(e){
+		$('#myModal').modal
+		(
+			{
+				backdrop:'static', /*点击黑色区域不关闭*/
+				keyboard:false     /*ESC键不关闭*/
+			}
+		);
+
+		$('#navigation').fadeOut("fast").addClass("fixed-top-changed");
+	});	
+
+
+    /*关闭时回到原来尺寸*/
+	$('#closemodal').click(function(e){
+		$('#navigation').removeClass("fixed-top-changed").delay(300).fadeIn("fast");
+		});
+    });
+	
+	$(document).ready(function(){
+		//一行代码搞定，提交表单的时候会自动触发验证程序
+		$('#loginform').Validform({
+			tiptype:0,
+			ajaxPost:true,
+			beforeSubmit:function(curform){return false;}
+		});
+	});
+	</script>
+	<!--登陆界面模态层-->
+	<div class="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" id="closemodal" data-dismiss="modal">&times;</button>
+					<h4 class="text-center">切换用户</h4>
+				</div>
+
+				<div class="modal-body">
+					<form id="loginform" class="form-horizontal" method="post" action="./cloud_oa/login/login.action">
+			        	<div class="form-group"> 
+			                <label for="userName" class="col-sm-4 control-label">账号</label>
+			                <div class="col-sm-6">
+			                	<input type="text" datatype="*" name="empNum" id="empNum" class="form-control" placeholder="请输入账号">               
+			                </div>
+			            </div>
+			            
+			            <div class="form-group">
+			                <label for="userPwd" class="col-sm-4 control-label">密码</label>
+			                <div class="col-sm-6">
+			                	<input datatype="*" type="password" name="password" id="password" class="form-control" placeholder="请输入密码 ">              
+			                </div>
+			            </div>
+
+			            <div class="form-group">
+			            	<div class="col-sm-3 col-sm-offset-7">
+			            		<input type="submit" id="btn2" class="btn btn-primary btn-block" data-loading-text="正在确认..." value="登录"> 		            		
+			                </div>
+			            </div>
+		        	</form>  
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<!--/登陆界面模态层-->
+
+	<!--导航条-->
+	<nav id="navigation" class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+
+			<div class="navbar-header" >
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myCollapse1">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="./cloud_oa/pages/index.jsp" class="navbar-brand">
+					<img src="./cloud_oa/image/default-transparent.png" height="20"/>
+				</a>
+			</div>
+			<!--/.navbar-header-->
+
+			<form if="userform" action="">
+			<div class="collapse navbar-collapse navbar-right" id="myCollapse1">
+				<ul class="nav navbar-nav nav-right">
+					<li class="dropdown">
+						<a href="./cloud_oa/empInfo/query.action" data-toggle="dropdown">
+							当前用户：系统管理员
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu ">
+							<li>
+								<a href="#" id="modalBtn">切换用户</a>
+							</li>
+							<li>
+								<a href="./indexLogin.html">退出</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a id="notice" href="./在线消息-未阅消息.html">
+							新消息：
+							<span id="infonotice" class="badge">0</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" 
+						id="fuckhtml"
+						data-html="true" data-toggle="popover" 
+						data-content="<center>
+						<img width='30' src='./cloud_oa/image/ic_launcher.png'></img>&nbsp;
+						<a style='font-size:1.1em;color:black;text-decoration:none' href='./cloud_oa/app/cloud.apk'>点击直接下载</a>
+						<br><img width='200' src='./cloud_oa/appuser/getApkQRcode.do'></img>
+						<br>扫一扫二维码，下载安装客户端</center>"
+						data-placement="bottom"> 安卓客户端 </a></li>
+					
+				</ul>
+
+			</div>
+			<!--/.collapse-->
+			</form>
+
+		</div>
+		<!--/.container-fluid-->
+	</nav>
+	<!--/导航条-->
+
+	<!--轮播容器-->
+	<header id="myCarousel" class="carousel slide">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				<div class="fill" style="background-image:url('./cloud_oa/image/100.jpg');"></div>
+				<div class="carousel-caption">
+					<h2>学JAVA开发，到中软国际。</h2>
+				</div>
+			</div>
+			<div class="item">
+				<div class="fill" style="background-image:url('./cloud_oa/image/101.jpg');"></div>
+				<div class="carousel-caption">
+					<h2>学iOS/Android开发，到中软国际。</h2>
+				</div>
+			</div>
+			<div class="item">
+				<div class="fill" style="background-image:url('./cloud_oa/image/102.jpg');"></div>
+				<div class="carousel-caption">
+					<h2>学C++开发，到中软国际。</h2>
+				</div>
+			</div>
+		</div>
+		<!-- Controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="icon-prev"></span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+			<span class="icon-next"></span>
+		</a>
+	</header>
+	<!--/轮播容器-->
+	
+	<!--网页分类-->
+	<nav class="navbar navbar-default hidden-sm hidden-xs">
+		<div class="container">
+			<div class="collapse navbar-collapse" id="myCollapse2">
+			
+				<ul class="nav navbar-nav">
+				
+					<li>
+						<a href="./index.html">系统首页</a>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							个人中心
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu ">
+							<li>
+								<a href="./个人中心-员工信息维护.html">员工信息维护</a>
+							</li>
+							<li>
+								<a href="./个人中心-检索他人信息.html">检索他人信息</a>
+							</li>
+							<li>
+								<a href="./个人中心-个人申请中心.html">个人申请中心</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							工作安排
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./工作安排-日程安排.html">日程安排</a>
+							</li>
+							<li>
+								<a href="./工作安排-综合查询.html">综合查询</a>
+							</li>
+							<li>
+								<a href="./工作安排-日历查看.html">日历查看</a>
+							</li>
+							<li>
+								<a href="./工作安排-代读设置.html">代读设置</a>
+							</li>
+							<li>
+								<a href="./工作安排-待办审批.html">待办审批</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							名片夹
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./名片夹-联系人查询.html">联系人查询</a>
+							</li>
+							<li>
+								<a href="./名片夹-名片夹分类.html">名片夹分类</a>
+							</li>
+							<li>
+								<a href="./名片夹-公司通讯录.html">公司通讯录</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							消息收发
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./在线消息-发送新消息.html">发送消息</a>
+							</li>
+							<li>
+								<a href="./在线消息-草稿箱.html">草稿箱</a>
+							</li>
+							<li>
+								<a href="./在线消息-发件箱.html">已发送消息</a>
+							</li>
+							<li>
+								<a href="./在线消息-收件箱.html">收到的消息</a>
+							</li>
+							<li>
+								<a href="./在线消息-未阅消息.html">未阅的消息(<span name="count">0</span>)</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							云文件存储
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./云文件存储-云文件目录.html">云文件目录</a>
+							</li>
+							<li>
+								<a href="./云文件存储-我的云共享.html">我的云共享</a>
+							</li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							会议管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./会议管理-会议室信息.html">会议室信息</a>
+							</li>
+							<li>
+								<a href="./会议管理-会议预约情况.html">会议预约情况</a>
+							</li>
+							<li>
+								<a href="./会议管理-我要参加的会议.html">我要参加的会议</a>
+							</li>
+							<li>
+								<a href="./会议管理-我发布的会议.html">我发布的会议</a>
+							</li>
+						</ul>
+					</li>
+
+					
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							系统管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./系统管理-部门管理.html">部门管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-职务管理.html">职务管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-员工管理.html">员工管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-角色管理.html">角色管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-权限管理.html">权限管理</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							资产管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./资产管理-库存管理.html">库存管理</a>
+							</li>
+							<li>
+								<a href="./资产管理-办公用品消耗.html">办公用品消耗</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							车辆管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./车辆管理-查看车辆信息.html">查看车辆信息</a>
+							</li>
+							<li>
+								<a href="./车辆管理-派车待办.html">派车待办</a>
+							</li>
+							<li>
+								<a href="./车辆管理-派车记录.html">派车记录</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							外派人才
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./外派人才-外派人才列表.html">外派人才列表</a>
+							</li>
+							<li>
+								<a href="./外派人才-合作公司列表.html">合作公司列表</a>
+							</li>
+							<li>
+								<a href="./外派人才-公司需求列表.html">公司需求列表</a>
+							</li>
+							<li>
+								<a href="./外派人才-外派记录列表.html">外派记录显示</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="./系统公告.html">
+							系统公告
+						</a>
+					</li>
+				</ul>
+				
+			</div>
+			<!--/.collapse-->
+		</div>
+	</nav>
+	<!-- 网页头部完成-->
+	<!-- 每个模块的部分 -->
+	<div class="container">
+		<h2 class="page-header">
+			云文件目录		
+		</h2>	  
+		<!-- 侧边栏树形结构-->     
+		<div class="col-md-3"> 
+	        <div class="panel panel-primary" >
+	        	<div class="panel-heading" style="font-weight:bolder">
+	        		我的云目录
+	            </div>
+	            <div id="folderTree" class="panel-body">
+	            	<ul id="tree" class="ztree"></ul>
+				</div>
+			</div>    
+			<div class="panel panel-primary">
+				<div class="panel-heading" style="font-weight:bolder">
+	        		<a style="color:white;" href="./云文件存储-我的云共享.html">我的云共享</a>
+	            </div>  
+	       	</div>
+		</div>
+        <!-- 侧边栏完成    -->
+         
+        <!-- 右侧内容-->
+		<div id="currentFolder1" class="col-md-offset-3">
+			<div class="panel panel-info" >
+	<div class="panel-heading" ><b>
+	
+	系统管理员的云存储</b>
+		<input type=hidden id="oriFolderId" value="1">
+		<input type=hidden id="oriFolderName" value="系统管理员的云存储">
+		<input type=hidden id="oriFolderDescription" value="中软云办公为您提供免费默认1G云空间，在您今后的工作生活中有机会增加容量。">
+		<input type=hidden id="oriFolderShare" value="0">
+		<div class="pull-right">
+			
+			<a href="javascript:addFolder(1)" class="btn btn-primary btn-xs">新建子目录</a>
+			<a href="javascript:upload(1)" class="btn btn-primary btn-xs" >上传文件</a>
+		</div>
+	</div>
+   	
+   	<div class="panel-body">
+   		<p>文件夹描述：中软云办公为您提供免费默认1G云空间，在您今后的工作生活中有机会增加容量。
+   		
+   		<div class="panel panel-default" >
+			<div class="panel-heading" >子目录和文件</div>
+			<div style="height:300px;overflow-x:visible;overflow-y:auto">
+				
+				<table class="table table-striped">
+  					
+					   	<tr>
+					   	<td width="10%">
+				   			<div class="btn-group btn-xs">
+				            	<button  type="button" class="btn btn-default  btn-xs dropdown-toggle  input-xs" id="dropdownMenu" data-toggle="dropdown">
+				                   	 操作
+				                    <span class="caret"></span>
+				                </button>
+				                <input type="hidden" value="2">
+				                <input type="hidden" value="0">
+				                <input type="hidden" value="">
+				                <ul id="folder21" class="dropdown-menu">
+				                    <li><a href="javascript:addFolder(21)">新建子目录</a></li>
+				                    <li><a href="javascript:upload(21)">上传文件</a></li>
+				                   	<li><a href="javascript:editChildFolder(21)">修改信息</a></li>
+				                   	<li><a href="javascript:delFolder(21)">删除目录</a></li>			                    
+				                </ul>
+				            </div>    
+				   		</td>
+				   		<td width="5%" style="background:url(./cloud_oa/image/folder.png);background-size: cover;background-size: contain;background-repeat:no-repeat;">
+				   		</td>
+				   		<td width="60%"><a href="javascript:loadDetail(21)">
+				   			
+					   		2
+				   			</a>
+				   		</td>
+				   		<td width="10%">
+					   		
+					   			<span class="label label-primary">已共享</span>
+					   		
+					   		
+				   		</td>
+				   		<td width="15%">
+				   			0MB
+				   		</td>
+				   		
+				   	</tr>
+			   	
+			   	</table>
+			   	
+				
+			
+		</div>
+		</div>
+   	</div>
+   	<div class="panel-footer">
+   		已用/总容量：0MB / 1,024MB
+   		
+   		
+   		<div class="pull-right">
+   		
+   		<span class="label label-default">未共享</span>
+   			<a href="javascript:editShare(1)" >设为共享目录</a>
+   		
+   		
+   		</div>
+   	</div>
+</div>
+	    </div>  
+		<!--右侧内容完 -->
+		 <!-- 右侧内容-->
+		<div id="currentFolder2" class="col-md-offset-3">
+<div class="panel panel-info" >
+	<div class="panel-heading" ><b>
+	
+	2</b>
+		<input type=hidden id="oriFolderId" value="21">
+		<input type=hidden id="oriFolderName" value="2">
+		<input type=hidden id="oriFolderDescription" value="">
+		<input type=hidden id="oriFolderShare" value="0">
+		<div class="pull-right">
+			
+				<a href="javascript:editFolder(21)" class="btn btn-xs btn-info">修改信息</a>
+				<a href="javascript:delFolder(21)" class="btn btn-xs btn-info">删除目录</a>
+			
+			<a href="javascript:addFolder(21)" class="btn btn-primary btn-xs">新建子目录</a>
+			<a href="javascript:upload(21)" class="btn btn-primary btn-xs" >上传文件</a>
+		</div>
+	</div>
+   	
+   	<div class="panel-body">
+   		
+   		<p>文件夹描述：无
+   		<div class="panel panel-default" >
+			<div class="panel-heading" >子目录和文件</div>
+			<div style="height:300px;overflow-x:visible;overflow-y:auto">
+				
+				
+			<div class="list-group-item">空文件夹!可以点击标题右上侧创建新目录或上传文件！</div>
+		</div>
+		</div>
+   	</div>
+   	<div class="panel-footer">
+   		
+   		文件夹大小：0MB
+   		
+   		<div class="pull-right">
+   		<div id="yigongxiang">
+   		<span class="label label-primary">已共享</span>
+   			<a href="javascript:editShare(21)" >取消共享</a>
+   		</div>
+   		<div id="weigongxiang">
+   		<span class="label label-default">未共享</span>
+   			<a href="javascript:editShare(22)" >设为共享目录</a>
+   		</div>
+   		
+   		</div>
+   	</div>
+</div>
+      	
+	    </div>  
+		<!--右侧内容完 -->
+	</div>	
+<iframe name="hiddenUpload" width="0" height="0"></iframe>
+	<!--网页底部-->
+	
+
+<footer>
+		<div class="container-fluid footer_style">
+			<div class="col-md-6 col-md-offset-3 text-center">
+				<h4><img src="./cloud_oa/image/default-transparent.png" height="20"/></h4>
+				<p>地址：辽宁省大连市高新园区宏川东路20号黄泥川天地软件园金枫楼三层</p>
+				<p>Copyright 2009-2014 dletc.com.cn all rights reserved 网站备案号 : 辽ICP备09019147号-1</p>
+			</div>
+		</div>
+	</footer>
+	
+	<!--网页底部结束-->
+	
+	<!--文件夹模态层-->
+    <div class="modal fade" id="folderInfo" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+            	<div class="modal-header">
+                	<button id="closeBtn" type="button" class="close" data-dismiss="modal">&times;</button>
+                	<h4 class="text-center"></h4>
+                </div>
+            	<div class="modal-body">
+                	<div id="folderForm" class="form-horizontal">
+			        	<div class="form-group"> 
+			                <div class="col-sm-6">
+			                	<input type="hidden" name="folderId" id="folderId" class="form-control">               
+			                </div>
+			            </div>
+			            
+			            <div id="folderNameDiv" class="form-group">
+			                <label class="col-sm-4 control-label">目录名称</label>
+			                <div class="col-sm-6">
+			                	<input type="text" name="folderName" id="folderName" class="form-control" placeholder="请输入文件夹名称 ">              
+			                </div>
+			            </div>
+			            
+			            <div class="form-group">
+			                <label class="col-sm-4 control-label">目录描述</label>
+			                <div class="col-sm-6">
+			                	<textarea name="folderDescription" id="folderDescription" class="form-control" placeholder="请输入文件夹描述 " ></textarea>              
+			                </div>
+			            </div>
+
+						<div class="form-group">
+			                <label class="col-sm-4 control-label">设置共享</label>
+		                	<div class="col-sm-6">
+		                  		<select class="form-control" name="folderShare" id="folderShare" >
+           							<option id="fs0" value="0">不共享</option>
+               						<option id="fs1" value="1">共享</option>
+           						</select>
+		                	</div>
+			            </div>
+			            
+			            <div id="setBtn" class="form-group">
+			            	<div class="col-sm-2 col-sm-offset-8">
+			            		<button id="folderSet" class="btn btn-primary btn-block">修改</button> 		            		
+			                </div>
+			            </div>
+			            <div id="addBtn" class="form-group">
+			            	<div class="col-sm-2 col-sm-offset-8">
+			            		<button id="folderAdd" class="btn btn-primary btn-block">新增</button> 		            		
+			                </div>
+			            </div>
+		        	</div>  
+                </div>
+            </div>
+        </div> 
+    </div>
+    <!-- 重命名模态层 -->
+    <div class="modal fade" id="fileInfo" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+            	<div class="modal-body">
+            	    <button id="closeBtn2" type="button" class="close" data-dismiss="modal">&times;</button>
+                	<div id="fileForm" class="form-horizontal">
+			        	<div class="form-group"> 
+			                <div>
+			                	<input type="hidden" name="fileId" id="fileId" class="form-control">               
+			                </div>
+			            </div>
+			            
+			            <div id="fileNameDiv" class="form-group">
+			                <label class="col-sm-2 control-label">重命名</label>
+			                <div class="col-sm-6">
+			                	<input type="text" name="fileName" id="fileName" class="form-control" placeholder="请输入文件名 ">              
+			                </div>
+			                <div class="col-sm-2">
+			                	<input type="text" name="fileType" id="fileType" class="form-control" readonly>              
+			                </div>
+			                <div class="col-sm-2">
+			            		<button id="setFileBtn" class="btn btn-primary btn-block">修改</button> 		            		
+			                </div>
+			            </div>
+		        	</div>  
+                </div>
+            </div>
+        </div> 
+    </div>
+    <!-- 上传模态层 -->
+    <div class="modal fade" id="fileUpload" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+            	<div class="modal-body">
+                	<form id="uploadForm" class="form-horizontal" enctype="multipart/form-data" method="post" action="#" target="hiddenUpload">
+			            <div id="fileDiv" class="form-group">
+			                <div id="files" class="col-sm-6 col-sm-offset-2">
+			                	<input type="file" name="data" id="data" class="form-control">              
+			                </div>
+			                <div class="col-sm-2">
+			            		<button id="uploadBtn" class="btn btn-primary btn-block">上传</button> 		            		
+			                </div>
+			                <div class="col-sm-2">
+			                	<button id="closeBtn3" type="button" class="close" data-dismiss="modal">&times;</button>
+			                </div>
+			            </div>
+			            
+		        	</form>  
+		        	<div id="progressBar" class="progress">
+				        	<div id="bar" class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+				            	<span>0%</span>            	
+				            </div> 
+				            <input type="hidden" id="fileFolder" value="">
+				    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</body>
+
+</html>

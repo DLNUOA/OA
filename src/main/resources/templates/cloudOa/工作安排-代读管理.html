@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+<link href="./cloud_oa/css/sb-admin.css" rel="stylesheet">
+<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+<link rel="stylesheet" type="text/css" href="./cloud_oa/css/common.css">
+<script type="text/javascript">
+	//删除确认
+	function del(uaId) {
+		var flag = window.confirm("确定要删除此员工吗");
+		if (flag) {
+			location.href = "工作安排-代读管理.html";
+		}
+	}	
+</script>
+<title>代办管理</title>
+</head>
+<body>
+
+	<table class="table table-hover table-condensed table-striped">
+    	<tr style="font-size:14px;" align="center">
+    		<th style="text-align:center">姓名</th>
+    		<th style="text-align:center">部门</th>
+    		<th style="text-align:center">职位</th>
+    		<th style="text-align:center">代读状态</th>
+    		<th style="text-align:center">操作</th>
+    	</tr>
+         
+           <tr style="font-size:14px;" align="center">
+             <td>张炎</td>
+             <td>经理部</td>
+             <td>总经理</td>
+             <td>读者</td>
+             <td>		
+				<a href="javascript:del(122);" class="btn btn-primary btn-xs">删除</a>			
+             </td>
+           </tr>
+         
+           <tr style="font-size:14px;" align="center">
+             <td>何建吾</td>
+             <td>外派部</td>
+             <td>员工</td>
+             <td>读者</td>
+             <td>		
+				<a href="javascript:del(123);" class="btn btn-primary btn-xs">删除</a>			
+             </td>
+           </tr>
+         
+           <tr style="font-size:14px;" align="center">
+             <td>田金川</td>
+             <td>行政部</td>
+             <td>行政主管</td>
+             <td>代办</td>
+             <td>		
+				<a href="javascript:del(124);" class="btn btn-primary btn-xs">删除</a>			
+             </td>
+           </tr>
+         
+           <tr style="font-size:14px;" align="center">
+             <td>殷建</td>
+             <td>外派部</td>
+             <td>外派管理员</td>
+             <td>代办</td>
+             <td>		
+				<a href="javascript:del(121);" class="btn btn-primary btn-xs">删除</a>			
+             </td>
+           </tr>
+          
+	</table>
+	
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+			
+			
+			
+				<li class="disabled"><a href="#">下页</a></li>
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+		<li class="disabled"><a href="#">共1页</a></li>
+	</ul>
+</nav>
+ 
+
+
+</body>
+</html>

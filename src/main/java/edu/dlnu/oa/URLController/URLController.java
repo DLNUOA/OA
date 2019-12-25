@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class URLController {
     Logger log = LoggerFactory.getLogger(this.getClass());
-    @RequestMapping("index")
+    @RequestMapping("/index")
     public String index(){
-        log.info("Visit Index");
-        return "index";
+        log.info("Visit CloudOa Index");
+        return "cloudOa/index";
     }
 
     @RequestMapping("/login")

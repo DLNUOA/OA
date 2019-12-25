@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>在线消息</title>
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<link href="./cloud_oa/pages/Message/css/message.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+		
+	<script type="text/javascript">
+		//检查是否全选
+		function checkAll(){
+			if($('td>input').length==$("td>input:checked").length){
+				$('th>input').prop("checked", true);
+			}else{
+				$('th>input').prop("checked", false);
+			}
+		}
+		$(document).ready(function(e) 
+		{ 
+			//确定按钮，退出模态层
+			$('button').click(function(){
+				window.close();
+			});
+			//空行补满
+			while ($('tr').length<12)
+			{
+				$('tr').last().after('<tr><th>&nbsp</th><th></th><th></th><th></th></tr>');
+			}
+			//读取已选
+			$('td[name="recipientId"]').each(function(){
+				var key = this;
+				window.$('input[name="recipientIdList"]').each(function(){
+					if($(key).text()==$(this).val()){
+						$(key).prev().children().prop("checked", true);
+						return;
+					}
+				});
+			});
+			checkAll();
+			//选择添加或减少一个收件人
+			$('td>input').click(function (){
+				checkAll();
+				var recipientId = $(this).parent().next('td[name="recipientId"]').text();
+				var recipientName = $(this).parent().siblings('td[name="recipientName"]').text();
+				if($(this).prop("checked") == true){
+					parent.$('#recipientIdList').after('<input name="recipientIdList" value="'+recipientId+'" type="hidden"/><input name="recipientName" type="hidden" value="'+recipientName+'; ">');
+				}else{
+					parent.$('input[name="recipientIdList"]').each(function(){
+						if($(this).val()==recipientId){
+							$(this).next().remove();
+							$(this).remove();
+						}
+					});
+				}
+			});
+			//选择或取消所有
+			$('th>input').click(function(){
+				if($(this).prop("checked") == true){
+					$('td>input').prop("checked", true);
+					$('td[name="recipientId"]').each(function(){
+						var key = this;
+						var flag = 0;
+						parent.$('input[name="recipientIdList"]').each(function(){
+							if($(key).text()==$(this).val()){
+								flag = 1;
+								return;
+							}
+						});
+						if(flag==0){
+							parent.$('#recipientIdList').after('<input name="recipientIdList" value="'+$(this).text()+'" type="hidden"/><input name="recipientName" type="hidden" value="'+$(this).next().text()+'; ">');
+						}
+					});
+				}else{
+					$('td>input').prop("checked", false);
+					$('td[name="recipientId"]').each(function(){
+						var key = this;
+						parent.$('input[name="recipientIdList"]').each(function(){
+							if($(key).text()==$(this).val()){
+								$(this).next().remove();
+								$(this).remove();
+								return;
+							}
+						});
+					});
+				}
+			});
+		});
+	</script>
+	
+</head>
+<body>
+	<!-- 展示表格  -->
+	<table class="table table-striped">
+		<tr>
+			<th>&nbsp;<input type="checkbox"></th>
+			<th>姓名</th>
+			<th>部门</th>					
+			<th>职位</th>
+		</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">0</td>
+				<td name="recipientName">系统管理员</td>
+				<td>管理员</td>
+				<td>管理员</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">1</td>
+				<td name="recipientName">田金川</td>
+				<td>行政部</td>
+				<td>行政主管</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">2</td>
+				<td name="recipientName">包芳松</td>
+				<td>车队</td>
+				<td>车队管理</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">3</td>
+				<td name="recipientName">林栋之</td>
+				<td>财务部</td>
+				<td>财务出纳</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">4</td>
+				<td name="recipientName">殷建</td>
+				<td>外派部</td>
+				<td>外派管理员</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">5</td>
+				<td name="recipientName">张炎</td>
+				<td>经理部</td>
+				<td>总经理</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">6</td>
+				<td name="recipientName">李悦</td>
+				<td>外派部</td>
+				<td>部门经理</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">7</td>
+				<td name="recipientName">何建吾</td>
+				<td>外派部</td>
+				<td>员工</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">20</td>
+				<td name="recipientName">张三</td>
+				<td>人力资源部</td>
+				<td>员工</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">21</td>
+				<td name="recipientName">张三二</td>
+				<td>经理部</td>
+				<td>总经理</td>
+			</tr>
+		
+			<tr style="cursor:pointer">
+				<td>&nbsp;<input type="checkbox"></td>
+				<td hidden name="recipientId">22</td>
+				<td name="recipientName">李四</td>
+				<td>人力资源部</td>
+				<td>员工</td>
+			</tr>
+		
+	</table>
+	
+	<!-- 分页条 -->
+	
+
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+			
+			
+			
+				<li class="disabled"><a href="#">下页</a></li>
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+	</ul>
+</nav>
+
+	
+	<div class="text-center">
+		<button type="button" class="btn btn-primary col-xs-4 col-xs-offset-4">确 &nbsp;&nbsp;定 </button> 
+	</div>
+</body>
+</html>

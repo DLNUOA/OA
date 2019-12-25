@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+<link rel="stylesheet" type="text/css" href="/cloud_oa/css/common.css">
+<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+<link href="./cloud_oa/css/sb-admin.css" rel="stylesheet">
+<script type="text/javascript">
+
+function view(taskId,pageNum) {
+	layer.open({
+		type: 2,
+		title: '查看工作',
+		maxmin: false,
+		shadeClose: false, //点击遮罩关闭层
+		area : ['790px' , '400px'],
+		closeBtn:2,
+		content: '工作安排-查看.html'
+	});
+}
+</script>
+<title>查看工作</title>
+</head>
+<body>
+	
+	<table class="table table-hover table-condensed table-striped">
+    	<tr style="font-size:14px;" align="center">
+    		<th style="text-align:center">授予人</th>
+    		<th style="text-align:center">接收人</th>
+    		<th style="text-align:center">工作主题</th>
+    		<th style="text-align:center">布置时间</th>    		
+    		<th style="text-align:center">完成状态</th>
+    		<th style="text-align:center">操作</th>
+    	</tr>
+         
+           <tr style="font-size:14px;" align="center">
+             <td>殷建</td>
+             <td>李悦</td>
+             <td>工作二</td>
+             <td>2015-08-12</td>             
+             <td>未完成</td>
+             <td>             	
+				<a href="javascript:view(42,1);" class="btn btn-xs btn-primary">查看工作</a>			
+             </td>
+           </tr>
+         
+           <tr style="font-size:14px;" align="center">
+             <td>李悦</td>
+             <td>李悦</td>
+             <td>工作一</td>
+             <td>2015-08-12</td>             
+             <td>未完成</td>
+             <td>             	
+				<a href="javascript:view(41,1);" class="btn btn-xs btn-primary">查看工作</a>			
+             </td>
+           </tr>
+          
+	</table>
+	
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+			
+			
+			
+				<li class="disabled"><a href="#">下页</a></li>
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+		<li class="disabled"><a href="#">共1页</a></li>
+	</ul>
+</nav>
+ 
+	
+	
+	
+   
+	<div class="col-sm-10 col-sm-offset-1">
+		<table class="table text-center" >
+			<tr align="center">
+				<td style="text-align:center">
+				<a href="工作安排-编辑我的工作.html" id="readMy" class="btn btn-primary">编辑我的任务</a>
+				</td>
+				<td style="text-align:center">
+				<a href="工作安排-编辑授予任务.html" id="readMy" class="btn btn-primary">编辑授予任务</a>
+				</td>			
+				<td style="text-align:center">
+				<a href="工作安排-查看我的任务.html" id="readMy" class="btn btn-primary">查看我的任务</a>
+				</td>
+				<td style="text-align:center">
+				<a href="工作安排-查看授予任务.html" id="readMy" class="btn btn-primary">查看他人任务</a>
+				</td>	
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

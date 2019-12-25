@@ -1,0 +1,128 @@
+
+
+
+    
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no";>
+	<!--手机设备显示-->
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+	<link href="./cloud_oa/css/common.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/css/style.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/css/sb-admin.css" rel="stylesheet">
+	
+		<script type="text/javascript">
+	var index = parent.layer.getFrameIndex(window.name);
+		$(document).ready(function(){
+			
+			$('input[name="cataId"]').click(function(){
+				cataId = $(this).parent().parent().find('td').eq(1).text();
+				cataName = $(this).parent().parent().find('td').eq(2).text();	
+				
+			});
+			$('#yes').on('click', function(){
+				parent.$('#cataId').val(cataId);
+				parent.$('#cataName').val(cataName);
+				parent.layer.close(index);
+			});	
+			
+			$('#no').on('click', function(){
+				parent.layer.close(index);
+			});
+			
+			
+		});
+	
+	</script>
+</head>
+
+<body>
+
+	
+	<div>
+      	<table class="table table-striped table-bordered table-condensed table-hover">
+          	<thead>
+                	<tr>
+                		<th width="88">选择</th>
+                    	<th width="80">名片夹编号 </th>
+                    	<th width="100">名片夹名称</th>
+                    						
+                	</tr>	
+           	</thead>	
+              <tbody>		
+               	
+              	<tr>
+              		<td>
+                 		<input class="radio" name="cataId" type="radio" >
+                 	</td>
+                 	<td>7</td>
+                 	<td>李悦的名件夹</td>                	
+              	</tr>		                
+             	
+              	<tr>
+              		<td>
+                 		<input class="radio" name="cataId" type="radio" >
+                 	</td>
+                 	<td>61</td>
+                 	<td>家人</td>                	
+              	</tr>		                
+             	
+              	<tr>
+              		<td>
+                 		<input class="radio" name="cataId" type="radio" >
+                 	</td>
+                 	<td>62</td>
+                 	<td>客户</td>                	
+              	</tr>		                
+             	
+             	</tbody>
+      	</table>
+            
+   	<!-- 包含分页 -->
+   	
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+			
+			
+			
+				<li class="disabled"><a href="#">下页</a></li>
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+		<li class="disabled"><a href="#">共1页</a></li>
+	</ul>
+</nav>
+   	   		    		    	  
+    </div>  
+    <div class="text-center">
+    	<input id="yes" type="button" value="确定" class="btn btn-primary">
+		<input id="no" type="button" value="取消" class="btn">
+    </div>
+    			
+</body>
+
+</html>

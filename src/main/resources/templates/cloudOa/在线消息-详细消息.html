@@ -1,0 +1,91 @@
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>消息详情</title>
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<link rel="stylesheet" href="./cloud_oa/pages/Message/js/kindeditor/themes/default/default.css" />
+	<script charset="utf-8" src="./cloud_oa/pages/Message/js/kindeditor/kindeditor-min.js"></script>
+	<script charset="utf-8" src="./cloud_oa/pages/Message/js/kindeditor/zh_CN.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+	
+	<script type="text/javascript">
+	$(document).ready(function(e) 
+	{ 
+		//转换textarea到kindeditor，简化类型编辑器
+		var editor = KindEditor.create('textarea', {
+			resizeType : 0,
+			allowPreviewEmoticons : false,
+			allowImageUpload : false,
+			width: '100%',
+			readonlyMode: true,
+			height:'200px',
+			items : []
+		}); 
+		
+		//设置不同的表单提交内容
+		$("#forward").click(function(){
+			$('textarea').attr("name","content");
+			$('form').submit();
+			parent.layer.closeAll();
+ 		});
+		$("#answer").click(function(){
+ 			$('#recipientId').attr("name","recipientId");
+ 			$('#recipientName').attr("name","recipientName");
+ 			$('form').submit();
+ 			parent.layer.closeAll();
+		});
+	});
+	</script>
+	
+</head>
+<body>
+    <div class="container">
+    
+    	<form class="form-horizontal" style="margin-top:30px;" target="_top" method="post" action="./在线消息-发送新消息.html">
+        	<div class="form-group"> 
+            	
+					
+		            
+		            
+		           		<label class="col-xs-2 control-label text-right">您自己</label>
+		                <div class="col-xs-5">
+		                	<input id="recipientName" type="text" class="form-control" readonly value="系统管理员">
+		                	<input id="recipientId" type="hidden" value="0">            
+		                </div>
+		            
+		        
+            </div>
+            
+            <div class="form-group"> 
+                <label class="col-xs-2 control-label text-right">时间</label>
+                <div class="col-xs-5">
+                	<input type="text" class="form-control" readonly value="2015-08-11 14:12:21.0">               
+                </div>
+            </div>
+            
+            <div class="form-group"> 
+                <label class="col-xs-2 control-label text-right">内容</label>
+                <div class="col-xs-9">
+                	<textarea class="form-control">您收到新的请假申请，请<a href='./工作安排-待办审批.html' style='color:#FF0000' target='_top'>点击</a>查看</textarea>              
+                </div>
+            </div>  
+            
+            <div class="form-group">
+            	<div class="col-xs-1 col-xs-offset-7">
+            		<button id="answer" type="submit" class="btn btn-primary">  回  复  </button> 
+                </div>
+                <div class="col-xs-1 col-xs-offset-1">
+            		<button id="forward" type="submit" class="btn btn-primary">  转  发  </button> 
+                </div>
+            </div>                 
+        </form>
+    </div>
+</body>
+</html>

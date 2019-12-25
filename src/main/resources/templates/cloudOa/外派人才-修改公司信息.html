@@ -1,0 +1,561 @@
+
+
+<!doctype html>
+<html>
+<head>
+<title>修改公司信息</title>
+	<meta charset="utf-8">
+	<meta name="viewport" charset="width=device-width, initial-scale=1" user-scalable="no";>
+	<!--手机设备显示-->
+	<link href="./cloud_oa/css/common.css" rel="stylesheet" type="text/css">
+	<link href="./cloud_oa/js/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">	
+	<link href="./cloud_oa/css/style.css" rel="stylesheet" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+	<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+
+	<link href="./cloud_oa/css/style-bar.css" rel="stylesheet" rel="stylesheet" type="text/css">
+	
+	<script type="text/javascript">
+	$(document).ready(function(e) {
+        
+		//一行代码搞定，提交表单的时候会自动触发验证程序
+		$('#form1').Validform({
+			tiptype:3
+		});
+		
+    });
+	</script>
+	
+</head>
+
+<body>
+
+<!-- 网页头部-->>
+
+
+
+
+	
+
+
+
+<script type="text/javascript">
+
+	//轮播时间间隔设置
+	$(document).ready(function(e) {
+		$('.carousel').carousel({
+        interval: 4000
+    });
+    $(document).ready(function(e) {
+        //初始化工具提示
+		$('a,button[data-toggle="tooltip"]').tooltip();		
+		$('#fuckhtml').popover();
+    	});
+	});
+
+	//消息提示整体亮度控制
+	$(document).ready(function(e) {		
+		//鼠标移上
+		$('#notice').mouseover(function(){
+			if($('#infonotice').text()!="0"){
+				$('#infonotice').addClass('noticeBg');	
+			}else{
+				$('#infonotice').css("background-color","#999");
+			}
+				
+		});		
+		//鼠标离开
+		$('#notice').mouseout(function(){
+			if($('#infonotice').text()!="0"){
+				$('#infonotice').removeClass('noticeBg');
+			}else{
+				$('#infonotice').css("background-color","#777");
+			}
+			
+		});						
+	});
+
+	//登陆界面模态层
+	$(document).ready(function(e) 
+	{        
+	/*单击按钮弹出模态层*/
+	$('#modalBtn').click(function(e){
+		$('#myModal').modal
+		(
+			{
+				backdrop:'static', /*点击黑色区域不关闭*/
+				keyboard:false     /*ESC键不关闭*/
+			}
+		);
+
+		$('#navigation').fadeOut("fast").addClass("fixed-top-changed");
+	});	
+
+
+    /*关闭时回到原来尺寸*/
+	$('#closemodal').click(function(e){
+		$('#navigation').removeClass("fixed-top-changed").delay(300).fadeIn("fast");
+		});
+    });
+	
+	$(document).ready(function(){
+		//一行代码搞定，提交表单的时候会自动触发验证程序
+		$('#loginform').Validform({
+			tiptype:0,
+			ajaxPost:true,
+			beforeSubmit:function(curform){return false;}
+		});
+	});
+	</script>
+	<!--登陆界面模态层-->
+	<div class="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" id="closemodal" data-dismiss="modal">&times;</button>
+					<h4 class="text-center">切换用户</h4>
+				</div>
+
+				<div class="modal-body">
+					<form id="loginform" class="form-horizontal" method="post" action=""./cloud_oa/login/login.action">
+			        	<div class="form-group"> 
+			                <label for="userName" class="col-sm-4 control-label">账号</label>
+			                <div class="col-sm-6">
+			                	<input type="text" datatype="*" name="empNum" id="empNum" class="form-control" placeholder="请输入账号">               
+			                </div>
+			            </div>
+			            
+			            <div class="form-group">
+			                <label for="userPwd" class="col-sm-4 control-label">密码</label>
+			                <div class="col-sm-6">
+			                	<input datatype="*" type="password" name="password" id="password" class="form-control" placeholder="请输入密码 ">              
+			                </div>
+			            </div>
+
+			            <div class="form-group">
+			            	<div class="col-sm-3 col-sm-offset-7">
+			            		<input type="submit" id="btn2" class="btn btn-primary btn-block" data-loading-text="正在确认..." value="登录"> 		            		
+			                </div>
+			            </div>
+		        	</form>  
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<!--/登陆界面模态层-->
+
+	<!--导航条-->
+	<nav id="navigation" class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+
+			<div class="navbar-header" >
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myCollapse1">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href=""./cloud_oa/pages/index.jsp" class="navbar-brand">
+					<img src="./cloud_oa/image/default-transparent.png" height="20"/>
+				</a>
+			</div>
+			<!--/.navbar-header-->
+
+			<form if="userform" action="">
+			<div class="collapse navbar-collapse navbar-right" id="myCollapse1">
+				<ul class="nav navbar-nav nav-right">
+					<li class="dropdown">
+						<a href="./cloud_oa/empInfo/query.action" data-toggle="dropdown">
+							当前用户：系统管理员
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu ">
+							<li>
+								<a href="#" id="modalBtn">切换用户</a>
+							</li>
+							<li>
+								<a href="./indexLogin.html">退出</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a id="notice" href="./在线消息-未阅消息.html">
+							新消息：
+							<span id="infonotice" class="badge">0</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" 
+						id="fuckhtml"
+						data-html="true" data-toggle="popover" 
+						data-content="<center>
+						<img width='30' src='./cloud_oa/image/ic_launcher.png'></img>&nbsp;
+						<a style='font-size:1.1em;color:black;text-decoration:none' href='./cloud_oa/app/cloud.apk'>点击直接下载</a>
+						<br><img width='200' src='./cloud_oa/appuser/getApkQRcode.do'></img>
+						<br>扫一扫二维码，下载安装客户端</center>"
+						data-placement="bottom"> 安卓客户端 </a></li>
+					
+				</ul>
+
+			</div>
+			<!--/.collapse-->
+			</form>
+
+		</div>
+		<!--/.container-fluid-->
+	</nav>
+	<!--/导航条-->
+
+	<!--轮播容器-->
+	<header id="myCarousel" class="carousel slide">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner">
+			<div class="item active">
+				<div class="fill" style="background-image:url('./cloud_oa/image/100.jpg');"></div>
+				<div class="carousel-caption">
+					<h2>学JAVA开发，到中软国际。</h2>
+				</div>
+			</div>
+			<div class="item">
+				<div class="fill" style="background-image:url('./cloud_oa/image/101.jpg');"></div>
+				<div class="carousel-caption">
+					<h2>学iOS/Android开发，到中软国际。</h2>
+				</div>
+			</div>
+			<div class="item">
+				<div class="fill" style="background-image:url('./cloud_oa/image/102.jpg');"></div>
+				<div class="carousel-caption">
+					<h2>学C++开发，到中软国际。</h2>
+				</div>
+			</div>
+		</div>
+		<!-- Controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="icon-prev"></span>
+		</a>
+		<a class="right carousel-control" href="#myCarousel" data-slide="next">
+			<span class="icon-next"></span>
+		</a>
+	</header>
+	<!--/轮播容器-->
+	
+	<!--网页分类-->
+	<nav class="navbar navbar-default hidden-sm hidden-xs">
+		<div class="container">
+			<div class="collapse navbar-collapse" id="myCollapse2">
+			
+				<ul class="nav navbar-nav">
+				
+					<li>
+						<a href="./index.html">系统首页</a>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							个人中心
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu ">
+							<li>
+								<a href="./个人中心-员工信息维护.html">员工信息维护</a>
+							</li>
+							<li>
+								<a href="./个人中心-检索他人信息.html">检索他人信息</a>
+							</li>
+							<li>
+								<a href="./个人中心-个人申请中心.html">个人申请中心</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							工作安排
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./工作安排-日程安排.html">日程安排</a>
+							</li>
+							<li>
+								<a href="./工作安排-综合查询.html">综合查询</a>
+							</li>
+							<li>
+								<a href="./工作安排-日历查看.html">日历查看</a>
+							</li>
+							<li>
+								<a href="./工作安排-代读设置.html">代读设置</a>
+							</li>
+							<li>
+								<a href="./工作安排-待办审批.html">待办审批</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							名片夹
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./名片夹-联系人查询.html">联系人查询</a>
+							</li>
+							<li>
+								<a href="./名片夹-名片夹分类.html">名片夹分类</a>
+							</li>
+							<li>
+								<a href="./名片夹-公司通讯录.html">公司通讯录</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							消息收发
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./在线消息-发送新消息.html">发送消息</a>
+							</li>
+							<li>
+								<a href="./在线消息-草稿箱.html">草稿箱</a>
+							</li>
+							<li>
+								<a href="./在线消息-发件箱.html">已发送消息</a>
+							</li>
+							<li>
+								<a href="./在线消息-收件箱.html">收到的消息</a>
+							</li>
+							<li>
+								<a href="./在线消息-未阅消息.html">未阅的消息(<span name="count">0</span>)</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							云文件存储
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./云文件存储-云文件目录.html">云文件目录</a>
+							</li>
+							<li>
+								<a href="./云文件存储-我的云共享.html">我的云共享</a>
+							</li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							会议管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./会议管理-会议室信息.html">会议室信息</a>
+							</li>
+							<li>
+								<a href="./会议管理-会议预约情况.html">会议预约情况</a>
+							</li>
+							<li>
+								<a href="./会议管理-我要参加的会议.html">我要参加的会议</a>
+							</li>
+							<li>
+								<a href="./会议管理-我发布的会议.html">我发布的会议</a>
+							</li>
+						</ul>
+					</li>
+
+					
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							系统管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./系统管理-部门管理.html">部门管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-职务管理.html">职务管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-员工管理.html">员工管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-角色管理.html">角色管理</a>
+							</li>
+							<li>
+								<a href="./系统管理-权限管理.html">权限管理</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							资产管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./资产管理-库存管理.html">库存管理</a>
+							</li>
+							<li>
+								<a href="./资产管理-办公用品消耗.html">办公用品消耗</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							车辆管理
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./车辆管理-查看车辆信息.html">查看车辆信息</a>
+							</li>
+							<li>
+								<a href="./车辆管理-派车待办.html">派车待办</a>
+							</li>
+							<li>
+								<a href="./车辆管理-派车记录.html">派车记录</a>
+							</li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							外派人才
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="./外派人才-外派人才列表.html">外派人才列表</a>
+							</li>
+							<li>
+								<a href="./外派人才-合作公司列表.html">合作公司列表</a>
+							</li>
+							<li>
+								<a href="./外派人才-公司需求列表.html">公司需求列表</a>
+							</li>
+							<li>
+								<a href="./外派人才-外派记录列表.html">外派记录显示</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="./系统公告.html">
+							系统公告
+						</a>
+					</li>
+				</ul>
+				
+			</div>
+			<!--/.collapse-->
+		</div>
+	</nav>
+	<!-- 网页头部完成-->
+<!-- 每个模块的部分 -->
+<div class="container">
+
+	<!-- 侧边栏 -->
+	<div class="col-md-3" id="myScrollSpy" style="margin-top:30px;">
+        <dropdown class="col-xs-12" style="margin-bottom:30px;"> 
+		<input id="toggle1" type="checkbox" checked>
+		<label for="toggle1"class="animate">外派人才库<i class="fa fa-bars float-right"></i></label>
+		<ul class="animate">
+			<a href="./外派人才-外派人才列表.html">
+				<li class="animate actived">外派人员列表<i class="fa fa-code float-right"></i></li>
+			</a>
+			<a href="./外派人才-合作公司列表.html">
+				<li class="animate">合作公司列表<i class="fa fa-code float-right"></i></li>
+			</a>
+            <a href="./外派人才-公司需求列表.html">
+            	<li class="animate">公司需求列表<i class="fa fa-code float-right"></i></li>
+            </a>
+            <a href="./外派人才-外派记录列表.html">
+            	<li class="animate">外派记录显示<i class="fa fa-code float-right"></i></li>
+            </a>
+		</ul>
+	</dropdown>
+	</div>
+	<!-- 侧边栏完成 -->
+
+	<!-- 右侧内容-->
+	<div class="col-md-7">
+		<h3 class="page-header">合作公司详情</h3>
+
+		<form id="form1" class="form-horizontal" method="post" action="外派人才-合作公司列表.html">
+			<div class="form-group">
+				<label class="col-sm-2 control-label float-left">公司编号</label>
+				<div class="col-sm-10">
+					<input type="text" value="1" name="assComId" id="assComId" class="form-control col-sm-5"readonly="readonly"></div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label float-left">公司名称</label>
+				<div class="col-sm-10">
+					<input type="text"class="form-control col-sm-5" name="comName" id="comName" value="东软" readonly="readonly"></div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label float-left">联系人姓名</label>
+				<div class="col-sm-10">
+					<input type="text" value="张三" name="contactName" id="contactName" class="form-control col-sm-5"readonly="readonly"></div>
+			</div>
+
+			<div class="form-group">
+				<label for="stuBirthdate" class="col-sm-2 control-label">联系人电话</label>
+				<div class="col-sm-10">
+					<input value="13587896547" type="text" class="form-control" name="contactPhone" id="contactPhone" placeholder="本科"></div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">联系人QQ</label>
+				<div class="col-sm-10">
+					<input type="text" value="735489654" class="form-control" name="contactQq" id="contactQq" placeholder="5年"></div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label ">备注</label>
+				<div class="col-sm-10">
+					<input type="text" value="每周三下午5点以后有空" class="form-control" name="remarks " id="remarks" placeholder="C++"></div>
+			</div>
+
+			<div class="col-sm-offset-8">
+				<input type="submit" class="btn btn-primary col-sm-4 btn-block" value="确定添加">
+				<input type="button" class="btn btn-success col-sm-4 btn-block" value="返回上一页" onclick="history.back();">
+				<!-- 响应式布局，移动端才会有返回主页的按钮 -->
+				<input type="button" class="btn btn-success col-sm-4 btn-block visible-xs" value="返回主页" onclick="javascript:document.location.href='../index.jsp'">
+				<!-- / -->
+			</div>
+		</form>
+	</div>
+	<!--右侧内容完 -->
+</div>
+
+<!--网页底部-->
+<footer>
+	
+
+<footer>
+		<div class="container-fluid footer_style">
+			<div class="col-md-6 col-md-offset-3 text-center">
+				<h4><img src="./cloud_oa/image/default-transparent.png" height="20"/></h4>
+				<p>地址：辽宁省大连市高新园区宏川东路20号黄泥川天地软件园金枫楼三层</p>
+				<p>Copyright 2009-2015 dletc.com.cn all rights reserved 网站备案号 : 辽ICP备09019147号-1</p>
+			</div>
+		</div>
+	</footer>
+	
+</footer>
+<!--网页底部结束-->
+</body>
+</html>

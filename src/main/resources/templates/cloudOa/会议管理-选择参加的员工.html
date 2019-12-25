@@ -1,0 +1,125 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link type="text/css" rel="stylesheet" href="./cloud_oa/js/bootstrap/css/bootstrap.css">
+<link href="./cloud_oa/css/common.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./cloud_oa/js/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="./cloud_oa/js/Validform/css/style.css">
+	<script type="text/javascript" src="./cloud_oa/js/Validform/js/Validform_v5.3.2.js"></script>
+			<script type="text/javascript" src="./cloud_oa/js/layer/layer.js"></script>
+<script type="text/javascript">
+
+
+	//返回值到父窗口
+	function returnPopValue() {	
+		
+		var parentIds = $(window.parent.document).find('#parentIds');
+		
+		parentIds.empty();
+		
+		$('input[name="ids"]:checked').each(function(index,obj){
+			
+			var strs = obj.value.split(',');
+			
+			parentIds.append('<input type="hidden" name="ids" value="' + strs[0] + '">');
+			parentIds.append('<span>' + strs[1] + ';</span>');
+		});
+		
+		
+		$(window.parent.document).find('#popWinClose').click();
+	}
+	
+	//关闭当前窗口
+	function closeWin(){
+		$(window.parent.document).find('#popWinClose').click();
+	}
+
+
+	
+</script>
+</head>
+<body>
+
+<div class="container">
+	<div class="row"> 
+	    <div class="emp" style="min-height: 400px;">
+	    	<table class="table table-striped">
+			  <tr>
+			    <th width="100" height="24">选择</th>
+			    <th width="129" height="24">员工编号</th>
+			    <th width="177" height="24">员工姓名</th>   
+			  </tr>
+			
+			  
+			  <tr>
+			    <td height="24"><input type="checkbox" name="ids" value ="4,殷建"></td>
+			    <td height="24">4</td>
+			    <td height="24">殷建</td>   
+			  </tr>
+			  
+			  <tr>
+			    <td height="24"><input type="checkbox" name="ids" value ="6,李悦"></td>
+			    <td height="24">6</td>
+			    <td height="24">李悦</td>   
+			  </tr>
+			  
+			  <tr>
+			    <td height="24"><input type="checkbox" name="ids" value ="7,何建吾"></td>
+			    <td height="24">7</td>
+			    <td height="24">何建吾</td>   
+			  </tr>
+			  
+			</table>
+			<div class="text-center">			
+				<input type="button" value="确定" class="btn btn-primary" onclick="returnPopValue();">
+				<input type="button" value="取消" class="btn" onclick="closeWin();">
+			</div>
+  			<!-- 分页条 -->
+	    	
+
+<nav class="text-center">
+	<ul class="pagination">
+
+		
+			<li class="disabled"><a href="#">上页</a></li>
+			<li class="active"><a href="#">1</a></li>
+		
+		
+		
+		
+		<!-- 总页数在10页以内 -->
+		
+		
+			
+			
+			
+			
+			
+				<li class="disabled"><a href="#">下页</a></li>
+			
+			
+		
+		
+		
+		<!-- 总页数大于10页以 -->
+		
+		<li class="disabled"><a href="#">共1页</a></li>
+	</ul>
+</nav>
+
+		</div>
+	</div>	
+</div>
+
+</body>
+</html>
