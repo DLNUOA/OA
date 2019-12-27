@@ -22,7 +22,7 @@ public class PersonCenterTest {
     private PersonCenterService personCenterService;
     @Test
     public void getInfo(){
-        List<Map<String, Object>> empInfo = personCenterService.getPersonInfoById(1);
+        List<Map<String, Object>> empInfo = personCenterService.getPersonInfoById(6);
         System.out.println(empInfo.size());
         for (Map<String, Object> stringObjectMap : empInfo) {
             System.out.println(stringObjectMap);
