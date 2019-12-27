@@ -1,50 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>DataTable</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
-    <script src="cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+        table thead tr th {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<table id="example" class="display" style="width:100%">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Office</th>
-        <th>Extn.</th>
-        <th>Start date</th>
-        <th>Salary</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Office</th>
-        <th>Extn.</th>
-        <th>Start date</th>
-        <th>Salary</th>
-    </tr>
-    </tfoot>
-</table>
-</body>
-<script>
-    $(document).ready(function() {
-        $('#example').DataTable( {
-            "ajax": "data/objects.txt",
-            "columns": [
-                { "data": "name" },
-                { "data": "position" },
-                { "data": "office" },
-                { "data": "extn" },
-                { "data": "start_date" },
-                { "data": "salary" }
-            ]
-        } );
-    } );
+<div style="padding:20px;" id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">用户管理</div>
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+            <tr>
+                <th>用户名</th>
+                <th>年龄</th>
+                <th>毕业学校</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+            <template v-for="(row, index) in rows ">
+                <tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">
+                    <td>{{row.Name}}</td>
+                    <td>{{row.Age}}</td>
+                    <td>{{row.School}}</td>
+                    <td>{{row.Remark}}</td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+    </div>
+    <nav style="float:right;">
+        <ul class="pagination pagination-lg">
+            <li v-if="curpage==1" class="disabled"><a href="#">上一页</a></li>
+            <li v-else v-on:click="PrePage()"><a href="#">上一页</a></li>
+            <template v-for="page in pageCount">
+                <li v-if="page==curpage" class="active" v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
+                <li v-else v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
+            </template>
+            <li v-if="curpage==pageCount" class="disabled"><a href="#">下一页</a></li>
+            <li v-else v-on:click="NextPage()"><a href="#">下一页</a></li>
+        </ul>
+    </nav>
+</div>
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+
+<script type="text/javascript">
+    //Model
+    let data = {
+        rows: [
+            { Id: 1, Name: '小明', Age: 18, School: '光明小学', Remark: '三好学生' },
+            { Id: 2, Name: '小刚', Age: 20, School: '复兴中学', Remark: '优秀班干部' },
+            { Id: 3, Name: '吉姆格林', Age: 19, School: '光明小学', Remark: '吉姆做了汽车公司经理' },
+            { Id: 4, Name: '李雷', Age: 25, School: '复兴中学', Remark: '不老实的家伙' },
+            { Id: 5, Name: '韩梅梅', Age: 22, School: '光明小学', Remark: '在一起' },
+            { Id: 1, Name: '小明', Age: 18, School: '光明小学', Remark: '三好学生' },
+            { Id: 2, Name: '小刚', Age: 20, School: '复兴中学', Remark: '优秀班干部' },
+            { Id: 3, Name: '吉姆格林', Age: 19, School: '光明小学', Remark: '吉姆做了汽车公司经理' },
+            { Id: 4, Name: '李雷', Age: 25, School: '复兴中学', Remark: '不老实的家伙' },
+            { Id: 5, Name: '韩梅梅', Age: 22, School: '光明小学', Remark: '在一起' },
+            { Id: 1, Name: '小明', Age: 18, School: '光明小学', Remark: '三好学生' },
+            { Id: 2, Name: '小刚', Age: 20, School: '复兴中学', Remark: '优秀班干部' },
+            { Id: 3, Name: '吉姆格林', Age: 19, School: '光明小学', Remark: '吉姆做了汽车公司经理' },
+            { Id: 4, Name: '李雷', Age: 25, School: '复兴中学', Remark: '不老实的家伙' },
+            { Id: 5, Name: '韩梅梅', Age: 22, School: '光明小学', Remark: '在一起' },
+            { Id: 1, Name: '小明', Age: 18, School: '光明小学', Remark: '三好学生' },
+            { Id: 2, Name: '小刚', Age: 20, School: '复兴中学', Remark: '优秀班干部' },
+            { Id: 3, Name: '吉姆格林', Age: 19, School: '光明小学', Remark: '吉姆做了汽车公司经理' },
+            { Id: 4, Name: '李雷', Age: 25, School: '复兴中学', Remark: '不老实的家伙' },
+            { Id: 5, Name: '韩梅梅', Age: 22, School: '光明小学', Remark: '在一起' },
+        ],
+        pagesize: 6,
+        curpage:1,//当前页的页码
+    };
+    //ViewModel
+    let vue = new Vue({
+        el: '#app',
+        data: data,
+        created: function () {
+            //初始化总页数
+            this.pageCount = Math.ceil(this.rows.length / this.pagesize);
+        },
+        methods: {
+            //上一页方法
+            PrePage: function (event) {
+                if (this.curpage > 1) {
+                    this.curpage = this.curpage - 1;
+                }
+            },
+            //下一页方法
+            NextPage: function (event) {
+                if (this.curpage < this.pageCount) {
+                    this.curpage = this.curpage + 1;
+                }
+            },
+            //点击页码的方法
+            NumPage: function (num, event) {
+                if (this.curpage == num) {
+                    return;
+                }
+                this.curpage = num;
+            }
+        }
+    });
 </script>
+</body>
 </html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <style type="text/css">
+        table thead tr th {
+            text-align: center;
+        }
+        /*这个样式，是让表格在中心*/
+    </style>
+</head>
+<body>
+
+<!--欢迎使用Vue表格分页插件，这是个示例模板-->
+
+<!--首先需要几个模态框，使用模态框可以不跳转页面实现更好的用户体验，模态框最好直接写在body标签下面，模态框开始-->
+<!--增加部门模态框-->
+<!--    注意这里的属性id="addDeptModal"，这里的id是拿来绑定模态框按钮的，点击按钮便可以通过id找到对应的模态框-->
+<div class="modal fade" id="addDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+<!--        下面这个div通过id与一个Vue实例绑定-->
+        <div class="modal-content" id="addDept">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelAdd">增加部门</h4>
+            </div>
+            <div class="modal-body" >
+<!--                这里的使用v-model实现双向数据绑定-->
+                部门名：<input v-model="bmm" placeholder="部门名"><hr>
+                部门地址：<input v-model="bmdz" placeholder="部门地址"><hr>
+                部门描述：<input v-model="bmms" placeholder="部门描述">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+<!--                给增加按钮添加单击事件-->
+                <button type="button" class="btn btn-primary" @click="addADept">增加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--修改部门模态框-->
+<!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
+<div class="modal fade" id="updateDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="updateADeptModal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改部门</h4>
+            </div>
+            <div class="modal-body" >
+                部门名：<input v-model="deptName" placeholder="部门名"><hr>
+                部门地址：<input v-model="deptLoc" placeholder="部门地址"><hr>
+                部门描述：<input v-model="deptIntro" placeholder="部门描述">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="updateADept">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--模态框结束-->
+
+
+<div class="container">
+    <div style="padding:20px;" id="app">
+        <div class="panel panel-primary">
+<!--            这里的部门管理要根据你自己功能改-->
+            <div class="panel-heading">部门管理</div>
+            <table class="table table-bordered table-striped text-center">
+                <thead>
+<!--                下面也是动态改-->
+                <tr>
+                    <th>部门名</th>
+                    <th>部门ID</th>
+                    <th>部门地址</th>
+                    <th>部门介绍</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+<!--                row.xxxx   row后面写后端传过来的json对象属性-->
+                <template v-for="(row, index) in data ">
+                    <tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">
+                        <td>{{row.deptName}}</td>
+                        <td>{{row.deptId}}</td>
+                        <td>{{row.deptLoc}}</td>
+                        <td>{{row.deptIntro}}</td>
+                        <td>
+                            <!-- 按钮触发模态框 通过data-target="#updateDeptModal"，找到相对应的id的模态框 -->
+                            <button class="btn btn-primary " data-toggle="modal" data-target="#updateDeptModal" @click="LaunchUpdateDept(index)">修改</button>
+
+                            <a @click="deleteDept(index)" class="btn btn-danger">删除</a>
+                        </td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
+        </div>
+        <!-- 这个增加按钮也会触发模态框 -->
+        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addDeptModal">增加部门</button>
+        <nav style="float:right;">
+            <ul class="pagination pagination-lg">
+<!--                如果当前页面是第一页，那么就让上一页就点不了-->
+                <li v-if="curpage==1" class="disabled"><a href="#">上一页</a></li>
+<!--                不是第一页的话，触发PrePage()方法-->
+                <li v-else v-on:click="PrePage()"><a href="#">上一页</a></li>
+<!--                遍历所有页面并且显示-->
+                <template v-for="page in pageCount">
+<!--                    如果页面==当前页，让按钮的class="active"-->
+                    <li v-if="page==curpage" class="active" v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
+                    <li v-else v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
+                </template>
+<!--                下一页与上一页同理-->
+                <li v-if="curpage==pageCount" class="disabled"><a href="#">下一页</a></li>
+                <li v-else v-on:click="NextPage()"><a href="#">下一页</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<!--下面引用js文件，有点多，以后优化-->
+
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script>
+    // 设置提示框的属性
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "2500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script type="text/javascript">
+    let vue = new Vue({
+        el: '#app',    //绑定元素
+        data () {
+            //初始化data
+            return {
+                data: null,             //data接收后端传来的数据
+                pagesize: 6,            //默认每一页显示6页
+                curpage: 1,             //当前页面，默认为第一页
+                pageCount: null,        //页面总数
+                dept: null              //组件之间传递参数的对象，这里指的是data一个特定的dept，
+                                        // 要根据后端传来的json对象动态修改，这里后端传来的json对象为dept，故写为dept
+            }
+        },
+        methods: {
+            //删除部门方法，通过元素index迅速找到元素，这就是为什么html里面循环最好加上index
+            deleteDept: function (index) {
+                //使用let定义局部变量，获取删除部门的deptId
+                let deptId = this.data[index].deptId;
+                if(confirm('确定删除该部门吗？部门id为'+deptId)){
+                    // 发起ajax请求使后端进行删除操作并返回操作结果
+                    axios
+                        .delete('/api/dept/'+deptId)// 根据RestFul风格，以delete请求发送
+                        //这里使用了箭头函数，进一步简化了匿名函数的书写，获取response的data数据，若为1则表示删除成功
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        //出错处理，若出错请到控制台查看出错信息
+                        .catch(function(error){
+                            console.log(error);
+                        });
+                    this.data.splice(index,1);//删除选定的部门
+                }
+            },
+            //获取所有部门方法，这是个保留方法，只将获取到的数据打印到控制台
+            getDepts:function(){
+                axios
+                    .get('/api/dept')
+                    .then(response => console.log(response.data))
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            //修改部门方法，修改部门需要调用修改模态框，在这里修改部门模态框也是一个实例，调用模态框实例传输参数即可
+            LaunchUpdateDept:function(index){
+                this.dept=(this.data[index]);
+                updateADeptModal.deptId = this.dept.deptId;
+                updateADeptModal.deptName = this.dept.deptName;
+                updateADeptModal.deptLoc = this.dept.deptLoc;
+                updateADeptModal.deptIntro = this.dept.deptIntro;
+                updateADeptModal.index = index;
+            },
+
+
+
+            //上一页方法
+            PrePage: function (event) {
+                if (this.curpage > 1) {
+                    this.curpage = this.curpage - 1;
+                }
+            },
+            //下一页方法
+            NextPage: function (event) {
+                if (this.curpage < this.pageCount) {
+                    this.curpage = this.curpage + 1;
+                }
+            },
+            //点击页码的方法
+            NumPage: function (num, event) {
+                if (this.curpage == num) {
+                    return;
+                }
+                this.curpage = num;
+            }
+        },
+        //当vue挂载成功时，自动调用以下方法获取data数据
+        mounted: function () {
+            axios
+                .get('/api/dept')
+                .then(response => (this.data = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        },
+        // 当数据更新时，自动渲染页面
+        updated:function () {
+            this.pageCount = Math.ceil(this.data.length / this.pagesize);
+        }
+    });
+
+    let updateADeptModal = new Vue({
+        el:'#updateADeptModal',
+        data:{
+            //下面的数据要根据后端传过来的json对象动态改，一般初始化为null
+            deptId:null,
+            deptName:null,
+            deptLoc:null,
+            deptIntro:null,
+            index:null
+        },
+        methods:{
+            // 更新方法，使用put请求更新对象，参数放在请求体里，axios会自动将数据序列化为json对象
+            updateADept:function(){
+                axios
+                    .put('/api/dept',{
+                        deptId:this.deptId,
+                        deptName:this.deptName,
+                        deptLoc:this.deptLoc,
+                        deptIntro:this.deptIntro
+                    })
+                    .then(function (response) {
+                        //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
+                        if (response.data==1){
+                            toastr.success('修改部门成功');
+                            vue.data[this.index].deptName=this.deptName;
+                            vue.data[this.index].deptLoc=this.deptLoc;
+                            vue.data[this.index].deptIntro=this.deptIntro;
+                        }else {
+                            toastr.error('修改部门失败，请联系管理员');
+                        }
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                vue.data[this.index].deptName=this.deptName;
+                vue.data[this.index].deptLoc=this.deptLoc;
+                vue.data[this.index].deptIntro=this.deptIntro;
+            }
+        }
+    });
+
+
+
+    var addDept = new Vue({
+        el:'#addDept',
+        //data里面也可以写空字符串哦！
+        data:{
+            bmm:'',
+            bmdz:'',
+            bmms:''
+        },
+        methods:{
+            addADept:function (){
+                axios
+                    .post('/api/dept',{
+                        deptName:this.bmm,
+                        deptLoc:this.bmdz,
+                        deptIntro:this.bmms
+                    })
+                    .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                setTimeout(function () {
+                    window.location.href = "/fyDemo";
+                },1000);
+
+            }
+
+        }
+    });
+
+
+
+
+
+</script>
+</body>
+</html>

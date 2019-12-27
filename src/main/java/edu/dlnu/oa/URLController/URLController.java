@@ -24,15 +24,8 @@ public class URLController {
         return "newIndex";
     }
 
-    @RequestMapping("/AddDept")
-    public String AddDept(){
-        return "dept/AddDept";
-    }
 
-    @RequestMapping("/newAddDept")
-    public String newAddDept(){
-        return "dept/newAddDept";
-    }
+
     @RequestMapping("/welcome")
     public String welcome(){
         return "welcome";
@@ -41,5 +34,15 @@ public class URLController {
     @RequestMapping("/contactUs")
     public String contactUs(){
         return "contactUs";
+    }
+
+    @RequestMapping("/fy")
+    public String fy(){
+        return "datatableExample";
+    }
+
+    @RequestMapping("/fyDemo")
+    public String fyDemo(){
+        return "fy";
     }
 }
