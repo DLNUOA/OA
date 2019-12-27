@@ -13,9 +13,7 @@
     </style>
 </head>
 <body>
-
 <!--欢迎使用Vue表格分页插件，这是个示例模板-->
-
 <!--首先需要几个模态框，使用模态框可以不跳转页面实现更好的用户体验，模态框最好直接写在body标签下面，模态框开始-->
 <!--增加部门模态框-->
 <!--    注意这里的属性id="addDeptModal"，这里的id是拿来绑定模态框按钮的，点击按钮便可以通过id找到对应的模态框-->
@@ -41,7 +39,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-
 <!--修改部门模态框-->
 <!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
 <div class="modal fade" id="updateDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -63,10 +60,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-
 <!--模态框结束-->
-
-
 <div class="container">
     <div style="padding:20px;" id="app">
         <div class="panel panel-primary">
@@ -94,7 +88,6 @@
                         <td>
                             <!-- 按钮触发模态框 通过data-target="#updateDeptModal"，找到相对应的id的模态框 -->
                             <button class="btn btn-primary " data-toggle="modal" data-target="#updateDeptModal" @click="LaunchUpdateDept(index)">修改</button>
-
                             <a @click="deleteDept(index)" class="btn btn-danger">删除</a>
                         </td>
                     </tr>
@@ -122,11 +115,8 @@
             </ul>
         </nav>
     </div>
-
 </div>
-
 <!--下面引用js文件，有点多，以后优化-->
-
 <script src="/Vue/js/jquery.js"></script>
 <script src="Vue/js/vue.js"></script>
 <script src="/js/toastr.min.js"></script>
@@ -201,9 +191,6 @@
                 updateADeptModal.deptIntro = this.dept.deptIntro;
                 updateADeptModal.index = index;
             },
-
-
-
             //上一页方法
             PrePage: function (event) {
                 if (this.curpage > 1) {
@@ -238,7 +225,6 @@
             this.pageCount = Math.ceil(this.data.length / this.pagesize);
         }
     });
-
     let updateADeptModal = new Vue({
         el:'#updateADeptModal',
         data:{
@@ -279,9 +265,6 @@
             }
         }
     });
-
-
-
     var addDept = new Vue({
         el:'#addDept',
         //data里面也可以写空字符串哦！
@@ -305,16 +288,9 @@
                 setTimeout(function () {
                     window.location.href = "/fyDemo";
                 },1000);
-
             }
-
         }
     });
-
-
-
-
-
 </script>
 </body>
 </html>
