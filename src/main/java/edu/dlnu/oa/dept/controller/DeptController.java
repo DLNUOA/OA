@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +29,8 @@ public class DeptController {
     private DeptService deptService;
 
     @RequestMapping(value = "/dept",method = GET)
-    public List<Dept> getAllDept(){
-        log.info("Dept被访问了");
+    public List<Dept> getAllDept(HttpServletRequest request){
+        log.info("Dept被访问了---"+request.getLocalAddr()+"----"+request.getLocalName()+"--"+request.getServerName()+"--"+request.getSession());
         return deptService.findAllDept();
     }
     @RequestMapping(value = "/dept/{id}",method = DELETE)
@@ -40,7 +41,7 @@ public class DeptController {
     public int postADept(@RequestBody Dept dept ){
         return deptService.insertDept(dept);
     }
-    @RequestMapping(value = "/adept" ,method = POST)
+    @RequestMapping(value = "/dept" ,method = PUT)
     public int updateDept(@RequestBody Dept dept){
         return deptService.updateDept(dept);
     }

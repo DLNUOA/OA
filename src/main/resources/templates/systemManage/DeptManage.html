@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>部门管理</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+	<link rel="stylesheet" href="/css/bootstrap.css">
+</head>
+<body style="font-size: 14px !important">
+
+<div class="container">
+
+	<table class="table table-hover " id='deptInfoList'>
+		<caption><h1 align="center">部门管理</h1></caption>
+		<thead>
+		<tr>
+			<th>序号</th>
+			<th>部门名</th>
+			<th>部门ID</th>
+			<th>部门位置</th>
+			<th>部门描述</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody >
+		<!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+		<tr v-for="(dept,index) of depts"  v-bind:key = 'dept.deptId' >
+			<td>{{index+1}}</td>
+			<td>{{dept.deptName}}</td>
+			<td>{{dept.deptId}}</td>
+			<td>{{dept.deptLoc==null? "暂无" : dept.deptLoc}}</td>
+			<td>{{dept.deptIntro==null? "暂无" :dept.deptIntro}}</td>
+			<td>
+				<!-- 按钮触发模态框 -->
+				<button class="btn btn-primary " data-toggle="modal" data-target="#updateDeptModal" @click="LaunchUpdateDept(index)">修改</button>
+
+				<a @click="deleteDept(index)" class="btn btn-danger">删除</a>
+			</td>
+		</tr>
+
+		</tbody>
+
+
+
+
+
+
+	</table>
+	<!-- 按钮触发模态框 -->
+	<button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addDeptModal">增加部门</button>
+	<!-- 增加部门模态框（Modal） -->
+	<div class="modal fade" id="addDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" id="addDept">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabelAdd">增加部门</h4>
+				</div>
+				<div class="modal-body" >
+					部门名：<input v-model="bmm" placeholder="部门名"><hr>
+					部门地址：<input v-model="bmdz" placeholder="部门地址"><hr>
+					部门描述：<input v-model="bmms" placeholder="部门描述">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" @click="addADept">增加</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
+
+
+
+	<!-- 修改部门模态框（Modal） -->
+	<div class="modal fade" id="updateDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content"  id="updateADeptModal">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">修改部门</h4>
+				</div>
+				<div class="modal-body" >
+					部门名：<input v-model="deptName" placeholder="部门名"><hr>
+					部门地址：<input v-model="deptLoc" placeholder="部门地址"><hr>
+					部门描述：<input v-model="deptIntro" placeholder="部门描述">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" @click="updateADept">修改</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>
+
+<!--	警告框待开发-->
+	<div class="alert alert-danger alert-dismissible fade in col-md-6" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+		<h4>Oh ! 确定删除该部门吗？</h4>
+		<p>您得清楚您现在在做什么!</p>
+		<p>
+			<button type="button" class="btn btn-danger">确定！</button>
+			<button type="button" class="btn btn-default">算了~</button>
+		</p>
+	</div>
+
+</div>
+<script src="/js/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/jqAlert2.js"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script>
+	toastr.options = {
+		"closeButton": true,
+		"debug": false,
+		"progressBar": false,
+		"positionClass": "toast-top-center",
+		"onclick": null,
+		"showDuration": "400",
+		"hideDuration": "1000",
+		"timeOut": "2500",
+		"extendedTimeOut": "1000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+	};
+</script>
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/deptManage.js"></script>
+
+</body>
+</html>
