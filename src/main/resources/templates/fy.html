@@ -205,7 +205,7 @@
             },
             //点击页码的方法
             NumPage: function (num, event) {
-                if (this.curpage == num) {
+                if (this.curpage === num) {
                     return;
                 }
                 this.curpage = num;
@@ -247,7 +247,7 @@
                     })
                     .then(function (response) {
                         //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
-                        if (response.data==1){
+                        if (response.data===1){
                             toastr.success('修改部门成功');
                             vue.data[this.index].deptName=this.deptName;
                             vue.data[this.index].deptLoc=this.deptLoc;
@@ -265,7 +265,7 @@
             }
         }
     });
-    var addDept = new Vue({
+    let addDept = new Vue({
         el:'#addDept',
         //data里面也可以写空字符串哦！
         data:{
@@ -281,12 +281,12 @@
                         deptLoc:this.bmdz,
                         deptIntro:this.bmms
                     })
-                    .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                    .then(response => response.data===1?(toastr.success('成功')):toastr.error('失败'))
                     .catch(function(error) {
                         console.log(error);
                     });
                 setTimeout(function () {
-                    window.location.href = "/fyDemo";
+                    window.location.href = "/fy";
                 },1000);
             }
         }
