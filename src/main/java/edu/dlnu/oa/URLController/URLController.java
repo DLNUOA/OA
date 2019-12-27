@@ -38,11 +38,8 @@ public class URLController {
 
     @RequestMapping("/fy")
     public String fy(){
-        return "datatableExample";
-    }
-
-    @RequestMapping("/fyDemo")
-    public String fyDemo(){
         return "fy";
     }
+
+
 }
