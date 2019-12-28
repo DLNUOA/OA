@@ -17,7 +17,7 @@ class assetTest {
     }
     @Test
     void get(){
-        Asset asset = new Asset("水杯","家具类","个","100.3",50);
+        Asset asset = new Asset(1,"水杯","家具类","个",100.3,50);
         int i = assetService.insertAsset(asset);
         System.out.print(i);
     }
@@ -33,5 +33,12 @@ class assetTest {
         int i = 2;
         int i1 = assetService.deleteAssetById(i);
         System.out.println(i1);
+    }
+    @Test
+    void updateAsset(){
+        Asset asset = new Asset(9,"花盆","家具类","个",10.6,50);
+        int i = assetService.updateAsset(asset);
+        System.out.print(i);
+
     }
 }

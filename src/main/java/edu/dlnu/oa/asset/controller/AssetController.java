@@ -29,7 +29,7 @@ public class AssetController {
     @RequestMapping(value = "/asset/{id}",method = DELETE)
     public int deleteAssetById(@PathVariable int id){return assetService.deleteAssetById(id);}
 
-    @RequestMapping(value = "/asset", method = POST)
+    @RequestMapping(value = "/asset", method = PATCH)
     public int postAsset(@RequestBody Asset asset ){
         return assetService.insertAsset(asset);
     }

@@ -8,71 +8,72 @@ public class Asset{
     private String assetName;
     private String assetClasses;
     private String assetSpecification;
-    private String assUnitPrice;
+    private double assetUnitPrice;
     private Integer assetInventory;
 
-    public Asset() {
-    }
-
-    public Asset(String assetName, String assetClasses, String assetSpecification, String assUnitPrice, Integer assetInventory) {
-        this.assetName = assetName;
-        this.assetClasses = assetClasses;
-        this.assetSpecification = assetSpecification;
-        this.assUnitPrice = assUnitPrice;
-        this.assetInventory = assetInventory;
-    }
-
-    public Asset(Integer assetId, String assetName, String assetClasses, String assetSpecification, String assUnitPrice, Integer assetInventory) {
+    public Asset(Integer assetId, String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
         this.assetId = assetId;
         this.assetName = assetName;
         this.assetClasses = assetClasses;
         this.assetSpecification = assetSpecification;
-        this.assUnitPrice = assUnitPrice;
+        this.assetUnitPrice = assetUnitPrice;
         this.assetInventory = assetInventory;
     }
 
+    public Asset() {
+    }
+
+    public Asset(String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
+        this.assetName = assetName;
+        this.assetClasses = assetClasses;
+        this.assetSpecification = assetSpecification;
+        this.assetUnitPrice = assetUnitPrice;
+        this.assetInventory = assetInventory;
+    }
+
+
     public Integer getAssetId() {
         return assetId;
-    }
-
-    public String getAssetName() {
-        return assetName;
-    }
-
-    public String getAssetClasses() {
-        return assetClasses;
-    }
-
-    public String getAssetSpecification() {
-        return assetSpecification;
-    }
-
-    public String getAssUnitPrice() {
-        return assUnitPrice;
-    }
-
-    public Integer getAssetInventory() {
-        return assetInventory;
     }
 
     public void setAssetId(Integer assetId) {
         this.assetId = assetId;
     }
 
+    public String getAssetName() {
+        return assetName;
+    }
+
     public void setAssetName(String assetName) {
         this.assetName = assetName;
+    }
+
+    public String getAssetClasses() {
+        return assetClasses;
     }
 
     public void setAssetClasses(String assetClasses) {
         this.assetClasses = assetClasses;
     }
 
+    public String getAssetSpecification() {
+        return assetSpecification;
+    }
+
     public void setAssetSpecification(String assetSpecification) {
         this.assetSpecification = assetSpecification;
     }
 
-    public void setAssUnitPrice(String assUnitPrice) {
-        this.assUnitPrice = assUnitPrice;
+    public double getAssetUnitPrice() {
+        return assetUnitPrice;
+    }
+
+    public void setAssetUnitPrice(double assetUnitPrice) {
+        this.assetUnitPrice = assetUnitPrice;
+    }
+
+    public Integer getAssetInventory() {
+        return assetInventory;
     }
 
     public void setAssetInventory(Integer assetInventory) {
@@ -86,7 +87,7 @@ public class Asset{
                 ", assetName='" + assetName + '\'' +
                 ", assetClasses='" + assetClasses + '\'' +
                 ", assetSpecification='" + assetSpecification + '\'' +
-                ", assUnitPrice='" + assUnitPrice + '\'' +
+                ", assetUnitPrice=" + assetUnitPrice +
                 ", assetInventory=" + assetInventory +
                 '}';
     }

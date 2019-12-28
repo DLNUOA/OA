@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface AssetMapper {
-    @Insert("insert into asset values(default, #{assetName},#{assetClasses},#{assetSpecification},#{assUnitPrice},#{assetInventory})")
+    @Insert("insert into asset values(default, #{assetName},#{assetClasses},#{assetSpecification},#{assetUnitPrice},#{assetInventory})")
     int insertAsset(Asset asset);
 
     @Select("select * from asset")
@@ -16,7 +16,7 @@ public interface AssetMapper {
     @Delete("delete from asset where asset_id = #{id} ")
     int deleteAssetById(int id);
 
-    @Update("UPDATE asset SET asset.asset_name= #{assetName},asset.asset_classes=#{assetClasses} ,asset.asset_inventory=#{assetInventory} \n" +
+    @Update("UPDATE asset SET asset.asset_name= #{assetName},asset.asset_classes=#{assetClasses},asset.asset_specification=#{assetSpecification},asset.asset_unit_price=#{assetUnitPrice},asset.asset_inventory=#{assetInventory} \n" +
             "WHERE asset.asset_id = #{assetId}")
     int updateAsset(Asset asset);
 }
