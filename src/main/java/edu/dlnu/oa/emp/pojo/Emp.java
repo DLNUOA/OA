@@ -21,7 +21,7 @@ public class Emp  {
 
     private Integer empSalary;
 
-    private Integer deptId;
+    private Integer empDeptId;
 
     private Integer empJobId;
 
@@ -97,12 +97,12 @@ public class Emp  {
         this.empSalary = empSalary;
     }
 
-    public Integer getDeptId() {
-        return deptId;
+    public Integer getEmpDeptId() {
+        return empDeptId;
     }
 
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
+    public void setEmpDeptId(Integer empDeptId) {
+        this.empDeptId = empDeptId;
     }
 
     public Integer getEmpJobId() {
@@ -148,7 +148,7 @@ public class Emp  {
     public Emp() {
     }
 
-    public Emp(String empName, String empLoginName, String empPwd, String empEmail, String empPhone, Date empHiredate, Integer empSalary, Integer deptId, Integer empJobId, String empPic, String empInfo, Integer empRoleId, String empGender) {
+    public Emp(String empName, String empLoginName, String empPwd, String empEmail, String empPhone, Date empHiredate, Integer empSalary, Integer empDeptId, Integer empJobId, String empPic, String empInfo, Integer empRoleId, String empGender) {
         this.empName = empName;
         this.empLoginName = empLoginName;
         this.empPwd = empPwd;
@@ -156,7 +156,7 @@ public class Emp  {
         this.empPhone = empPhone;
         this.empHiredate = empHiredate;
         this.empSalary = empSalary;
-        this.deptId = deptId;
+        this.empDeptId = empDeptId;
         this.empJobId = empJobId;
         this.empPic = empPic;
         this.empInfo = empInfo;
@@ -164,7 +164,7 @@ public class Emp  {
         this.empGender = empGender;
     }
 
-    public Emp(Integer empId, String empName, String empLoginName, String empPwd, String empEmail, String empPhone, Date empHiredate, Integer empSalary, Integer deptId, Integer empJobId, String empPic, String empInfo, Integer empRoleId, String empGender) {
+    public Emp(Integer empId, String empName, String empLoginName, String empPwd, String empEmail, String empPhone, Date empHiredate, Integer empSalary, Integer empDeptId, Integer empJobId, String empPic, String empInfo, Integer empRoleId, String empGender) {
         this.empId = empId;
         this.empName = empName;
         this.empLoginName = empLoginName;
@@ -173,7 +173,7 @@ public class Emp  {
         this.empPhone = empPhone;
         this.empHiredate = empHiredate;
         this.empSalary = empSalary;
-        this.deptId = deptId;
+        this.empDeptId = empDeptId;
         this.empJobId = empJobId;
         this.empPic = empPic;
         this.empInfo = empInfo;
@@ -192,7 +192,7 @@ public class Emp  {
                 ", empPhone='" + empPhone + '\'' +
                 ", empHiredate=" + empHiredate +
                 ", empSalary=" + empSalary +
-                ", deptId=" + deptId +
+                ", deptId=" + empDeptId +
                 ", empJobId=" + empJobId +
                 ", empPic='" + empPic + '\'' +
                 ", empInfo='" + empInfo + '\'' +
