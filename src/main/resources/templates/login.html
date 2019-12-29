@@ -194,7 +194,16 @@
         if($(this).val() == "")
             $(this).removeClass("focus");
     });
-</script>
+    //回车事件绑定
+    $(".logbtn").keyup(function(event){
+        var theEvent = event || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if(event.keyCode ==13){
+           alert("sd");
+        }
+    });
 
+
+</script>
 </body>
 </html>
