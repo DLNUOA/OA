@@ -72,8 +72,35 @@ public class PersonCenterController {
 
     @PostMapping("/updatePwd")
     public int updatePwd(@RequestBody Map<String,Object> updatePwdInfo,HttpServletRequest request){
+        int empId = Integer.parseInt(request.getSession().getAttribute("empId").toString());
+        String oldPwd = updatePwdInfo.get("oldPwd").toString();
+        String newPwd = updatePwdInfo.get("newPwd").toString();
+        int code = -1;
+        //就在后端验证以下用户输入的验证码是不是数字吧。。。。。。QAQ
+        try {
+             code = Integer.parseInt(updatePwdInfo.get("code").toString());
+             //如果从前端接收到的验证码不是数字会报异常，没办法，没写前端，后端处理吧。。。。。
 
-        return 1;
+        }catch (NumberFormatException e){
+//            直接给他return0吧
+            return 0;
+        }
+        Object obj = request.getSession().getAttribute("code");
+        if (obj!=null){
+            int validCode = Integer.parseInt(obj.toString());
+            if (validCode==code){
+                String pwd = personCenterService.getPersonPwdById(empId);
+                if (pwd.equals(oldPwd)){
+                    return personCenterService.setNewPwd(empId,newPwd);
+                }else {
+                    return 0;
+                }
+            }else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
 

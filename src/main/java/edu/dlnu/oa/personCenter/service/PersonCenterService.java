@@ -2,7 +2,6 @@ package edu.dlnu.oa.personCenter.service;
 
 import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 
-import java.util.List;
 import java.util.Map;
 
 public interface PersonCenterService {
@@ -11,4 +10,8 @@ public interface PersonCenterService {
     public int updatePersonInfo(SaveUpdateDto saveUpdateDto);
 
     int sendValidEmail(String email);
+
+    String getPersonPwdById(int empId);
+
+    int setNewPwd(int empId, String newPwd);
 }

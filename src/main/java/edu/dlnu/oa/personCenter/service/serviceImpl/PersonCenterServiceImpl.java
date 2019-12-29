@@ -4,11 +4,9 @@ import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 import edu.dlnu.oa.personCenter.mapper.PersonCenterMapper;
 import edu.dlnu.oa.personCenter.service.PersonCenterService;
 import edu.dlnu.oa.utils.MailUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,5 +32,15 @@ public class PersonCenterServiceImpl implements PersonCenterService {
         int code = (int)((Math.random()*9+1)*100000);
         MailUtils.sendMail(email,String.valueOf(code),"OA验证码");
         return code;
+    }
+
+    @Override
+    public String getPersonPwdById(int empId) {
+        return personCenterMapper.getPersonPwdById(empId);
+    }
+
+    @Override
+    public int setNewPwd(int empId, String newPwd) {
+        return personCenterMapper.setNewPwd(empId,newPwd);
     }
 }

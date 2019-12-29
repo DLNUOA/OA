@@ -2,6 +2,7 @@ package edu.dlnu.oa.personCenter.mapper;
 
 import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -31,4 +32,9 @@ public interface PersonCenterMapper {
             "WHERE emp.`emp_id` = #{empId}")
     int updateEmpInfo(SaveUpdateDto saveUpdateDto);
 
+    @Select("select emp_pwd from emp where emp_id = #{empId} ")
+    String getPersonPwdById(int empId);
+
+    @Update("update emp set emp_pwd = #{newPwd} where emp_id = #{empId} ")
+    int setNewPwd(@Param("empId") int empId, @Param("newPwd") String newPwd);
 }

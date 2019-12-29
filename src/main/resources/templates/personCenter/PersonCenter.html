@@ -165,7 +165,7 @@
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon3">邮箱验证码</span>
                         <input  v-model="code" type="text" class="form-control col-md-3" placeholder="输入您邮箱收到的验证码" aria-describedby="basic-addon2">
-                        <button id="ValidCodeButton" type="button" class="btn btn-info col-md-3" @click="countDown"  :class="{disabled: !this.canClick}" >{{content}}</button>
+                        <button type="button" class="btn btn-info col-md-3" @click="countDown"  :class="{disabled: !this.canClick}" >{{content}}</button>
                         <span style="color: #00a1d6 " >遇到问题就打电话给客服小姐姐吧！</span>
                     </div>
                 </div>
