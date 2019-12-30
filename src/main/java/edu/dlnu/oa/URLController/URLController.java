@@ -42,4 +42,14 @@ public class URLController {
     public String contactUs(){
         return "contactUs";
     }
+
+
+//zhanghan
+    @RequestMapping("/AddAsset")
+    public String AddAsset(){
+        return "asset/AddAsset";
+    }
+
+
+
 }
