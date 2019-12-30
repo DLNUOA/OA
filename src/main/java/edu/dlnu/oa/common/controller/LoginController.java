@@ -71,8 +71,13 @@ public class LoginController {
         String loginName = signUpInfo.get("loginName");
         String password = signUpInfo.get("password");
         String code = signUpInfo.get("code");
-        loginValidService.userSignUp(loginName,password);
-        return 1;
+        String verifyCode = request.getSession().getAttribute("verifyCode").toString();
+        if (code.equals(verifyCode)){
+            return loginValidService.userSignUp(loginName,password);
+
+        }else {
+            return -1;
+        }
     }
 
 
