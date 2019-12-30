@@ -2,12 +2,16 @@
 <html lang="en" >
 <head>
     <meta charset="utf-8">
-    <title>登陆</title>
+    <title>注册</title>
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" charset="utf-8"></script>-->
-    <script src="js/jquery-3.4.1.js" charset="UTF-8"></script>
-    <script src="./js/toastr.min.js"></script>
+    <script src="/js/jquery-3.4.1.js" charset="UTF-8"></script>
+    <script src="/js/toastr.min.js"></script>
     <script>
-        toastr.options = {
+        function updateValidCode() {
+        document.getElementById("code").src='/common/kaptcha?time='+Math.random();
+    }
+
+    toastr.options = {
             "closeButton": true,
             "debug": false,
             "progressBar": false,
@@ -132,7 +136,7 @@
 <body>
 
 <div  class="login-form">
-    <h1><a href="/">OA Login</a></h1>
+    <h1><a href="/">OA SignUp</a></h1>
 
     <div class="txtb">
         <input type="text" id="userName">
@@ -144,38 +148,49 @@
         <span data-placeholder="Password"></span>
     </div>
 
-    <input type="submit" class="logbtn" onclick="login()" value="Log In">
-
-    <div class="bottom-text">
-        Don't have account? <a href="/signUp">Sign up</a>
+    <div class="txtb">
+        <input type="text" id="validCode">
+        <span data-placeholder="ValidCode"></span>
     </div>
+    <img id="code" onclick="updateValidCode()"  src="/common/kaptcha" alt="验证码">
+
+    <input type="submit" class="logbtn" onclick="signUp()" value="Sign Up">
+
+<!--    <div class="bottom-text">-->
+<!--        Don't have account? <a href="/signUp">Sign up</a>-->
+<!--    </div>-->
 
 </div>
 
 <script type="text/javascript">
 
-    function login(){
+    function signUp(){
         if ($("#userName").val() ==='' || $("#password").val() === ''){
-            toastr.error("登录信息不能为空！");
+            toastr.error("注册信息不能为空！");
+            return;
+        }
+        if ('' === $("#validCode").val()){
+            toastr.error('请输入验证码！');
             return;
         }
         $.ajax({
             type : "POST",
-            url : "/userLogin",
+            url : "/userSignUp",
             contentType : "application/json;charset=UTF-8",
             dataType : "json",
             data : JSON.stringify({
                 "loginName" : $("#userName").val(),
-                "password" : $("#password").val()
+                "password" : $("#password").val(),
+                "code": $("#validCode").val()
             }),
             success : function (data) {
                 if (data){
-                    toastr.success("登陆成功😚,正在跳转到欢迎页面，不出意外的话，当你读完这行字的时候已经跳转成功了");
+                    toastr.success("注册成功😚,正在跳转到欢迎页面，不出意外的话，当你读完这行字的时候已经跳转成功了");
                     setTimeout( function(){
                         location.href="/welcome";
                     }, 500 );//延迟2000毫秒
                 }else {
-                    toastr.error("用户名或密码错误");
+                    toastr.error("用户名或密码或验证码错误");
                 }
 
             },

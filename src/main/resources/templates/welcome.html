@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,6 @@
     <meta name="author" content="">
 
     <title>OA</title>
-    <script src="/Vue/js/jquery.js"></script>
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!--    <link rel="stylesheet" href="css/uikit.css">-->
@@ -21,10 +20,13 @@
             background-color: rgba(0,0,0,0);
             border-color: #0f0f0f;
         }
+        #avatar{
+            width: 30px;
+            height: 30px;
+            display: inline;
+        }
     </style>
-    <script src="/Vue/js/vue.js"></script>
-    <script src="/Vue/js/axios.js"></script>
-    <script src="/Vue/js/lodash.min.js"></script>
+
 
 
 </head>
@@ -67,6 +69,7 @@
                             <li><a href="/personCenter/myInfo">个人中心</a></li>
                             <li class="dropdown">
                                 <a id="sessionInfo"    class="dropdown-toggle" data-toggle="dropdown" ondblclick="window.location.href='/login'">
+                                    <img id="avatar"  v-bind:src="avatar==null? ` /images/upAvatar.jpg ` : avatar " alt="avatar" class="img-responsive img-circle">
                                    {{(empName==null)?"双击登录":empName}}  <b class="caret"></b>
 
                                 </a>
@@ -122,7 +125,10 @@
     </div>
 
 </div>
-
+<script src="/Vue/js/jquery.js"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

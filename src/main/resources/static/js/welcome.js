@@ -4,7 +4,8 @@ var nav = new Vue({
         return {
             empId:null,
             empName:'未登录',
-            empRoleId:null
+            empRoleId:null,
+            avatar:null
         }
 
     },
@@ -27,6 +28,13 @@ var nav = new Vue({
         axios
             .get('/sessionInfo')
             .then(response => (this.empName = response.data.empName))
+            .catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
+
+        axios
+            .get('/api/personCenter/myAvatar')
+            .then(response => (this.avatar = response.data))
             .catch(function (error) { // 请求失败处理
                 console.log(error);
             });

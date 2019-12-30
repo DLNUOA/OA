@@ -43,4 +43,14 @@ public class PersonCenterServiceImpl implements PersonCenterService {
     public int setNewPwd(int empId, String newPwd) {
         return personCenterMapper.setNewPwd(empId,newPwd);
     }
+
+    @Override
+    public int upMyAvatar(int empId, String avatar) {
+        return personCenterMapper.upMyAvatar(empId,avatar);
+    }
+
+    @Override
+    public String getMyAvatar(int empId) {
+        return personCenterMapper.getMyAvatar(empId);
+    }
 }

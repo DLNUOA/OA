@@ -103,5 +103,23 @@ public class PersonCenterController {
         }
     }
 
+    @PostMapping("/upMyAvatar")
+    public int upMyAvatar(@RequestBody Map<String,String> info,HttpServletRequest request){
+        int empId =  Integer.parseInt( request.getSession().getAttribute("empId").toString());
+        String avatar = info.get("avatar");
+        return personCenterService.upMyAvatar(empId, avatar);
+    }
+
+    @GetMapping("/myAvatar")
+    public String myAvatar(HttpServletRequest request){
+
+
+            int  empId =  Integer.parseInt( request.getSession().getAttribute("empId").toString());
+
+
+        return personCenterService.getMyAvatar(empId);
+    }
+
+
 
 }

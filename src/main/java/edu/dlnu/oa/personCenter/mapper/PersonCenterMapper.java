@@ -37,4 +37,11 @@ public interface PersonCenterMapper {
 
     @Update("update emp set emp_pwd = #{newPwd} where emp_id = #{empId} ")
     int setNewPwd(@Param("empId") int empId, @Param("newPwd") String newPwd);
+
+
+    @Update("update emp set emp_pic = #{avatar} where emp_id = #{empId} ")
+    int upMyAvatar(@Param("empId") int empId,@Param("avatar") String avatar);
+
+    @Select("select emp_pic from emp where emp_id = #{empId}")
+    String getMyAvatar(int empId);
 }

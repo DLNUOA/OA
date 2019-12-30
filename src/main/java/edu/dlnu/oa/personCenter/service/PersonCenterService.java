@@ -14,4 +14,8 @@ public interface PersonCenterService {
     String getPersonPwdById(int empId);
 
     int setNewPwd(int empId, String newPwd);
+
+    int upMyAvatar(int empId, String avatar);
+
+    String getMyAvatar(int empId);
 }
