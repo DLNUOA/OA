@@ -7,6 +7,7 @@ import edu.dlnu.oa.utils.MailUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,5 +53,10 @@ public class PersonCenterServiceImpl implements PersonCenterService {
     @Override
     public String getMyAvatar(int empId) {
         return personCenterMapper.getMyAvatar(empId);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAB() {
+        return personCenterMapper.getAddressBook();
     }
 }

@@ -14,4 +14,8 @@ public class SystemManageURLController {
     public String deptManage(){
         return "systemManage/DeptManage";
     }
+    @RequestMapping("/empManage")
+    public String empManage(){
+        return "systemManage/EmpManage";
+    }
 }

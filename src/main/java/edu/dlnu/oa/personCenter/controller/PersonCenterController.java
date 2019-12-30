@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -118,6 +119,17 @@ public class PersonCenterController {
 
 
         return personCenterService.getMyAvatar(empId);
+    }
+
+    /**
+     * 获取通讯录
+     * @param request
+     * @param response
+     * @return
+     */
+    @GetMapping("/getAB")
+    public List<Map<String,Object>> getAB(HttpServletRequest request, HttpServletResponse response){
+        return personCenterService.getAB();
     }
 
 
