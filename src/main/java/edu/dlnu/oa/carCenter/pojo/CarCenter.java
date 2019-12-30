@@ -8,6 +8,16 @@ public class CarCenter {
     private String carNum;
     private String carPic;
 
+    public Integer getCarState() {
+        return carState;
+    }
+
+    public void setCarState(Integer carState) {
+        this.carState = carState;
+    }
+
+    private Integer carState;
+
     public Integer getCarId() {
         return carId;
     }
@@ -43,14 +53,21 @@ public class CarCenter {
     public CarCenter() {
     }
 
-    public CarCenter(String carType, String carNum, String carPic) {
+    public CarCenter(String carType, String carNum, String carPic, Integer carState) {
+        this.carType = carType;
+        this.carNum = carNum;
+        this.carPic = carPic;
+        this.carState = carState;
+    }
+
+    public CarCenter(Integer carId, String carType, String carNum, String carPic) {
+        this.carId = carId;
         this.carType = carType;
         this.carNum = carNum;
         this.carPic = carPic;
     }
 
-    public CarCenter(Integer carId, String carType, String carNum, String carPic) {
-        this.carId = carId;
+    public CarCenter(String carType, String carNum, String carPic) {
         this.carType = carType;
         this.carNum = carNum;
         this.carPic = carPic;
@@ -63,6 +80,7 @@ public class CarCenter {
                 ", carType='" + carType + '\'' +
                 ", carNum='" + carNum + '\'' +
                 ", carPic='" + carPic + '\'' +
+                ", carState=" + carState +
                 '}';
     }
 }

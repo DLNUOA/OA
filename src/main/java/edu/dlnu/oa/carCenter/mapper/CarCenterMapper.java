@@ -12,8 +12,8 @@ import java.util.List;
 public interface CarCenterMapper {
 
     //添加车辆信息
-    @Insert("INSERT INTO car VALUES(default, #{car.carType}, #{car.carNum}, #{car.carPic})")
-    int insert(@Param("car") CarCenter car);
+    @Insert("INSERT INTO car VALUES(default, #{carType}, #{carNum}, #{carPic}, 0)")
+    int insert(CarCenter car);
 
     //查询所有车辆信息
     @Select("SELECT * FROM car ")

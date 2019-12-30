@@ -11,4 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CarCenterUrlController {
     @RequestMapping("/CarCenterList")
     public String carCenterInfoList() { return "carCenter/queryCarCenter"; }
+
+    @RequestMapping("/CarRentList")
+    public String carRentInfoList() { return "carCenter/queryCarRent"; }
+
+    @RequestMapping("/CarRentStateList")
+    public String carRentStateList() { return "carCenter/queryCarState"; }
 }

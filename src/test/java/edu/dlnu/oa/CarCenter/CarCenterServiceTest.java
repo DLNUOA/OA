@@ -49,7 +49,7 @@ public class CarCenterServiceTest {
     //测试修改车辆信息的Service
     @Test
     public void testUpdate() {
-        CarCenter car = new CarCenter(9,"五菱面包车", "辽A-B1234", "");
+        CarCenter car = new CarCenter(9,"五菱面包车", "辽A-B1234","");
         service.updateCar(car);
     }
 }

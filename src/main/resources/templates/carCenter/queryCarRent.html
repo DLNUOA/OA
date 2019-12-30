@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>派车记录</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+    </style>
+</head>
+<body>
+<div class="col-sm-offset-4 col-sm-8">
+    <table class="table table-hover" id="carRentList">
+        <caption><h1 align="center">派车记录</h1></caption>
+        <thead>
+            <tr>
+                <td>员工编号</td>
+                <td>员工姓名</td>
+                <td>车辆编号</td>
+                <td>车辆牌照</td>
+                <td>路线</td>
+                <td>开始时间</td>
+                <td>结束时间</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(car,index) of carList" v-bind:key = 'car.carRentId'>
+                <td>{{car.rent_emp_id}}</td>
+                <td>{{car.emp_name}}</td>
+                <td>{{car.car_id}}</td>
+                <td>{{car.car_num}}</td>
+                <td>{{car.rent_line}}</td>
+                <td>{{car.rent_stime}}</td>
+                <td>{{car.rent_otime}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <div class="col-md-offset-10 col-md-2" >
+        <button class="btn btn-primary btn-sm" @click="xxx">导出EXCEL表</button>
+    </div>
+</div>
+    <script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Vue/js/vue.js"></script>
+    <script src="/Vue/js/axios.js"></script>
+    <script src="/Vue/js/common.js"></script>
+    <script src="/Vue/js/layer/layer.js"></script>
+    <script src="/Vue/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        //派车记录
+        var carRent = new Vue({
+            el:'#carRentList' ,
+            data:{
+                carList:[]
+            },
+            methods:{
+                query:function () {
+                    axios
+                        .get(host+'/api/car/queryCarRent')
+                        .then(response => (this.carList=response.data))
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        })
+                }
+            },
+            mounted: function(){
+               this.query();
+            }
+        });
+    </script>
+</body>
+</html>
