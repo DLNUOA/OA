@@ -111,10 +111,10 @@ public class PersonCenterController {
     }
 
     @GetMapping("/myAvatar")
-    public String myAvatar(HttpServletRequest request){
+    public String myAvatar(HttpServletRequest request) throws Exception{
 
 
-            int  empId =  Integer.parseInt( request.getSession().getAttribute("empId").toString());
+        int  empId =  Integer.parseInt( request.getSession().getAttribute("empId").toString());
 
 
         return personCenterService.getMyAvatar(empId);
