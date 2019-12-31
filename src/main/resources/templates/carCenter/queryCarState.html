@@ -18,35 +18,55 @@
         body {
             text-shadow: 2px 2px 8px black;
         }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
     </style>
 </head>
 <body>
-<div class="col-sm-offset-4 col-sm-8">
-    <table class="table table-hover" id="carRentList">
-        <caption><h1 align="center">待派车列表</h1></caption>
-        <thead>
-        <tr>
-            <td>申请员工</td>
-            <td>申请原因</td>
-            <td>部门领导</td>
-            <td>当前审批流程</td>
-            <td>申请提交日期</td>
-            <td>审批</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(car,index) of list" v-bind:key = 'car.carRentId'>
-            <td>{{car.emp_apply_name}}</td>
-            <td>{{car.car_rent_info}}</td>
-            <td>{{car.emp_checkman_name}}</td>
-            <td>{{"车队派车"}}</td>
-            <td>{{car.car_apply_time}}</td>
-            <td>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#planCarModal" @click="PlanCar(car.car_rent_id)">安排车辆</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                车辆管理 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./queryCarCenter.html">车辆查看</a></li>
+                <li><a href="./queryCarState.html">派车代办</a></li>
+                <li><a href="./queryCarRent.html">派车记录</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover" id="carRentList">
+            <caption><h1 align="center">待派车列表</h1></caption>
+            <thead>
+            <tr>
+                <td>申请员工</td>
+                <td>申请原因</td>
+                <td>部门领导</td>
+                <td>当前审批流程</td>
+                <td>申请提交日期</td>
+                <td>审批</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(car,index) of list" v-bind:key = 'car.carRentId'>
+                <td>{{car.emp_apply_name}}</td>
+                <td>{{car.car_rent_info}}</td>
+                <td>{{car.emp_checkman_name}}</td>
+                <td>{{"车队派车"}}</td>
+                <td>{{car.car_apply_time}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#planCarModal" @click="PlanCar(car.car_rent_id)">安排车辆</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <div class="modal fade" id="planCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

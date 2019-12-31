@@ -25,6 +25,7 @@ public class CarCenterServiceImpl implements CarCenterService {
     @Override
     public List<CarCenter> queryCar() { return mapper.query(); }
 
+
     //根据ID查找车辆信息
     @Override
     public CarCenter queryByIdCar(int carId) { return mapper.queryById(carId); }

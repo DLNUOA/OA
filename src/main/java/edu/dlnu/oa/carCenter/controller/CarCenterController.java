@@ -1,5 +1,6 @@
 package edu.dlnu.oa.carCenter.controller;
 
+import edu.dlnu.oa.carCenter.common.Pager;
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.service.CarCenterService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -33,6 +35,7 @@ public class CarCenterController {
     //查询所有车辆信息
     @RequestMapping(value = "/car/query", method = GET)
     public List<CarCenter> query() { return service.queryCar(); }
+
 
     //根据ID查询车辆信息
     @RequestMapping(value = "/car/queryById/{carId}", method = GET)
