@@ -1,40 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
     <link href="/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Vue/css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" href="/Vue/css/toastr.css">
     <style type="text/css">
         table thead tr th {
             text-align: center;
         }
-        /*这个样式，是让表格在中心*/
+        #avatar{
+            width: 30px;
+            height: 30px;
+            display: inline;
+        }
     </style>
 </head>
 <body>
+<!--日期选择器模板-->
+<!--<div class="container">-->
+<!--    <form action="" class="form-horizontal"  role="form">-->
+<!--        <fieldset>-->
+<!--            <legend>Test</legend>-->
+<!--            <div class="form-group">-->
+<!--                <label for="dtp_input1" class="col-md-2 control-label">DateTime Picking</label>-->
+<!--                <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">-->
+<!--                    <input class="form-control" size="16" type="text" value="" readonly>-->
+<!--                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+<!--                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>-->
+<!--                </div>-->
+<!--                <input type="hidden" id="dtp_input1" value="" /><br/>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label for="dtp_input2" class="col-md-2 control-label">Date Picking</label>-->
+<!--                <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">-->
+<!--                    <input class="form-control" size="16" type="text" value="" readonly>-->
+<!--                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+<!--                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+<!--                </div>-->
+<!--                <input type="hidden" id="dtp_input2" value="" /><br/>-->
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--                <label for="dtp_input3" class="col-md-2 control-label">Time Picking</label>-->
+<!--                <div class="input-group date form_time col-md-5" data-date="" data-date-format="hh:ii" data-link-field="dtp_input3" data-link-format="hh:ii">-->
+<!--                    <input class="form-control" size="16" type="text" value="" readonly>-->
+<!--                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+<!--                    <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>-->
+<!--                </div>-->
+<!--                <input type="hidden" id="dtp_input3" value="" /><br/>-->
+<!--            </div>-->
+<!--        </fieldset>-->
+<!--    </form>-->
+<!--</div>-->
 <!--欢迎使用Vue表格分页插件，这是个示例模板-->
 <!--首先需要几个模态框，使用模态框可以不跳转页面实现更好的用户体验，模态框最好直接写在body标签下面，模态框开始-->
 <!--增加部门模态框-->
 <!--    注意这里的属性id="addDeptModal"，这里的id是拿来绑定模态框按钮的，点击按钮便可以通过id找到对应的模态框-->
-<div class="modal fade" id="addDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEmpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
 <!--        下面这个div通过id与一个Vue实例绑定-->
-        <div class="modal-content" id="addDept">
+        <div class="modal-content" id="addEmp">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabelAdd">增加部门</h4>
+                <h4 class="modal-title" id="myModalLabelAdd">增加员工</h4>
             </div>
             <div class="modal-body" >
 <!--                这里的使用v-model实现双向数据绑定-->
-                部门名：<input v-model="bmm" placeholder="部门名"><hr>
-                部门地址：<input v-model="bmdz" placeholder="部门地址"><hr>
-                部门描述：<input v-model="bmms" placeholder="部门描述">
+                员工名：<input v-model="empName" placeholder="员工名"><hr>
+                员工登陆名：<input v-model="empLoginName" placeholder="员工登陆名"><hr>
+                员工所属部门：   <select v-model="selectedDept">
+                                    <option disabled value="">请选择</option>
+                                    <template v-for="(row,index) of data">
+                                        <option>{{row.dept_id}}:{{row.dept_name}}</option>
+                                    </template>
+                                </select>
+                <hr>
+                手机号码：<input v-model="tel" placeholder="tel"><hr>
+                工资：<input v-model="salary" placeholder="salary"><hr>
+
+
+                职位：  <select v-model="selectedJob">
+                        <option disabled value="">请选择</option>
+                        <template v-for="(row,index) of jobs">
+                            <option>{{row.job_id}}:{{row.job_name}}</option>
+                        </template>
+                        </select>
+
+                <hr>
+
+                <div class="form-group">
+                    <label for="dtp_input2" class="col-md-2 control-label">入职日期</label>
+                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input   class="form-control" size="16" type="text"  readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <input  v-model="hiredate"  type="hidden" id="dtp_input2"  /><br/>
+                </div>
+                性别：
+                    <select v-model="selectedGender">
+                        <option disabled value="">请选择</option>
+                        <option>男</option>
+                        <option>女</option>
+                    </select>
+                <hr>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Email</span>
+                    <input v-model="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
+                </div>
+                <hr>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 <!--                给增加按钮添加单击事件-->
-                <button type="button" class="btn btn-primary" @click="addADept">增加</button>
+                <button type="button" class="btn btn-primary" @click="addAEmp">增加</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -69,7 +151,7 @@
                 <div class="input-group">
                         <input v-model="message"  type="text"  class="form-control" placeholder="Search for...">
                     <span class="input-group-btn">
-                        <button @click="search" class="btn btn-default" type="button">根据部门名字搜索</button>
+                        <button @click="search" class="btn btn-default" type="button">根据员工名字搜索</button>
                     </span>
                     <input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">
                 </div><!-- /input-group -->
@@ -80,30 +162,42 @@
     <div style="padding:20px;" id="app">
         <div class="panel panel-primary">
 <!--            这里的部门管理要根据你自己功能改-->
-            <div class="panel-heading">部门管理</div>
+            <div class="panel-heading">员工管理</div>
             <table class="table table-bordered table-hover table-striped text-center">
                 <thead>
 <!--                下面也是动态改-->
                 <tr>
-                    <th>部门名</th>
-                    <th>部门ID</th>
-                    <th>部门地址</th>
-                    <th>部门介绍</th>
-                    <th>操作</th>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>职位</th>
+                    <th>所在部门</th>
+                    <th>登陆名</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>入职日期</th>
+                    <th>性别</th>
                 </tr>
                 </thead>
                 <tbody>
 <!--                row.xxxx   row后面写后端传过来的json对象属性-->
                 <template v-for="(row, index) in data ">
                     <tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">
-                        <td>{{row.deptName}}</td>
-                        <td>{{row.deptId}}</td>
-                        <td>{{row.deptLoc}}</td>
-                        <td>{{row.deptIntro}}</td>
+                        <td>{{row.emp_id}}</td>
+                        <td>
+                            <img id="avatar"  v-bind:src="row.emp_pic==null? ` /images/upAvatar.jpg ` : row.emp_pic " alt="avatar" class="img-responsive img-circle">
+                            {{row.emp_name}}
+                        </td>
+                        <td>{{row.job_name}}</td>
+                        <td>{{row.dept_name}}</td>
+                        <td>{{row.emp_login_name}}</td>
+                        <td>{{row.emp_email}}</td>
+                        <td>{{row.emp_phone}}</td>
+                        <td>{{row.emp_hiredate}}</td>
+                        <td>{{row.emp_gender}}</td>
                         <td>
                             <!-- 按钮触发模态框 通过data-target="#updateDeptModal"，找到相对应的id的模态框 -->
-                            <button class="btn btn-primary " data-toggle="modal" data-target="#updateDeptModal" @click="LaunchUpdateDept(index)">修改</button>
-                            <a @click="deleteDept(index)" class="btn btn-danger">删除</a>
+                            <button class="btn btn-primary " data-toggle="modal" data-target="#updateEmpModal" @click="LaunchUpdateEmp(index)">修改</button>
+                            <a @click="deleteEmp(index)" class="btn btn-danger">删除</a>
                         </td>
                     </tr>
                 </template>
@@ -111,7 +205,7 @@
             </table>
         </div>
         <!-- 这个增加按钮也会触发模态框 -->
-        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addDeptModal">增加部门</button>
+        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addEmpModal">增加部门</button>
         <nav style="float:right;">
             <ul class="pagination pagination-lg">
 <!--                如果当前页面是第一页，那么就让上一页就点不了-->
@@ -156,6 +250,8 @@
 <script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
 <script src="/Vue/js/axios.js"></script>
 <script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script type="text/javascript">
     //搜索栏功能实现
     let searchDiv = new Vue({
@@ -256,7 +352,7 @@
         //当vue挂载成功时，自动调用以下方法获取data数据
         mounted: function () {
             axios
-                .get('/api/dept')
+                .get('/api/emps')
                 .then(response => (this.data = response.data))
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
@@ -310,31 +406,95 @@
             }
         }
     });
-    let addDept = new Vue({
-        el:'#addDept',
+    let addEmp = new Vue({
+        el:'#addEmp',
         //data里面也可以写空字符串哦！
-        data:{
-            bmm:'',
-            bmdz:'',
-            bmms:''
+        data(){
+            return{
+                data:null,
+                depts:null,
+                empName:'',
+                empLoginName:'',
+                selectedDept: [],
+                hiredate:null,
+                selectedGender:null,
+                selectedJob:null,
+                jobs:null,
+                email:null,
+                tel:null,
+                salary: null
+            }
         },
         methods:{
-            addADept:function (){
+            addAEmp:function (){
                 axios
-                    .post('/api/dept',{
-                        deptName:this.bmm,
-                        deptLoc:this.bmdz,
-                        deptIntro:this.bmms
+                    .post('/api/emp',{
+                        empName:this.empName,
+                        empLoginName:this.empLoginName,
+                        selectedDept: parseInt(this.selectedDept),
+                        selectedGender:this.selectedGender,
+                        selectedJob:parseInt(this.selectedJob),
+                        email:this.email,
+                        tel:this.tel,
+                        hiredate: $('#dtp_input2').val(),
+                        salary:this.salary
                     })
                     .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
                     .catch(function(error) {
                         console.log(error);
                     });
                 setTimeout(function () {
-                    window.location.href = "/fy";
+                    // window.location.href = "/systemManage/empManage";
                 },1000);
             }
+        },
+        mounted:function () {
+            axios
+                .get('/api/deptsIdAndName')
+                .then(response => (this.data = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            axios
+                .get('/api/jobInfo')
+                .then(response => (this.jobs = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
         }
+    });
+</script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
     });
 </script>
 </body>

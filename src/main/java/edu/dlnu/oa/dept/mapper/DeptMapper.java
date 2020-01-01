@@ -4,6 +4,7 @@ import edu.dlnu.oa.dept.pojo.Dept;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface DeptMapper {
@@ -19,5 +20,8 @@ public interface DeptMapper {
     @Update("UPDATE dept SET dept.dept_name= #{deptName},dept.dept_loc=#{deptLoc} ,dept.dept_intro=#{deptIntro} \n" +
             "WHERE dept.dept_id = #{deptId}")
     int updateDept(Dept dept);
+
+    @Select("SELECT dept_id ,dept_name FROM dept where dept_id>0")
+    List<Map<String,Object>> getDeptIdAndDeptName();
 
 }

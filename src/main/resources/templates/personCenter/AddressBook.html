@@ -49,7 +49,7 @@
                 <!--                row.xxxx   row后面写后端传过来的json对象属性-->
                 <template v-for="(row, index) in data ">
                     <tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">
-                        <td>{{row.NAME}}</td>
+                        <td>{{row.NAME}} </td>
                         <td>{{row.gender}}</td>
                         <td>{{row.dept_name}}</td>
                         <td>{{row.job_name}}</td>
