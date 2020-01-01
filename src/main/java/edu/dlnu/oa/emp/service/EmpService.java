@@ -7,4 +7,6 @@ public interface EmpService {
     List<Map<String, Object>> getEmps();
 
     int postAEmp(Map<String, Object> emp);
+
+    int deleteEmpById(int empId);
 }

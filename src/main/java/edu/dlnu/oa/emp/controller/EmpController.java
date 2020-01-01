@@ -28,5 +28,9 @@ public class EmpController {
     public int postAEmp(@RequestBody Map<String,Object> emp,HttpServletRequest request){
         return empService.postAEmp(emp);
     }
+    @DeleteMapping("/emps/{empId}")
+    public int deleteEmpById(@PathVariable("empId") int empId,HttpServletRequest request){
+        return empService.deleteEmpById(empId);
+    }
 
 }

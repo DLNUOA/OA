@@ -1,5 +1,6 @@
 package edu.dlnu.oa.emp.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -32,4 +33,7 @@ public interface EmpMapper {
             "VALUES (DEFAULT,#{empName},#{empLoginName},#{selectedDept}," +
             "#{selectedGender},#{selectedJob},#{email},#{tel},#{hiredate},#{salary},123456,2)")
     int postAEmp(Map<String, Object> emp);
+
+    @Delete("delete from emp where emp_id = #{empId}")
+    int deleteEmpById(int empId);
 }

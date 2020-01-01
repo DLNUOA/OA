@@ -25,4 +25,9 @@ public class EmpServiceImpl implements EmpService {
     public int postAEmp(Map<String, Object> emp) {
         return empMapper.postAEmp(emp);
     }
+
+    @Override
+    public int deleteEmpById(int empId) {
+        return empMapper.deleteEmpById(empId);
+    }
 }

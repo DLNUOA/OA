@@ -123,12 +123,12 @@
 </div>
 <!--修改部门模态框-->
 <!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
-<div class="modal fade" id="updateDeptModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateEmpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content"  id="updateADeptModal">
+        <div class="modal-content"  id="updateAEmpModal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">修改部门</h4>
+                <h4 class="modal-title" id="myModalLabel">修改员工</h4>
             </div>
             <div class="modal-body" >
                 部门名：<input v-model="deptName" placeholder="部门名"><hr>
@@ -205,7 +205,7 @@
             </table>
         </div>
         <!-- 这个增加按钮也会触发模态框 -->
-        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addEmpModal">增加部门</button>
+        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addEmpModal">增加员工</button>
         <nav style="float:right;">
             <ul class="pagination pagination-lg">
 <!--                如果当前页面是第一页，那么就让上一页就点不了-->
@@ -289,19 +289,20 @@
                 pagesize: 6,            //默认每一页显示6页
                 curpage: 1,             //当前页面，默认为第一页
                 pageCount: null,        //页面总数
-                dept: null              //组件之间传递参数的对象，这里指的是data一个特定的dept，
+                emp: null              //组件之间传递参数的对象，这里指的是data一个特定的dept，
                                         // 要根据后端传来的json对象动态修改，这里后端传来的json对象为dept，故写为dept
             }
         },
         methods: {
             //删除部门方法，通过元素index迅速找到元素，这就是为什么html里面循环最好加上index
-            deleteDept: function (index) {
+            deleteEmp: function (index) {
                 //使用let定义局部变量，获取删除部门的deptId
-                let deptId = this.data[index].deptId;
-                if(confirm('确定删除该部门吗？部门id为'+deptId)){
+                // alert(index);
+                let empId = vue.data[index].emp_id;
+                if(confirm('确定删除该Emp吗？EmpId为'+empId)){
                     // 发起ajax请求使后端进行删除操作并返回操作结果
                     axios
-                        .delete('/api/dept/'+deptId)// 根据RestFul风格，以delete请求发送
+                        .delete('/api/emps/'+empId)// 根据RestFul风格，以delete请求发送
                         //这里使用了箭头函数，进一步简化了匿名函数的书写，获取response的data数据，若为1则表示删除成功
                         .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
                         //出错处理，若出错请到控制台查看出错信息
@@ -312,9 +313,9 @@
                 }
             },
             //获取所有部门方法，这是个保留方法，只将获取到的数据打印到控制台
-            getDepts:function(){
+            getEmps:function(){
                 axios
-                    .get('/api/dept')
+                    .get('/api/emp')
                     .then(response => console.log(response.data))
                     .catch(function(error) {
                         console.log(error);
