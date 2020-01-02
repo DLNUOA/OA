@@ -1,9 +1,7 @@
 package edu.dlnu.oa.carCenter.controller;
 
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
-import edu.dlnu.oa.carCenter.pojo.CarRent;
 import edu.dlnu.oa.carCenter.service.CarRentService;
-import edu.dlnu.oa.job.pojo.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

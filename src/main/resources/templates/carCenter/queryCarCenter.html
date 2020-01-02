@@ -92,7 +92,9 @@
             <div class="modal-body">
                     车辆类型：<input v-model="cart" placeholder="车辆类型"><hr>
                     车辆牌照：<input v-model="carn" placeholder="车辆牌照"><hr>
-                    车辆图片：<input v-model="carp" placeholder="车辆图片">
+<!--                    车辆图片：<input v-model="carp" placeholder="车辆图片">-->
+                    车辆图片：<input v-mpdel="carp" type="file" style="float:right">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -113,11 +115,30 @@
             <div class="modal-body" >
                 车辆类型：<input v-model="cart" placeholder="车辆类型"><hr>
                 车辆牌照：<input v-model="carn" placeholder="车辆牌照"><hr>
-                车辆图片：<input v-model="carp" placeholder="车辆图片">
+                车辆图片：<input v-mpdel="carp" id="file" type="file" style="float:right">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" @click="update">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 查看车辆信息模态框（Modal） -->
+<div class="modal fade" id="queryCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="queryCar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myQueryModalLabel" style="color: #0f0f0f; font-size: 23px">修改车辆信息</h4>
+            </div>
+            <div class="modal-body" >
+                <p style="color: #0f0f0f;font-size: 20px">类型：{{carType}} &nbsp;&nbsp;&nbsp;&nbsp; 牌照：{{carNum}}</p>
+                <img :src="carPic" height="350" width="350">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -135,20 +156,31 @@
         },
         methods:{
             update:function(){
-                axios
-                    .put(host+'/api/car/update/',{
-                        carId:this.cari,
-                        carType:this.cart,
-                        carNum:this.carn,
-                        carPic:this.carp
-                    })
-                    .then( response => response.data ==1 ? ( toastr.success('车辆信息修改成功') ) : ( toastr.error('修改厦禾路信息失败，请联系管理员') ) )
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                setTimeout(function(){
-                    window.location.href="queryCarCenter.html";
-                },1000);
+                var reader = new FileReader();
+                var imgUpSrc = document.querySelector('#file').files[0];
+                console.log(imgUpSrc);
+                reader.readAsDataURL(imgUpSrc)
+
+                reader.onload=()=>{
+                    this.carp = reader.result;
+                    axios
+                        .put(host+'/api/car/update/',{
+                            carId:this.cari,
+                            carType:this.cart,
+                            carNum:this.carn,
+                            carPic:this.carp
+                        })
+                        .then( response => response.data ==1 ? ( toastr.success('车辆信息修改成功') ) : ( toastr.error('修改厦禾路信息失败，请联系管理员') ) )
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    setTimeout(function(){
+                        window.location.href="queryCarCenter.html";
+                    },1000);
+                }
+                reader.onerror = function (error) {
+                    console.log((error))
+                }
             }
         }
     });
@@ -163,38 +195,60 @@
         },
         methods: {
             addCar:function (){
-                if(!this.cart) {
-                    toastr.error("车辆类型不能为空");
+                var reader = new FileReader();
+                var imgSrc = document.querySelector('input[type=file]').files[0];
+                reader.readAsDataURL(imgSrc)
 
-                } else if(!this.carn) {
-                    toastr.error("车辆牌照不能为空");
+                reader.onload=()=>{
+                    this.carp = reader.result;
+                    if(!this.cart) {
+                        toastr.error("车辆类型不能为空");
 
-                } else {
-                    axios
-                        .post(host+'/api/car/add',{
-                            carType:this.cart,
-                            carNum:this.carn,
-                            carPic:this.carp
-                        })
-                        .then(function (response) {
+                    } else if(!this.carn) {
+                        toastr.error("车辆牌照不能为空");
+
+                    } else {
+                        axios
+                            .post(host+'/api/car/add',{
+                                carType:this.cart,
+                                carNum:this.carn,
+                                carPic:this.carp
+                            })
+                            .then(function (response) {
+
                                 if(response != 1){
                                     toastr.success('增加车辆信息成功');
                                     setTimeout(function(){
                                         window.location.href="queryCarCenter.html";
                                     },1000);
+
                                 }else{
                                     toastr.success('增加车辆信息失败，请联系管理员');
                                 }
-                        })
-                        .catch(function(error) {
-                            console.log(error);
-                        })
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            })
 
+                    }
                 }
+                reader.onerror = function (error) {
+                    console.log((error))
+                }
+
+
             }
         },
     });
 
+    var queryCar = new Vue({
+        el: '#queryCar',
+        data:{
+            carType:null,
+            carNum:null,
+            carPic:null
+        }
+    });
 
     var carList = new Vue({
         el: '#carInfoList',
@@ -226,7 +280,9 @@
                 axios
                     .get(host+'/api/car/queryById/' + carId)
                     .then(function (response) {
-                        alert(response.data.carType + response.data.carPic);
+                        queryCar.carType = response.data.carType;
+                        queryCar.carPic = response.data.carPic;
+                        queryCar.carNum = response.data.carNum;
                     })
                     .catch(function(error) {
                         console.log(error);

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service类，接口实现
@@ -19,7 +20,7 @@ public class CarCenterServiceImpl implements CarCenterService {
 
     //插入车辆信息
     @Override
-    public int addCar(CarCenter car) { return  mapper.insert(car);}
+    public int addCar(Map<String,Object> car) { return  mapper.insert(car);}
 
     //查找所有车辆信息
     @Override
@@ -36,5 +37,5 @@ public class CarCenterServiceImpl implements CarCenterService {
 
     //更改车辆信息
     @Override
-    public int updateCar(CarCenter car) { return mapper.update(car); }
+    public int updateCar(Map<String,Object> car) { return mapper.update(car); }
 }

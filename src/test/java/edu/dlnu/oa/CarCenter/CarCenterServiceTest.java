@@ -18,11 +18,12 @@ public class CarCenterServiceTest {
     private CarCenterService service;
 
     //测试添加车辆信息的Service
-    @Test
-    public void testInsert() {
-        CarCenter car = new CarCenter("宝马bb", "辽A-B1234", "");
-        service.addCar(car);
-    }
+//    @Test
+//    public void testInsert() {
+//
+//        CarCenter car = new CarCenter("宝马bb", "辽A-B1234", "");
+//        service.addCar(car);
+//    }
 
     //测试查询全部车辆信息的Service
     @Test
@@ -45,11 +46,11 @@ public class CarCenterServiceTest {
     public void testDelete() {
         service.deleteCar(10);
     }
-
-    //测试修改车辆信息的Service
-    @Test
-    public void testUpdate() {
-        CarCenter car = new CarCenter(9,"五菱面包车", "辽A-B1234","");
-        service.updateCar(car);
-    }
+//
+//    //测试修改车辆信息的Service
+//    @Test
+//    public void testUpdate() {
+//        CarCenter car = new CarCenter(9,"五菱面包车", "辽A-B1234","");
+//        service.updateCar(car);
+//    }
 }

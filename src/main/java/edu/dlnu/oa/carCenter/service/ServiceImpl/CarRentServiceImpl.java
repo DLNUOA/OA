@@ -5,7 +5,6 @@ import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.pojo.CarRent;
 import edu.dlnu.oa.carCenter.service.CarRentService;
 import edu.dlnu.oa.job.pojo.Job;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +60,7 @@ public class CarRentServiceImpl implements CarRentService {
     //改变车辆派车状态，改变可派车列表里的car_id
     //派车记录存入记录
     @Override
-    public int updateAndAddRent(@NotNull Map<String,Integer> map) {
+    public int updateAndAddRent(Map<String,Integer> map) {
          mapper.updateCarState(map.get("carId"));
          mapper.updateRentState(map.get("carId"), map.get("carRentId"));
          Map<String, Object> car = mapper.queryByRentId(map.get("carRentId"));

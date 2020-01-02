@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -29,7 +30,10 @@ public class CarCenterController {
 
     //添加车辆信息
     @RequestMapping(value = "/car/add", method = POST)
-    public int add(@RequestBody CarCenter car) { return service.addCar(car); }
+    public int add(@RequestBody Map<String,Object> car) {
+
+        return service.addCar(car);
+    }
 
     //查询所有车辆信息
     @RequestMapping(value = "/car/query", method = GET)
@@ -46,5 +50,5 @@ public class CarCenterController {
 
     //更改学生信息
     @RequestMapping(value = "/car/update", method = PUT)
-    public int update(@RequestBody CarCenter car) { return service.updateCar(car); }
+    public int update(@RequestBody Map<String,Object> car) { return service.updateCar(car); }
 }
