@@ -1,6 +1,8 @@
 server:
   port: 80
 spring:
+  jackson:
+    time-zone: GMT+8
   mvc:
     hiddenmethod:
       filter:

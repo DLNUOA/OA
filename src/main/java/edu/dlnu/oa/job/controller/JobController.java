@@ -1,10 +1,9 @@
 package edu.dlnu.oa.job.controller;
 
 import edu.dlnu.oa.job.service.JobService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,8 +20,28 @@ public class JobController {
     private JobService jobService;
 
     @GetMapping("/jobInfo")
-    private List<Map<String,Object>> jobInfo(HttpServletRequest request){
+    public List<Map<String,Object>> jobInfo(HttpServletRequest request){
 
         return jobService.getJobInfo();
     }
+
+    @GetMapping("/job")
+    public List<Map<String,Object>> getJobs(HttpServletRequest request){
+        return jobService.getJobs();
+    }
+    @PostMapping("/job")
+    public int postJob(HttpServletRequest request, @RequestBody Map<String,Object> job){
+        return jobService.postJob(job);
+    }
+
+    @DeleteMapping("/job/{id}")
+    public int deleteJobById(HttpServletRequest request,@PathVariable("id") int id){
+        return jobService.deleteJobById(id);
+    }
+    @PutMapping("/job")
+    public int putJob(HttpServletRequest request,@RequestBody Map<String,Object> job){
+        return  jobService.putJob(job);
+    }
+
+
 }
