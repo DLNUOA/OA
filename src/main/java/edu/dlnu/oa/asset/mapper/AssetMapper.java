@@ -12,6 +12,8 @@ public interface AssetMapper {
 
     @Select("select * from asset")
     List<Asset> findAllAsset();
+    @Select("select * from asset where asset_id = #{id}")
+
 
     @Delete("delete from asset where asset_id = #{id} ")
     int deleteAssetById(int id);

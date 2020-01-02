@@ -41,5 +41,11 @@ public class URLController {
         return "fy";
     }
 
+    @RequestMapping("/AssetManagement")
+    public String AssetManagement(){
+        return "asset/AssetManagement";
+    }
+
+
 
 }

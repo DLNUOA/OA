@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>增加库存</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+</head>
+<body>
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="#">OA系统</a></li>
+        <li><a href="#">资产管理</a></li>
+        <li>库存管理</li>
+    </ol>
+
+    <h2 class="page-header">增加新资产</h2>
+
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="assetName", class="col-sm-2 control-label">资产名称</label>
+            <div class="col-sm-8">
+                <input type="text" placeholder="资产名称" id="assetName" name="assetName" class="form-control"/>
+            </div>
+        </div>
+        <div class="dropdown">
+            <label for="assetClasses" class="col-sm-2 control-label">资产类别</label>
+            <div class="col-sm-8">
+                <input type="text" placeholder="请输入资产类别" id="assetClasses" name="assetClasses" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="assetSpecification" class="col-sm-2 control-label">资产规格</label>
+            <div class="col-sm-8">
+                <input type="text" placeholder="请输入资产规格" id="assetSpecification" name="assetSpecification" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="assetUnitPrice" class="col-sm-2 control-label">资产单价</label>
+            <div class="col-sm-8">
+                <input type="text" placeholder="请输入资产单价" id="assetUnitPrice" name="assetUnitPrice" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="assetInventory" class="col-sm-2 control-label">库存数量</label>
+            <div class="col-sm-8">
+                <input type="text" placeholder="请输入库存数量" id="assetInventory" name="assetInventory" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <input id="addBtn" type="button" value="增加" class="btn btn-primary" />
+                <input type="button" value="返回" class="btn btn-warning" onclick="history.back();" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="/js/jquery-3.4.1.js" ></script>
+<script type="text/javascript" src="/js/global.js" ></script>
+<script type="text/javascript" src="/js/layer/layer.js" ></script>
+<script>
+    //表单验证函数
+    function checkForm() {
+
+        //资产名称
+        var assetName = $('#assetName');
+
+        if (assetName.val() == '' || assetName.val().length > 10) {
+            layer.msg('资产名称不能为空且最多10个字符');
+            assetName.focus();
+            return false;
+        }
+
+        //资产类别
+        var assetClasses = $('#assetClasses');
+
+        if (assetClasses.val() == '' || assetClasses.val().length > 20) {
+            layer.msg('资产类别不能为空且最多20字符');
+            assetClasses.select();
+            return false;
+        }
+        //资产规格
+        var assetSpecification = $('#assetSpecification');
+
+        if (assetSpecification.val() == '' || assetSpecification.val().length > 10) {
+            layer.msg('资产规格不能为空且最多10个字符');
+            assetSpecification.focus();
+            return false;
+        }
+        //资产单价
+        var assetUnitPrice = $('#assetUnitPrice');
+
+        if (assetUnitPrice.val() == '' || assetUnitPrice.val().length > 10) {
+            layer.msg('资产单价不能为空且最多10个字符');
+            assetUnitPrice.focus();
+            return false;
+        }
+        //库存数量
+        var assetInventory = $('#assetInventory');
+
+        if (assetInventory.val() == '' || assetInventory.val().length > 10) {
+            layer.msg('库存数量不能为空且最多10个字符');
+            assetInventory.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    //增加部门
+    $('#addBtn').click(function(){
+
+        //调用验证函数
+        if ( !checkForm() )
+            return;
+
+        //请求参数
+        var params = {
+            assetName:$('#assetName').val(),
+            assetClasses:$('#assetClasses').val(),
+            assetSpecification:$('#assetSpecification').val(),
+            assetUnitPrice:$('#assetUnitPrice').val(),
+            assetInventory:$('#assetInventory').val()
+        }
+
+        //调用后端功能
+        $.post(baseUrl + '/asset/add',params,function(data) {
+
+            layer.msg('增加部门成功');
+
+            setTimeout(function(){
+                location.href = 'QueryAsset.html';
+            },500);
+
+        });
+
+    });
+</script>
+</body>
+</html>

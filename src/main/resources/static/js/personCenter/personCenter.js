@@ -97,7 +97,7 @@ var updateInfoModal = new Vue({
 // });
 
 
-let updatePwdModal = new Vue({
+var updatePwdModal = new Vue({
     el:"#updatePwdModal",
     data(){
         return{
