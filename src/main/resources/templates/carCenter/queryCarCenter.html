@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>车辆信息列表</title>
+    <script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Vue/js/vue.js"></script>
+    <script src="/Vue/js/axios.js"></script>
+    <script src="/Vue/js/common.js"></script>
+    <script src="/Vue/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <script src="/Vue/js/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                车辆管理 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./queryCarCenter.html">车辆查看</a></li>
+                <li><a href="./queryCarState.html">派车代办</a></li>
+                <li><a href="./queryCarRent.html">派车记录</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover " id='carInfoList'>
+            <caption><h1 align="center">车辆管理</h1></caption>
+            <thead>
+            <tr>
+                <td>车辆编号</td>
+                <td>车辆类型</td>
+                <td>车辆牌照</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody >
+            <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+
+            <tr v-for="(car,index) of carList"  v-bind:key = 'car.carId' >
+                <td>{{car.carId}}</td>
+                <td>{{car.carType}}</td>
+                <td>{{car.carNum}}</td>
+                <td>
+                    <!-- 按钮触发模态框 -->
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#queryCarModal" @click="QueryByIdCar(index)">查询</button>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateCarModal" @click="LaunchUpdateCar(index)">修改</button>
+                    <a @click="deleteCar(index)" class="btn btn-danger btn-sm">删除</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-success " data-toggle="modal" data-target="#addCarModal">增加车辆</button>
+    </div>
+</div>
+
+<!-- 增加车辆信息模态框（Modal） -->
+<div class="modal fade" id="addCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="addCar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelAdd">增加车辆信息</h4>
+            </div>
+            <div class="modal-body">
+                    车辆类型：<input v-model="cart" placeholder="车辆类型"><hr>
+                    车辆牌照：<input v-model="carn" placeholder="车辆牌照"><hr>
+<!--                    车辆图片：<input v-model="carp" placeholder="车辆图片">-->
+                    车辆图片：<input v-mpdel="carp" type="file" style="float:right">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="addCar">增加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 修改车辆信息模态框（Modal） -->
+<div class="modal fade" id="updateCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="updateCar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改车辆信息</h4>
+            </div>
+            <div class="modal-body" >
+                车辆类型：<input v-model="cart" placeholder="车辆类型"><hr>
+                车辆牌照：<input v-model="carn" placeholder="车辆牌照"><hr>
+                车辆图片：<input v-mpdel="carp" id="file" type="file" style="float:right">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="update">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 查看车辆信息模态框（Modal） -->
+<div class="modal fade" id="queryCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="queryCar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myQueryModalLabel" style="color: #0f0f0f; font-size: 23px">修改车辆信息</h4>
+            </div>
+            <div class="modal-body" >
+                <p style="color: #0f0f0f;font-size: 20px">类型：{{carType}} &nbsp;&nbsp;&nbsp;&nbsp; 牌照：{{carNum}}</p>
+                <img :src="carPic" height="350" width="350">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script type = "text/javascript">
+
+    var updateCar = new Vue({
+        el:'#updateCar',
+        data:{
+            cari:'',
+            cart:'',
+            carn:'',
+            carp:''
+        },
+        methods:{
+            update:function(){
+                var reader = new FileReader();
+                var imgUpSrc = document.querySelector('#file').files[0];
+                console.log(imgUpSrc);
+                reader.readAsDataURL(imgUpSrc)
+
+                reader.onload=()=>{
+                    this.carp = reader.result;
+                    axios
+                        .put(host+'/api/car/update/',{
+                            carId:this.cari,
+                            carType:this.cart,
+                            carNum:this.carn,
+                            carPic:this.carp
+                        })
+                        .then( response => response.data ==1 ? ( toastr.success('车辆信息修改成功') ) : ( toastr.error('修改厦禾路信息失败，请联系管理员') ) )
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    setTimeout(function(){
+                        window.location.href="queryCarCenter.html";
+                    },1000);
+                }
+                reader.onerror = function (error) {
+                    console.log((error))
+                }
+            }
+        }
+    });
+
+
+    var addCar = new Vue({
+        el:'#addCar',
+        data:{
+                cart:'',
+                carn:'',
+                carp:''
+        },
+        methods: {
+            addCar:function (){
+                var reader = new FileReader();
+                var imgSrc = document.querySelector('input[type=file]').files[0];
+                reader.readAsDataURL(imgSrc)
+
+                reader.onload=()=>{
+                    this.carp = reader.result;
+                    if(!this.cart) {
+                        toastr.error("车辆类型不能为空");
+
+                    } else if(!this.carn) {
+                        toastr.error("车辆牌照不能为空");
+
+                    } else {
+                        axios
+                            .post(host+'/api/car/add',{
+                                carType:this.cart,
+                                carNum:this.carn,
+                                carPic:this.carp
+                            })
+                            .then(function (response) {
+
+                                if(response != 1){
+                                    toastr.success('增加车辆信息成功');
+                                    setTimeout(function(){
+                                        window.location.href="queryCarCenter.html";
+                                    },1000);
+
+                                }else{
+                                    toastr.success('增加车辆信息失败，请联系管理员');
+                                }
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            })
+
+                    }
+                }
+                reader.onerror = function (error) {
+                    console.log((error))
+                }
+
+
+            }
+        },
+    });
+
+    var queryCar = new Vue({
+        el: '#queryCar',
+        data:{
+            carType:null,
+            carNum:null,
+            carPic:null
+        }
+    });
+
+    var carList = new Vue({
+        el: '#carInfoList',
+        // 不使用return包裹的数据会在项目的全局可见，会造成变量污染；使用return包裹后数据中变量只在当前组件中生效，不会影响其他组件。
+        data () {
+            return {
+                carList: null,
+                car:null
+            }
+        },
+        methods: {
+            deleteCar: function (index) {
+                //使用let定义局部变量
+                let carId = this.carList[index].carId;
+                if(confirm('确定删除该车辆信息吗？车辆id为'+carId)){
+                    this.carList.splice(index,1);
+                    axios
+                        .delete(host+'/api/car/delete/'+carId)
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        .catch(function(error){
+                            console.log(error);
+                        });
+                }
+            },
+            QueryByIdCar: function (index) {
+                //使用let定义局部变量
+                let carId = this.carList[index].carId;
+
+                axios
+                    .get(host+'/api/car/queryById/' + carId)
+                    .then(function (response) {
+                        queryCar.carType = response.data.carType;
+                        queryCar.carPic = response.data.carPic;
+                        queryCar.carNum = response.data.carNum;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            LaunchUpdateCar:function(index){
+                let carId = this.carList[index].carId;
+                this.car=(this.carList[index]);
+                updateCar.cari = this.car.carId;
+                updateCar.cart = this.car.carType;
+                updateCar.carn = this.car.carNum;
+                updateCar.carp = this.car.carPic;
+            }
+        },
+        mounted () {
+            //当Vue实例挂载完成时，自动调用后端接口获取所有dept数据并且将数据渲染到html
+            axios
+                .get(host+'/api/car/query')
+                .then(response => (this.carList = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        }
+    });
+
+</script>
+
+</body>
+</html>
