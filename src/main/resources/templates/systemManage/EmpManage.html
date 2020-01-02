@@ -75,7 +75,6 @@
                                         <option>{{row.dept_id}}:{{row.dept_name}}</option>
                                     </template>
                                 </select>
-                <hr>
                 手机号码：<input v-model="tel" placeholder="tel"><hr>
                 工资：<input v-model="salary" placeholder="salary"><hr>
 
@@ -86,9 +85,16 @@
                             <option>{{row.job_id}}:{{row.job_name}}</option>
                         </template>
                         </select>
-
-                <hr>
-
+                性别：
+                    <select v-model="selectedGender">
+                        <option disabled value="option">请选择</option>
+                        <option>男</option>
+                        <option>女</option>
+                    </select>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Email</span>
+                    <input v-model="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
+                </div>
                 <div class="form-group">
                     <label for="dtp_input2" class="col-md-2 control-label">入职日期</label>
                     <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
@@ -98,18 +104,6 @@
                     </div>
                     <input  v-model="hiredate"  type="hidden" id="dtp_input2"  /><br/>
                 </div>
-                性别：
-                    <select v-model="selectedGender">
-                        <option disabled value="">请选择</option>
-                        <option>男</option>
-                        <option>女</option>
-                    </select>
-                <hr>
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Email</span>
-                    <input v-model="email" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
-                </div>
-                <hr>
 
 
             </div>
@@ -121,7 +115,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<!--修改部门模态框-->
+<!--修改模态框-->
 <!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
 <div class="modal fade" id="updateEmpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -131,9 +125,47 @@
                 <h4 class="modal-title" id="myModalLabel">修改员工</h4>
             </div>
             <div class="modal-body" >
-                部门名：<input v-model="deptName" placeholder="部门名"><hr>
-                部门地址：<input v-model="deptLoc" placeholder="部门地址"><hr>
-                部门描述：<input v-model="deptIntro" placeholder="部门描述">
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon1">姓名</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon2">登陆名</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon3">密码</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon4">邮箱</span>
+                    <input type="email" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon5">电话</span>
+                    <input type="tel" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon7">性别</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon8">工资</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon9">部门</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon10">职位</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="emp-addon11">角色</span>
+                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -324,11 +356,11 @@
             //修改部门方法，修改部门需要调用修改模态框，在这里修改部门模态框也是一个实例，调用模态框实例传输参数即可
             LaunchUpdateDept:function(index){
                 this.dept=(this.data[index]);
-                updateADeptModal.deptId = this.dept.deptId;
-                updateADeptModal.deptName = this.dept.deptName;
-                updateADeptModal.deptLoc = this.dept.deptLoc;
-                updateADeptModal.deptIntro = this.dept.deptIntro;
-                updateADeptModal.index = index;
+                updateAEmpModal.deptId = this.dept.deptId;
+                updateAEmpModal.deptName = this.dept.deptName;
+                updateAEmpModal.deptLoc = this.dept.deptLoc;
+                updateAEmpModal.deptIntro = this.dept.deptIntro;
+                updateAEmpModal.index = index;
             },
             //上一页方法
             PrePage: function (event) {
@@ -364,7 +396,7 @@
             this.pageCount = Math.ceil(this.data.length / this.pagesize);
         }
     });
-    let updateADeptModal = new Vue({
+    let updateAEmpModal = new Vue({
         el:'#updateADeptModal',
         data:{
             //下面的数据要根据后端传过来的json对象动态改，一般初始化为null
