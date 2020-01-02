@@ -62,11 +62,26 @@
 </div>
 <!--模态框结束-->
 <div class="container">
+
+    <div id="searchDiv">
+        <div class="row" >
+            <div class="col-lg-6">
+                <div class="input-group">
+                        <input v-model="message"  type="text"  class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button @click="search" class="btn btn-default" type="button">根据部门名字搜索</button>
+                    </span>
+                    <input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+    </div>
+
     <div style="padding:20px;" id="app">
         <div class="panel panel-primary">
 <!--            这里的部门管理要根据你自己功能改-->
             <div class="panel-heading">部门管理</div>
-            <table class="table table-bordered table-striped text-center">
+            <table class="table table-bordered table-hover table-striped text-center">
                 <thead>
 <!--                下面也是动态改-->
                 <tr>
@@ -118,7 +133,7 @@
 </div>
 <!--下面引用js文件，有点多，以后优化-->
 <script src="/Vue/js/jquery.js"></script>
-<script src="Vue/js/vue.js"></script>
+<script src="/Vue/js/vue.js"></script>
 <script src="/js/toastr.min.js"></script>
 <script>
     // 设置提示框的属性
@@ -128,9 +143,9 @@
         "progressBar": false,
         "positionClass": "toast-top-center",
         "onclick": null,
-        "showDuration": "400",
+        "showDuration": "1000",
         "hideDuration": "1000",
-        "timeOut": "2500",
+        "timeOut": "5500",
         "extendedTimeOut": "1000",
         "showEasing": "swing",
         "hideEasing": "linear",
@@ -142,6 +157,33 @@
 <script src="/Vue/js/axios.js"></script>
 <script src="/Vue/js/lodash.min.js"></script>
 <script type="text/javascript">
+    //搜索栏功能实现
+    let searchDiv = new Vue({
+        el:'#searchDiv',
+        data(){
+            return{
+                result:null,
+                message:null
+            }
+        },
+        methods:{
+            search: function () {
+                let tempData = vue.data;
+                for (let temp of tempData) {
+                    if (this.message == temp.deptName){
+                        toastr.success('成功找到！');
+                        toastr.info('id:'+temp.deptId+'   名字:'+temp.deptName+'   地址:'+temp.deptLoc+'  描述:'+temp.deptIntro);
+                        this.result = 'id为'+temp.deptId+'   名字为'+temp.deptName+'   地址为'+temp.deptLoc+'  描述为'+temp.deptIntro;
+                        return;
+                    }
+                }
+                this.result=null;
+                toastr.error('未找到');
+            }
+        },
+    });
+
+
     let vue = new Vue({
         el: '#app',    //绑定元素
         data () {
@@ -205,7 +247,7 @@
             },
             //点击页码的方法
             NumPage: function (num, event) {
-                if (this.curpage == num) {
+                if (this.curpage === num) {
                     return;
                 }
                 this.curpage = num;
@@ -252,6 +294,9 @@
                             vue.data[this.index].deptName=this.deptName;
                             vue.data[this.index].deptLoc=this.deptLoc;
                             vue.data[this.index].deptIntro=this.deptIntro;
+                            $('#addDeptModal').modal({
+                                show:false
+                            });//这里使用Jquery不生效，来个大佬改bug啊！
                         }else {
                             toastr.error('修改部门失败，请联系管理员');
                         }
@@ -265,7 +310,7 @@
             }
         }
     });
-    var addDept = new Vue({
+    let addDept = new Vue({
         el:'#addDept',
         //data里面也可以写空字符串哦！
         data:{
@@ -286,7 +331,7 @@
                         console.log(error);
                     });
                 setTimeout(function () {
-                    window.location.href = "/fyDemo";
+                    window.location.href = "/fy";
                 },1000);
             }
         }

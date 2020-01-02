@@ -1,24 +1,60 @@
 package edu.dlnu.oa.personCenter.mapper;
 
+import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface PersonCenterMapper {
-//    @Select("SELECT  ed.login_name,ed.name,ed.dept_name,job.`name`,ed.gender,ed.birthday,ed.tel,ed.email,ed.qq,ed.intro\n" +
-//            "FROM job\n" +
-//            "INNER JOIN (\n" +
-//            "\tSELECT\n" +
-//            "\temp.`login_name` login_name,emp.`name` NAME,dept.`name` dept_name,emp.`gender` gender,emp.`birthday` birthday,\n" +
-//            "\temp.`tel` tel,emp.`email` email,emp.`qq` qq,emp.`intro` intro,emp.`job_id` job_id\n" +
-//            "\tFROM emp\n" +
-//            "\tINNER JOIN dept ON emp.`dept_id`=dept.`id`\n" +
-//            "\tWHERE emp.`id` = #{empId} " +
-//            ")ed ON job.`id` = ed.job_id")
-    @Select("SELECT  DISTINCT  *  FROM emp e,job j,dept d\n" +
-            "WHERE e.emp_id=#{empId} and e.emp_job_id = j.job_id AND e.emp_dept_id = d.dept_id")
-    List<Map<String,Object>> getEmpInfoById(int empId);
+
+    @Select("SELECT  NAME,login_name,job_id,job_name,job_min_sal,job_max_sal,dept_name,gender,hiredate,tel,email,intro\n" +
+            "FROM job\n" +
+            "INNER JOIN (\n" +
+            "\tSELECT\n" +
+            "\temp.`emp_login_name` login_name,emp.`emp_name` NAME,dept.`dept_name` dept_name,emp.`emp_gender` gender,emp.`emp_hiredate` hiredate,\n" +
+            "\temp.`emp_phone` tel,emp.`emp_email` email,emp.`emp_info` intro,emp.`emp_job_id` emp_job_id\n" +
+            "\tFROM emp\n" +
+            "\tINNER JOIN dept ON emp.`emp_dept_id`=dept.`dept_id`\n" +
+            "\tWHERE emp.`emp_id` = #{empId}  \n" +
+            ")ed ON  job.`job_id`=ed.emp_job_id")
+    Map<String,Object> getEmpInfoById(int empId);
+
+
+    @Update("UPDATE emp \n" +
+            "SET     emp.`emp_login_name` = #{loginName} ,\n" +
+            "\temp.`emp_phone` = #{tel},\n" +
+            "\temp.`emp_email` = #{email},\n" +
+            "\temp.`emp_info` = #{intro}\n" +
+            "WHERE emp.`emp_id` = #{empId}")
+    int updateEmpInfo(SaveUpdateDto saveUpdateDto);
+
+    @Select("select emp_pwd from emp where emp_id = #{empId} ")
+    String getPersonPwdById(int empId);
+
+    @Update("update emp set emp_pwd = #{newPwd} where emp_id = #{empId} ")
+    int setNewPwd(@Param("empId") int empId, @Param("newPwd") String newPwd);
+
+
+    @Update("update emp set emp_pic = #{avatar} where emp_id = #{empId} ")
+    int upMyAvatar(@Param("empId") int empId,@Param("avatar") String avatar);
+
+    @Select("select emp_pic from emp where emp_id = #{empId}")
+    String getMyAvatar(int empId);
+
+    @Select("SELECT    NAME,login_name,job_id,job_name,job_min_sal,job_max_sal,dept_name,gender,hiredate,tel,email,intro\n" +
+            "FROM job\n" +
+            "INNER JOIN (\n" +
+            "\tSELECT\n" +
+            "\temp.`emp_login_name` login_name,emp.`emp_name` NAME,dept.`dept_name` dept_name,emp.`emp_gender` gender,emp.`emp_hiredate` hiredate,\n" +
+            "\temp.`emp_phone` tel,emp.`emp_email` email,emp.`emp_info` intro,emp.`emp_job_id` emp_job_id\n" +
+            "\tFROM emp   \n" +
+            "\tINNER JOIN dept ON emp.`emp_dept_id`=dept.`dept_id`\n" +
+            ")ed ON  job.`job_id`=ed.emp_job_id")
+    List<Map<String,Object>> getAddressBook();
+
 }

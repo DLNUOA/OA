@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wuhan
@@ -34,5 +35,9 @@ public class deptServiceImpl implements DeptService {
 
     public int updateDept(Dept dept){
         return deptMapper.updateDept(dept);
+    }
+
+    public List<Map<String,Object>> getDeptIdAndName(){
+        return deptMapper.getDeptIdAndDeptName();
     }
 }
