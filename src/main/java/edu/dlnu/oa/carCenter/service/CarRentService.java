@@ -2,6 +2,7 @@ package edu.dlnu.oa.carCenter.service;
 
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.pojo.CarRent;
+import edu.dlnu.oa.job.pojo.Job;
 import org.springframework.context.annotation.Primary;
 
 import java.util.List;
@@ -28,4 +29,10 @@ public interface CarRentService {
 
     //根据ID查询车辆信息
     CarCenter queryByPlanIdCar(int carId);
+
+    //查询审批人信息
+    Map<String,Object> queryJobList(String jobName);
+
+    //提交申请
+    int addApply(Map<String, Object> apply);
 }

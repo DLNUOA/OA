@@ -1,6 +1,5 @@
 package edu.dlnu.oa.carCenter.controller;
 
-import edu.dlnu.oa.carCenter.common.Pager;
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.service.CarCenterService;
 import org.slf4j.Logger;

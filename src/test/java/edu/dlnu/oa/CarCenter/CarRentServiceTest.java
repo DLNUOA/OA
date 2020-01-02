@@ -46,4 +46,16 @@ public class CarRentServiceTest {
         service.updateAndAddRent(map);
     }
 
+    //查询审批人信息
+    @Test
+    public void testXingZheng() {
+        Map<String,Object> list = service.queryJobList("行政主管");
+            System.out.println(list);
+    }
+
+//    //提交用户用车申请
+//    @Test
+//    public void testApplyCar() {
+//        CarRent car  =  new CarRent("大连-北京","坎坎坷坷","2019-12-12","")
+//    }
 }

@@ -3,6 +3,7 @@ package edu.dlnu.oa.carCenter.controller;
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.pojo.CarRent;
 import edu.dlnu.oa.carCenter.service.CarRentService;
+import edu.dlnu.oa.job.pojo.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import sun.rmi.log.LogInputStream;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,4 +55,23 @@ public class CarRentController {
     //根据ID查询车辆信息
     @RequestMapping(value = "/car/queryByPlanId/{carId}", method = GET)
     public CarCenter queryByPlanId(@PathVariable int carId) { return service.queryByPlanIdCar(carId); }
+
+    //获取行政主管信息
+    @RequestMapping(value = "/car/getJobList", method = GET)
+    public Map<String,Object> getJobList() { return service.queryJobList("行政主管"); }
+
+    //提交用车申请
+    @RequestMapping(value = "/emp/carApply", method = POST)
+    public int add(@RequestBody Map<String, Object> apply, HttpServletRequest request) {
+        String applyId = (String) request.getSession().getAttribute("empId");
+        Map<String, Object> map = service.queryJobList("行政主管");
+        Map<String, Object> list = new HashMap<>();
+        list.put("carRentLine", apply.get("carRentLine"));
+        list.put("carRentInfo", apply.get("carRentInfo"));
+        list.put("carApplyTime", apply.get("carApplyTime"));
+        list.put("carRentStime", apply.get("carRentStime"));
+        list.put("carRentOtime", apply.get("carRentOtime"));
+        list.put("empApplyId", applyId);
+        list.put("empCheckmanId", map.get("emp_id"));
+        return service.addApply(list); }
 }

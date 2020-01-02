@@ -3,8 +3,8 @@ package edu.dlnu.oa.carCenter.service.ServiceImpl;
 import edu.dlnu.oa.carCenter.mapper.CarRentMapper;
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.pojo.CarRent;
-import edu.dlnu.oa.carCenter.pojo.RentList;
 import edu.dlnu.oa.carCenter.service.CarRentService;
+import edu.dlnu.oa.job.pojo.Job;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,4 +79,12 @@ public class CarRentServiceImpl implements CarRentService {
     //根据ID查找车辆信息
     @Override
     public CarCenter queryByPlanIdCar(int carId) { return mapper.queryByPlanId(carId); }
+
+    //查询审批人信息
+    @Override
+    public Map<String,Object> queryJobList(String jobName) {return mapper.queryJob(jobName);}
+
+    //提交申请
+    @Override
+    public int addApply(Map<String, Object> apply) {return mapper.insertApply(apply);}
 }

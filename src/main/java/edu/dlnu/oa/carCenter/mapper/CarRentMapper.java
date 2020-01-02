@@ -2,6 +2,7 @@ package edu.dlnu.oa.carCenter.mapper;
 
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
 import edu.dlnu.oa.carCenter.pojo.CarRent;
+import edu.dlnu.oa.job.pojo.Job;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -56,4 +57,13 @@ public interface CarRentMapper {
     //根据ID查询车辆信息
     @Select("SELECT car_type, car_pic FROM car WHERE car_id = #{carId}")
     CarCenter queryByPlanId(int carId);
+
+    //查找行政主管信息，以便在申请用车的时候选择审批人,得到审批人信息（职务和名字）
+    @Select("SELECT j.job_name, e.emp_id FROM job j INNER JOIN emp e ON j.`job_id`=e.`emp_job_id` WHERE j.job_name=#{jobName}")
+    Map<String,Object> queryJob(String jobName);
+
+    //个人中心租车提交申请
+    @Insert("INSERT INTO rent_car VALUES(default, #{carRentLine}, #{carRentInfo}, #{carApplyTime}, #{carRentStime}, #{carRentOtime}," +
+            "1,0,#{empApplyId},#{empCheckmanId})")
+    int insertApply(Map<String, Object> apply);
 }
