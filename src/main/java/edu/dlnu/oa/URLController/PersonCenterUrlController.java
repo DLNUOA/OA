@@ -19,4 +19,9 @@ public class PersonCenterUrlController {
         return "personCenter/PersonCenter";
     }
 
+    @RequestMapping("/addressBook")
+    public String addressBook(){
+        return "personCenter/AddressBook";
+    }
+
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -37,4 +38,23 @@ public interface PersonCenterMapper {
 
     @Update("update emp set emp_pwd = #{newPwd} where emp_id = #{empId} ")
     int setNewPwd(@Param("empId") int empId, @Param("newPwd") String newPwd);
+
+
+    @Update("update emp set emp_pic = #{avatar} where emp_id = #{empId} ")
+    int upMyAvatar(@Param("empId") int empId,@Param("avatar") String avatar);
+
+    @Select("select emp_pic from emp where emp_id = #{empId}")
+    String getMyAvatar(int empId);
+
+    @Select("SELECT    NAME,login_name,job_id,job_name,job_min_sal,job_max_sal,dept_name,gender,hiredate,tel,email,intro\n" +
+            "FROM job\n" +
+            "INNER JOIN (\n" +
+            "\tSELECT\n" +
+            "\temp.`emp_login_name` login_name,emp.`emp_name` NAME,dept.`dept_name` dept_name,emp.`emp_gender` gender,emp.`emp_hiredate` hiredate,\n" +
+            "\temp.`emp_phone` tel,emp.`emp_email` email,emp.`emp_info` intro,emp.`emp_job_id` emp_job_id\n" +
+            "\tFROM emp   \n" +
+            "\tINNER JOIN dept ON emp.`emp_dept_id`=dept.`dept_id`\n" +
+            ")ed ON  job.`job_id`=ed.emp_job_id")
+    List<Map<String,Object>> getAddressBook();
+
 }

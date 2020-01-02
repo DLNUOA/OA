@@ -16,6 +16,56 @@
             color:#57a3f3;
             cursor: not-allowed; // 鼠标变化
         }
+        .action
+        {
+            width: 400px;
+            height: 30px;
+            margin: 10px 0;
+        }
+        .cropped>img
+        {
+            margin-right: 10px;
+        }
+        .imageBox
+        {
+            position: relative;
+            height: 400px;
+            width: 400px;
+            border:1px solid #aaa;
+            background: #fff;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            cursor:move;
+        }
+
+        .imageBox .thumbBox
+        {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            margin-top: -100px;
+            margin-left: -100px;
+            box-sizing: border-box;
+            border: 1px solid rgb(102, 102, 102);
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+            background: none repeat scroll 0% 0% transparent;
+        }
+
+        .imageBox .spinner
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            line-height: 400px;
+            background: rgba(0,0,0,0.7);
+        }
+
+
     </style>
 </head>
 <body>
@@ -96,12 +146,11 @@
                     <a  data-toggle="modal" data-target="#updateInfoModal"  id="changeInfo" class="btn btn-primary col-md-4" data-original-title="" title="" @click="lunchUpdate">修改信息</a>
 <!--                    <button type="button" class="btn btn-primary col-md-4 col-sm-offset-2" id="changePwd">密码修改</button>-->
 
-
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary col-md-4 col-sm-offset-2" data-toggle="modal" data-target="#updatePwdModal">
                         密码修改
                     </button>
-
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myAvatarModal">修改头像</button>
                     <!-- <a href="javascript:changePwd()" id="changePwd" class="btn btn-primary col-md-4 col-sm-offset-2">密码修改</a> -->
                     <!-- 响应式布局，移动端才会有返回主页的按钮 -->
                     <input type="button" class="btn btn-success btn-block visible-xs visible-md" value="返回主页" onclick="location.href = '/welcome' ">
@@ -109,6 +158,42 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myAvatarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabelAvatar">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabelAvatar">myAvatarModal</h4>
+                </div>
+                <div class="modal-body">
+                    <script src="/Vue/js/cropbox.js"></script>
+                    <div class="container">
+                        <div class="imageBox">
+                            <div class="thumbBox"></div>
+                            <div class="spinner" style="display: none">Loading...</div>
+                        </div>
+                        <div class="action">
+                            <input type="file" id="file" style="float:left; width: 250px">
+                            <input type="button" id="btnCrop" value="Crop" style="float: right">
+                            <input type="button" id="btnZoomIn" value="+" style="float: right">
+                            <input type="button" id="btnZoomOut" value="-" style="float: right">
+                        </div>
+                        <div class="cropped">
+
+                        </div>
+                        <button type="button" class="btn btn-sm " onclick="getAvatarSrc()">上传头像</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Modal -->
     <div class="modal fade" id="updateInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -205,4 +290,64 @@
 <script src="/Vue/js/axios.js"></script>
 <script src="/Vue/js/lodash.min.js"></script>
 <script src="/js/personCenter/personCenter.js"></script>
+<script type="text/javascript">
+    function getAvatarSrc() {
+        let path =  document.getElementById("myAvatar").src;
+        if (path==null){
+            toastr.error('请先生成头像！');
+            return
+        }
+        $.ajax({
+            type : "POST",
+            url : "/api/personCenter/upMyAvatar",
+            contentType : "application/json;charset=UTF-8",
+            dataType : "json",
+            data : JSON.stringify({
+                "avatar":path
+            }),
+            success : function (data) {
+                if (data){
+                    toastr.success("上传头像成功");
+                }else {
+                    toastr.error("上传头像失败");
+                }
+
+            },
+            error : function () {
+                toastr.error("服务错误，请联系客服");
+            }
+        })
+    }
+
+    window.onload = function() {
+        var options =
+            {
+                imageBox: '.imageBox',
+                thumbBox: '.thumbBox',
+                spinner: '.spinner',
+                imgSrc: '/images/avatar.png'
+            }
+        var cropper = new cropbox(options);
+        document.querySelector('#file').addEventListener('change', function(){
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                options.imgSrc = e.target.result;
+                cropper = new cropbox(options);
+            }
+            reader.readAsDataURL(this.files[0]);
+            this.files = [];
+        })
+        document.querySelector('#btnCrop').addEventListener('click', function(){
+            var img = cropper.getDataURL();
+            document.querySelector('.cropped').innerHTML += '<img id="myAvatar" src="'+img+'">';
+        })
+        document.querySelector('#btnZoomIn').addEventListener('click', function(){
+            cropper.zoomIn();
+        })
+        document.querySelector('#btnZoomOut').addEventListener('click', function(){
+            cropper.zoomOut();
+        })
+    };
+</script>
+
 </html>

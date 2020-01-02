@@ -5,10 +5,7 @@ import edu.dlnu.oa.dept.service.DeptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -44,6 +41,11 @@ public class DeptController {
     @RequestMapping(value = "/dept" ,method = PUT)
     public int updateDept(@RequestBody Dept dept){
         return deptService.updateDept(dept);
+    }
+
+    @GetMapping("/deptsIdAndName")
+    public List<Map<String, Object>> getDeptsIdAndName(){
+        return deptService.getDeptIdAndName();
     }
 
 }
