@@ -1,8 +1,6 @@
 package edu.dlnu.oa.carCenter.service;
 
 import edu.dlnu.oa.carCenter.pojo.CarCenter;
-import edu.dlnu.oa.carCenter.pojo.CarRent;
-import edu.dlnu.oa.job.pojo.Job;
 import org.springframework.context.annotation.Primary;
 
 import java.util.List;

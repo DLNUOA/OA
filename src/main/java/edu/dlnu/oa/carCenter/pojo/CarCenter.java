@@ -1,6 +1,5 @@
 package edu.dlnu.oa.carCenter.pojo;
 
-import java.io.Serializable;
 
 public class CarCenter {
     private Integer carId;
