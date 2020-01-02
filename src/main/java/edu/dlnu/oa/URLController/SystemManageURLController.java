@@ -18,4 +18,8 @@ public class SystemManageURLController {
     public String empManage(){
         return "systemManage/EmpManage";
     }
+    @RequestMapping("/job")
+    public String job(){
+        return "systemManage/JobManage";
+    }
 }

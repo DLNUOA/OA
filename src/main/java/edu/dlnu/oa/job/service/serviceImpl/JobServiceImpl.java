@@ -20,4 +20,24 @@ public class JobServiceImpl implements JobService {
     public List<Map<String, Object>> getJobInfo() {
         return jobMapper.getJobInfo();
     }
+
+    @Override
+    public List<Map<String, Object>> getJobs() {
+        return jobMapper.getJobs();
+    }
+
+    @Override
+    public int postJob(Map<String, Object> job) {
+        return jobMapper.postJob(job);
+    }
+
+    @Override
+    public int deleteJobById(int id) {
+        return jobMapper.deleteJobById(id);
+    }
+
+    @Override
+    public int putJob(Map<String, Object> job) {
+        return jobMapper.putJob(job);
+    }
 }
