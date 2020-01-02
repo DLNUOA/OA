@@ -2,6 +2,7 @@ package edu.dlnu.oa.personCenter.service;
 
 import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PersonCenterService {
@@ -14,4 +15,10 @@ public interface PersonCenterService {
     String getPersonPwdById(int empId);
 
     int setNewPwd(int empId, String newPwd);
+
+    int upMyAvatar(int empId, String avatar);
+
+    String getMyAvatar(int empId);
+
+    List<Map<String, Object>> getAB();
 }

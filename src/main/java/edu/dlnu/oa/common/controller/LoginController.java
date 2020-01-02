@@ -66,4 +66,19 @@ public class LoginController {
         }
         response.sendRedirect("/");
     }
+    @PostMapping("/userSignUp")
+    public int loginOut(@RequestBody Map<String,String> signUpInfo,HttpServletRequest request){
+        String loginName = signUpInfo.get("loginName");
+        String password = signUpInfo.get("password");
+        String code = signUpInfo.get("code");
+        String verifyCode = request.getSession().getAttribute("verifyCode").toString();
+        if (code.equals(verifyCode)){
+            return loginValidService.userSignUp(loginName,password);
+
+        }else {
+            return -1;
+        }
+    }
+
+
 }

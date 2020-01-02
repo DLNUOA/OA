@@ -21,4 +21,9 @@ public class LoginValidImpl implements LoginValidService {
     public List<Emp> loginValid(Map<String, String> loginInfo) {
         return loginValidMapper.loginValid(loginInfo);
     }
+
+    @Override
+    public int userSignUp(String loginName, String password) {
+        return loginValidMapper.signUp(loginName,password);
+    }
 }
