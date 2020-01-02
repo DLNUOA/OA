@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+
+</head>
+<body>
+
+
+<div class="container">
+    <div class="col-md-9">
+        <h3 class="page-header">
+            申请记录中心
+        </h3>
+        <div class="text-center">
+            <div class="col-xs-12 col-md-4">
+                <div>
+                    <img src="/cloud_oa/image/at1.png" class="img-rounded">
+                </div>
+                <p>
+                    <a class="btn btn-default btn-lg" style="margin-top:15px" href="./个人中心-请假申请.html" role="button" data-original-title="" title="">请假申请 »</a>
+                </p>
+            </div>
+
+            <div class="col-xs-12 col-md-4">
+                <img src="/cloud_oa/image/at2.png" class="img-rounded">
+                <p>
+                    <a class="btn btn-default btn-lg" style="margin-top:15px" href="./个人中心-报销申请.html" role="button" data-original-title="" title="">报销申请 »</a>
+                </p>
+            </div>
+
+            <div class="col-xs-12 col-md-4">
+                <img src="/cloud_oa/image/at3.png" class="img-rounded">
+                <p>
+                    <a class="btn btn-default btn-lg" style="margin-top:15px" href="./个人中心-用车申请.html" role="button" data-original-title="" title="">用车申请 »</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!--下面引用js文件，有点多，以后优化-->
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script>
+    // 设置提示框的属性
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+</html>

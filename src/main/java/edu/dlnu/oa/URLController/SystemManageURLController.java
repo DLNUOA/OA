@@ -22,4 +22,8 @@ public class SystemManageURLController {
     public String job(){
         return "systemManage/JobManage";
     }
+    @RequestMapping("/rm")
+    public String rm(){
+        return "systemManage/ReplyManage";
+    }
 }
