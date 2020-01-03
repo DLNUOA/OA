@@ -1,5 +1,8 @@
 package edu.dlnu.oa.peopleSend.pojo;
 
+/**
+ * 外派人员列表
+ */
 public class ComSendPeople {
     private Integer spId;
     private String spName;

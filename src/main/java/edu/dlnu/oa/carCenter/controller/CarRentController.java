@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,15 +62,27 @@ public class CarRentController {
     //提交用车申请
     @RequestMapping(value = "/emp/carApply", method = POST)
     public int add(@RequestBody Map<String, Object> apply, HttpServletRequest request) {
-        String applyId = (String) request.getSession().getAttribute("empId");
+        Integer applyId = (Integer) request.getSession().getAttribute("empId");
         Map<String, Object> map = service.queryJobList("行政主管");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+       ;// new Date()为获取当前系统时间
         Map<String, Object> list = new HashMap<>();
         list.put("carRentLine", apply.get("carRentLine"));
         list.put("carRentInfo", apply.get("carRentInfo"));
-        list.put("carApplyTime", apply.get("carApplyTime"));
+        list.put("carApplyTime",  df.format(new Date()));
         list.put("carRentStime", apply.get("carRentStime"));
         list.put("carRentOtime", apply.get("carRentOtime"));
         list.put("empApplyId", applyId);
         list.put("empCheckmanId", map.get("emp_id"));
-        return service.addApply(list); }
+        return service.addApply(list);
+    }
+
+    //查询自己所有的车辆申请
+    @RequestMapping(value = "/emp/querySelf", method = GET)
+    public List<Map<String,Object>> querySelf(HttpServletRequest request) {
+        Integer applyId = (Integer) request.getSession().getAttribute("empId");
+        List<Map<String,Object>> list = service.querySelf(applyId);
+        return list;
+    }
+
 }
