@@ -74,4 +74,9 @@ public interface PersonCenterMapper {
     @Delete("delete from  leave_request where id = #{id}")
     int deleteLeaveRequestById(int id);
 
+    @Select("SELECT *  FROM leave_request  \n" +
+            "\tINNER JOIN emp  ON emp.`emp_id`= leave_request.`leave_staff_id` \n" +
+            "\tWHERE leave_request.`dept_manager_id`=#{id}")
+    List<Map<String, Object>> getDeptManagerLeaveRequest(int id);
+
 }

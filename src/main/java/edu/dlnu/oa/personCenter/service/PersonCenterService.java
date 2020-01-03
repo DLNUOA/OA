@@ -31,4 +31,6 @@ public interface PersonCenterService {
     String getEmpNameById(int id);
 
     int deleteLeaveRequestById(int id);
+
+    List<Map<String, Object>> getDeptManagerLeaveRequest(int id);
 }
