@@ -21,7 +21,6 @@ public class TestConsumeMapper {
     @Test
     public  void testInsert()
     {
-        //Consume consume=new Consume(1,"shi",'个',1, "zhang",2, Date.valueOf("2019-12-13"),"infoyayay");
 
         Consume consume=new Consume(1,"dianshi","dian",2,"zhang",2,Date.valueOf("2019-12-13"),"info");
         mapper.insert(consume);

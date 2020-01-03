@@ -25,6 +25,10 @@ public interface AssetMapper {
     @Select("select * from asset where asset_id=#{assetId}")
     Asset queryById(Integer assetId);
 
+    @Select("select * from asset where asset_name=#{assetName}")
+    List<Asset> queryByName(String assetName);
+
+
     @Select("select * from asset")
     List<Asset> query();
 

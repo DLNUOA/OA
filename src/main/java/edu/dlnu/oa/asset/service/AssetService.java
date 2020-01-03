@@ -9,6 +9,7 @@ public interface AssetService {
      int updateAsset(Asset asset);
      int deleteAsset(Integer assetId);
      Asset queryAssetById(Integer assetId);
+     List<Asset> queryAssetByName(String assetName);
      List<Asset> queryAsset();
 
 

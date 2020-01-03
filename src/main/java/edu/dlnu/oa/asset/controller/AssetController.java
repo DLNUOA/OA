@@ -53,4 +53,10 @@ public class AssetController {
         return  service.queryAssetById(assetId);
     }
 
+
+    @RequestMapping(value = "/asset/queryByName/{assetName}", method=POST)
+    public  List<Asset> queryByName(@PathVariable String assetName) {
+        return  service.queryAssetByName(assetName);
+    }
+
 }

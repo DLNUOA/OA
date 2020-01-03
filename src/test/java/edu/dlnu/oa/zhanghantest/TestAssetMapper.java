@@ -30,12 +30,23 @@ public class TestAssetMapper {
     {
         mapper.delete(8);
     }
+
     @Test
     public  void testQueryById()
     {
         Asset asset=mapper.queryById(2);
         System.out.println(asset);
     }
+
+    @Test
+    public  void testQueryByName()
+    {
+        List<Asset> list=mapper.queryByName("平板");
+        for (Asset asset:list){
+            System.out.println(asset);
+        }
+    }
+
     @Test
     public  void testQuery()
     {

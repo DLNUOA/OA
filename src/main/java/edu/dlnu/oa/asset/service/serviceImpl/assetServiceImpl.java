@@ -29,11 +29,19 @@ public class assetServiceImpl implements AssetService {
     {
         return mapper.delete(assetId);
     }
+
     @Override
     public  Asset queryAssetById(Integer assetId)
     {
         return mapper.queryById(assetId);
     }
+
+    @Override
+    public  List<Asset> queryAssetByName(String  assetName)
+    {
+        return mapper.queryByName(assetName);
+    }
+
 
     @Override
     public List<Asset> queryAsset()

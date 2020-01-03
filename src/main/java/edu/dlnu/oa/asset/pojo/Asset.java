@@ -16,6 +16,11 @@ public class Asset {
         this.assetId = assetId;
     }
 
+
+    public Asset(String assetName) {
+        this.assetName = assetName;
+    }
+
     public Asset(String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
         this.assetName = assetName;
         this.assetClasses = assetClasses;
