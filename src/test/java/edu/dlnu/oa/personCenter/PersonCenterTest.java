@@ -2,6 +2,7 @@ package edu.dlnu.oa.personCenter;
 
 import edu.dlnu.oa.personCenter.mapper.PersonCenterMapper;
 import edu.dlnu.oa.personCenter.service.PersonCenterService;
+import edu.dlnu.oa.utils.MailUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,10 +23,12 @@ public class PersonCenterTest {
     private PersonCenterService personCenterService;
     @Test
     public void getInfo(){
-        List<Map<String, Object>> empInfo = personCenterService.getPersonInfoById(1);
-        System.out.println(empInfo.size());
-        for (Map<String, Object> stringObjectMap : empInfo) {
-            System.out.println(stringObjectMap);
-        }
+        Map<String, Object> empInfo = personCenterService.getPersonInfoById(7);
+        System.out.println(empInfo);
+
+    }
+    @Test
+    public void sendMail(){
+        MailUtils.sendMail("1530182931@qq.com","hello_test","Test");
     }
 }

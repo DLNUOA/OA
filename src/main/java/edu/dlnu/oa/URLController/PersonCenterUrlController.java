@@ -14,4 +14,9 @@ public class PersonCenterUrlController {
     public String personCenterEmpInfoMaintain(){
         return "cloudOa/personCenterEmpInfoMaintain";
     }
+    @RequestMapping("/myInfo")
+    public String myInfo(){
+        return "personCenter/PersonCenter";
+    }
+
 }

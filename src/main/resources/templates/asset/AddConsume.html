@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加消耗</title>
+    <link rel="stylesheet" href="zhanghan_cloud_oa/js/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="zhanghan_cloud_oa/js/datetimepicker/jquery.datetimepicker.css"/>
+</head>
+<body>
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="#">OA系统</a></li>
+            <li><a href="#">资产管理</a></li>
+            <li>增加资产消耗</li>
+        </ol>
+        <h2 class="page-header">增加资产消耗</h2>
+
+        <form class="form-horizontal" id="form1">
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">资产编号</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请选择资产编号" id="consumeAssetId" class="form-control" readonly/>
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="btn btn-primary btn-xs" @click="select1()">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        选择资产
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">资产名称</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请选择资产名称" id="consumeAssetName" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">资产类别</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请选择资产类别" id="consumeAssetClasses" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">员工编号</label>
+
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请选择员工编号" id="consumeEmpId" class="form-control" readonly/>
+                </div>
+                <div class="col-lg-2">
+                    <button type="button" class="btn btn-primary btn-xs" @click="select2()">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        选择员工
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">员工姓名</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请选择员工姓名" id="consumeEmpName" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">消耗数量</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请输入消耗数量" id="consumeNumber" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">消耗日期</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="请选择消耗日期" id="consumeDate" class="form-control" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="" class="col-sm-2 control-label">详述</label>
+                <div class="col-sm-6">
+                    <textarea id="consumeInfo" name="consumeInfo" placeholder="请输入消耗详述" class="form-control"></textarea>
+                </div>
+            </div>
+<!--            <div class="form-group">-->
+<!--                <div class="col-sm-offset-2 col-sm-8">-->
+<!--                    <input id="addBtn" type="button" value="增加新纪录" class="btn btn-primary" />-->
+<!--&lt;!&ndash;                    <input type="button" value="返回" class="btn btn-warning" onclick="history.back();" />&ndash;&gt;-->
+<!--                    <input type="button" value="返回" class="btn btn-warning" onclick="history.back();" />-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="form-group">
+
+<!--                <div class="col-lg-2">-->
+<!--                    <button type="button" class="btn btn-primary btn-xs" @click="select1()">-->
+<!--                        <span class="glyphicon glyphicon-pencil"></span>-->
+<!--                        选择资产-->
+<!--                    </button>-->
+<!--                </div>-->
+
+                <div class="col-sm-offset-2 col-sm-8">
+                    <input id="addBtn" type="button" value="增加" @click="addConsume()" class="btn btn-primary" />
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/jquery-3.4.1.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/global.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/layer/layer.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/datetimepicker/jquery.datetimepicker.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/vue.js" ></script>
+
+
+
+
+    <!--下面引用js文件，有点多，以后优化-->
+    <script src="/Vue/js/jquery.js"></script>
+    <script src="Vue/js/vue.js"></script>
+    <script src="/js/toastr.min.js"></script>
+
+    <script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/Vue/js/axios.js"></script>
+    <script src="/Vue/js/lodash.min.js"></script>
+
+    <script>
+        // $('#consumeDate').datetimepicker({
+        //     lang:'ch',
+        //     format:'Y-m-d',
+        //     formatDate:'Y-m-d',
+        //     timepicker:false
+        // });
+
+        var vue = new Vue({
+            el:'.container',
+            data:{
+                asset:null,
+                assetid:1
+
+            },
+            methods:{
+                select1:function() {
+                    layer.open({
+                        title:'选择资产',
+                        type: 2,
+                        area: ['620px', '600px'], //宽高
+                        content: 'Select1'
+                    });
+                },
+                select2:function() {
+                    layer.open({
+                        title:'选择员工',
+                        type: 2,
+                        area: ['620px', '600px'], //宽高
+                        content: 'Select2'
+                    });
+                },
+
+                // addConsume:function () {
+                //         axios
+                //             .post('/api/consume/add',{
+                //                 consumeAssetId:this.bmm,
+                //                 consumeAssetName:this.bml,
+                //                 consumeAssetClasses:this.bmg,
+                //                 consumeEmpId:this.bmd,
+                //                 consumeEmpName:this.bmk,
+                //                 consumeNumber:this.bmd,
+                //                 consumeDate:this.bmd,
+                //                 consumeInfo:this.bmk
+                //
+                //             })
+                //             .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                //             .catch(function(error) {
+                //                 console.log(error);
+                //             });
+                //         setTimeout(function () {
+                //             window.location.href = "/AddConsume";
+                //             // window.location.href = "/fy";
+                //         },1000);
+                //     }
+
+                    // axios
+                    //     .post('/api/consume/add')
+                    //     .then(response => (this.assetList = response.data))
+                    //     .catch(function (error) { // 请求失败处理
+                    //         console.log(error);
+                    //     });
+
+
+
+                },
+
+
+            mounted: function () {
+                assetid=localStorage.getItem("assetid");    //获取存储的信息
+                axios
+                    .post('/api/asset/queryById/'+assetid)
+                    .then(function (response) {
+                        this.asset = response.data;
+                        document.getElementById("consumeAssetId").value=asset.assetId;
+                        document.getElementById("consumeAssetName").value=asset.assetName;
+                        document.getElementById("consumeAssetClasses").value=asset.assetClasses;
+
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+
+
+
+
+
+
+            // mounted: function () {
+            //     assetid=localStorage.getItem("assetid");    //获取存储的信息
+            //     axios
+            //         .post('/api/asset/queryById/'+assetid)
+            //         .then(function (response) {
+            //             this.asset = response.data;
+            //             document.getElementById("consumeAssetId").value=asset.assetId;
+            //             document.getElementById("consumeAssetName").value=asset.assetName;
+            //             document.getElementById("consumeAssetClasses").value=asset.assetClasses;
+            //
+            //         })
+            //         .catch(function (error) { // 请求失败处理
+            //             console.log(error);
+            //         });
+            // }
+
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -24,15 +24,8 @@ public class URLController {
         return "newIndex";
     }
 
-    @RequestMapping("/AddDept")
-    public String AddDept(){
-        return "dept/AddDept";
-    }
 
-    @RequestMapping("/newAddDept")
-    public String newAddDept(){
-        return "dept/newAddDept";
-    }
+
     @RequestMapping("/welcome")
     public String welcome(){
         return "welcome";
@@ -47,7 +40,31 @@ public class URLController {
 //zhanghan
     @RequestMapping("/AddAsset")
     public String AddAsset(){
-        return "asset/AddAsset";
+            return "asset/AddAsset23";
+    }
+    @RequestMapping("/AddConsume")
+    public String AddConsume(){
+        return "asset/AddConsume";
+    }
+//    @RequestMapping("/AddAsset")
+//    public String AddAsset(){
+//        return "asset/AddAsset22";
+//    }
+
+
+    @RequestMapping("/fy")
+    public String fy(){
+        return "fy";
+    }
+
+    @RequestMapping("/Select1")
+    public String Select1(){
+        return "asset/Select1";
+    }
+
+    @RequestMapping("/Select2")
+    public String Select2(){
+        return "asset/Select2";
     }
 
 
