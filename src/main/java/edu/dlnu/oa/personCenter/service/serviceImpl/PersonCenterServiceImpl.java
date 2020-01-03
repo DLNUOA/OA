@@ -84,4 +84,9 @@ public class PersonCenterServiceImpl implements PersonCenterService {
     public int deleteLeaveRequestById(int id) {
         return personCenterMapper.deleteLeaveRequestById(id);
     }
+
+    @Override
+    public List<Map<String, Object>> getDeptManagerLeaveRequest(int id) {
+        return personCenterMapper.getDeptManagerLeaveRequest(id);
+    }
 }
