@@ -36,7 +36,7 @@ class assetTest {
     }
     @Test
     void updateAsset(){
-        Asset asset = new Asset(9,"花盆","家具类","个",10.6,50);
+        Asset asset = new Asset(8,"花盆","家具类","个",10.6,50);
         int i = assetService.updateAsset(asset);
         System.out.print(i);
 

@@ -14,17 +14,6 @@ var assetList = new Vue({
             //使用let定义局部变量
             let assetId = this.assets[index].assetId;
 
-            // jqAlert.Confirm('确定删除吗？',function () {
-            // 	alert(djile);
-            // 	axios
-            // 			.delete('/api/asset/'+assetId)
-            // 			.then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
-            // 			.catch(function(error){
-            // 				console.log(error);
-            // 			});
-            // 	assetList.assets.splice(index,1);
-            // });
-
             if(confirm('确定删除该资产吗？资产id为'+assetId)){
                 axios
                     .delete('/api/asset/'+assetId)
@@ -46,13 +35,13 @@ var assetList = new Vue({
         },
         LaunchUpdateAsset:function(index){
             this.asset=(this.assets[index]);
-            updateAssetModal.assetId = this.asset.assetId;
-            updateAssetModal.assetName = this.asset.assetName;
-            updateAssetModal.assetClasses = this.asset.assetLoc;
-            updateAssetModal.assetSpecification = this.asset.assetIntro;
-            updateAssetModal.assetUnitPrice = this.asset.assetUnitPrice;
-            updateAssetModal.assetInventory = this.asset.assetInventory;
-            updateAssetModal.index = index;
+            updateAAssetModal.assetId = this.asset.assetId;
+            updateAAssetModal.assetName = this.asset.assetName;
+            updateAAssetModal.assetClasses = this.asset.assetClasses;
+            updateAAssetModal.assetSpecification = this.asset.assetSpecification;
+            updateAAssetModal.assetUnitPrice = this.asset.assetUnitPrice;
+            updateAAssetModal.assetInventory = this.asset.assetInventory;
+            updateAAssetModal.index = index;
         }
     },
     mounted () {
@@ -66,7 +55,7 @@ var assetList = new Vue({
     }
 });
 
-var updateAssetModal = new Vue({
+var updateAAssetModal = new Vue({
     el:'#updateAssetModal',
     data:{
         assetId:null,
@@ -83,7 +72,7 @@ var updateAssetModal = new Vue({
     // 	this.empRoleId = response.data.empRoleId;
     // })
     methods:{
-        updateAsset:function(){
+        UpdateAAsset:function(){
             axios
                 .put('/api/asset',{
                     assetId:this.assetId,
@@ -96,7 +85,6 @@ var updateAssetModal = new Vue({
                 .then(function (response) {
                     if (response.data==1){
                         toastr.success('修改库存成功');
-
                         assetList.asset[this.index].assetName=this.assetName;
                         assetList.asset[this.index].assetClasses=this.assetClasses;
                         assetList.asset[this.index].assetSpecification=this.assetSpecification;
@@ -132,7 +120,7 @@ var addAsset = new Vue({
         bmb:''
     },
     methods:{
-        addAsset:function (){
+        addAAsset:function (){
             axios
                 .post('/api/asset',{
                     assetId:this.bmm,
@@ -147,7 +135,7 @@ var addAsset = new Vue({
                     console.log(error);
                 });
             setTimeout(function () {
-                window.location.href = "/systemManage/assetManage";
+                window.location.href = "/AssetManagement/QueryAsset";
             },1000);
 
         }

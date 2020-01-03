@@ -4,6 +4,7 @@ import edu.dlnu.oa.asset.pojo.Asset;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AssetMapper {
@@ -12,7 +13,8 @@ public interface AssetMapper {
 
     @Select("select * from asset")
     List<Asset> findAllAsset();
-    @Select("select * from asset where asset_id = #{id}")
+    @Select("SELECT asset_id ,asset_name FROM asset where asset_id>0")
+    List<Map<String,Object>> getAssetIdAndAssetName();
 
 
     @Delete("delete from asset where asset_id = #{id} ")

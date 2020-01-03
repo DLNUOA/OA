@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AssetServiceImpl implements AssetService {
@@ -27,4 +28,7 @@ public class AssetServiceImpl implements AssetService {
     public int deleteAssetById(int id){return assetMapper.deleteAssetById(id);}
 
     public int updateAsset(Asset asset){return assetMapper.updateAsset(asset);}
+    public List<Map<String,Object>> getAssetIdAndName(){
+        return assetMapper.getAssetIdAndAssetName();
+    }
 }

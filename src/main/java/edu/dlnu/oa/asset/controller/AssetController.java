@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -26,7 +27,7 @@ public class AssetController {
         return assetService.findAllAsset();
     }
 
-    @RequestMapping(value = "/asset",method = DELETE)
+    @RequestMapping(value = "/asset/{id}",method = DELETE)
     public int deleteAssetById(@PathVariable int id){return assetService.deleteAssetById(id);}
 
     @RequestMapping(value = "/asset", method = POST)
@@ -37,6 +38,11 @@ public class AssetController {
     @RequestMapping(value = "/asset" ,method = PUT)
     public int updateAsset(@RequestBody Asset asset){
         return assetService.updateAsset(asset);
+    }
+
+    @GetMapping("/assetIdAndName")
+    public List<Map<String, Object>> getAssetIdAndName(){
+        return assetService.getAssetIdAndName();
     }
 
 
