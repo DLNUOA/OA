@@ -55,5 +55,11 @@ public class URLController {
         return "navsidebar";
     }
 
+    @RequestMapping("/index/pageNotFound")
+    public String notfound(){
+        return "404";
+    }
+
+
 
 }

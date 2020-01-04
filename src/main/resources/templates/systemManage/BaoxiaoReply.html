@@ -11,8 +11,101 @@
         }
         /*这个样式，是让表格在中心*/
     </style>
+    <style>
+        #avatar{
+            width: 30px;
+            height: 30px;
+            display: inline;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: #333333;
+        }
+    </style>
 </head>
 <body>
+<nav class="navbar navbar-default navbar-inverse ">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand "  href="/welcome">OA</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/welcome">主页 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">车辆管理</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li> <a href="/systemManage/deptManage">部门管理</a></li>
+                        <li> <a href="/systemManage/empManage">员工管理</a></li>
+                        <li> <a href="/systemManage/JobManage.html">职位管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">权限管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/systemManage/reply">批复管理</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown"  href="#">动态<span style="color: red" id="me"></span><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a onclick="openPageAndClearCount()" href="/systemManage/reply/rm">请假批复<span id="mememe"></span></a>
+                        </li>
+                        <li>
+                            <a href="#">报销批复</a>
+                        </li>
+                        <li>
+                            <a href="#">用车批复</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="/personCenter/myInfo">个人中心</a></li>
+            </ul>
+
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a id="sessionInfo"    class="dropdown-toggle" data-toggle="dropdown" ondblclick="window.location.href='/login'">
+                        <img id="avatar"  v-bind:src="avatar==false? ` /images/upAvatar.jpg ` : avatar " alt="avatar" class="img-responsive img-circle">
+                        {{(empName==null)?"双击登录":empName}}  <b class="caret"></b>
+
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a id="action-1" href="#">功能</a>
+                        </li>
+                        <li>
+                            <a href="#">功能</a>
+                        </li>
+                        <li>
+                            <a href="/personCenter/addressBook">通讯录</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">切换用户</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/loginOut">退出</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
 <!--欢迎使用Vue表格分页插件，这是个示例模板-->
 <!--首先需要几个模态框，使用模态框可以不跳转页面实现更好的用户体验，模态框最好直接写在body标签下面，模态框开始-->
 <!--增加部门模态框-->
@@ -362,6 +455,111 @@
     //         }
     //     }
     // });
+</script>
+
+<script>
+
+    /**
+     * 当用户点击消息是，我默认判断用户已阅，清零用户的计数器。
+     * @param page
+     */
+    function openPageAndClearCount(page) {
+        $.ajax({
+            type: "POST",
+            url: "/getCount/clearCount",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            data:JSON.stringify({
+                // hello:"hello"
+                // post_id:
+                // content: $("#reply").code(),
+            }),success:function(result){
+                if(result == true){
+                    console.log("cleared");
+                }else{
+                    console.log("cleared fail")
+                }
+                // $('#reply').summernote('code','');
+                // setTimeout( function(){
+                //     history.go(0);
+                // }, 1* 1000 );
+            }
+        });
+    }
+
+    //通过SSE实时监听后端传来的信息并更新前端页面
+    if ('EventSource' in window){
+        let urlll = "/getCount/push";
+        let source = new EventSource(urlll);
+        source.onmessage = (event) =>{
+            let data = event.data;
+            console.log(data);
+        };
+        source.addEventListener('like',function (event) {
+            let data = event.data;
+            console.log(data);
+            let me=document.getElementById('mememe');
+            if (data!=0){
+                me.innerText= data;
+                document.getElementById('me').innerText=data;
+            }
+        })
+    }
+
+
+</script>
+
+<script>
+    var nav = new Vue({
+        el:'#sessionInfo',
+        data () {
+            return {
+                empId:null,
+                empName:'未登录',
+                empRoleId:null,
+                avatar:''
+            }
+
+        },
+        methods: {
+            getSessionInfo:function () {
+                axios
+                    .get('/sessionInfo',{
+                        headers:{
+                            'Authorization': window.localStorage.token
+                        }
+                    })
+                    .then(function (response) {
+                        this.empId =  response.data.empId;
+                        this.empName = response.data.empName;
+                        this.empRoleId = response.data.empRoleId;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        },
+        mounted () {
+            //当Vue实例挂载完成时，自动调用后端接口获取所有dept数据并且将数据渲染到html
+            axios
+                .get('/sessionInfo',{
+                    headers:{
+                        'Authorization': window.localStorage.token
+                    }
+                })
+                .then(response => (this.empName = response.data.empName))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+
+            axios
+                .get('/api/personCenter/myAvatar')
+                .then(response => (this.avatar = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        }
+    });
 </script>
 </body>
 </html>

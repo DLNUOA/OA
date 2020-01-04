@@ -4,6 +4,9 @@ import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 import edu.dlnu.oa.personCenter.service.PersonCenterService;
 import edu.dlnu.oa.utils.MailUtils;
 import edu.dlnu.oa.utils.RedisUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,6 +140,90 @@ public class PersonCenterController {
     public List<Map<String,Object>> getAB(HttpServletRequest request, HttpServletResponse response){
         return personCenterService.getAB();
     }
+
+    /**
+     *导出通讯录到excel
+     * @author Wuhan
+     * @date 2019/10/27
+     * @param response 功能是将excel格数据以二进制流输出
+     * @param request 得到session，获取教师id，这个导出成绩表的功能是只返回教师所教的学生的信息
+     * @throws IOException
+     */
+    @GetMapping("/getABExcel")
+    @ResponseBody
+    public void export(HttpServletResponse response,HttpServletRequest request) throws IOException {
+
+        List<Map<String, Object>> ab = personCenterService.getAB();
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("公司通讯录");
+        HSSFCellStyle yellowStyle = wb.createCellStyle();
+        yellowStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        yellowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        HSSFCellStyle redStyle = wb.createCellStyle();
+        redStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+        redStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        HSSFRow row = null;
+        row = sheet.createRow(0);//创建第一个单元格
+        row.setHeight((short)(20*20));
+        row.createCell(0).setCellValue("姓名 ");
+        row.createCell(1).setCellValue("登陆名");
+        row.createCell(2).setCellValue("性别");
+        row.createCell(3).setCellValue("赞数");
+        row.createCell(4).setCellValue("无语数");
+        row.createCell(5).setCellValue("入职日期");
+        row.createCell(6).setCellValue("职位");
+        row.createCell(7).setCellValue("部门");
+        row.createCell(8).setCellValue("电话");
+        row.createCell(9).setCellValue("电子邮箱");
+
+
+
+        //表格第一行设置完成，接下来就是取数据了
+        for(int v=0;v<ab.size();v++) {
+            row = sheet.createRow(v + 1);
+            Map<String,Object> map = ab.get(v);
+            HSSFCell cell = row.createCell(0);
+            String s = (String) map.get("NAME");
+            cell.setCellValue(s);
+            HSSFCell cell1 = row.createCell(1);
+            HSSFCell cell2 = row.createCell(2);
+            HSSFCell cell3 = row.createCell(3);
+            HSSFCell cell4 = row.createCell(4);
+            HSSFCell cell5 = row.createCell(5);
+            HSSFCell cell6 = row.createCell(6);
+            HSSFCell cell7 = row.createCell(7);
+            HSSFCell cell8 = row.createCell(8);
+            HSSFCell cell9 = row.createCell(9);
+            cell1.setCellValue( map.get("login_name").toString());
+            cell2.setCellValue( map.get("gender").toString());
+            cell3.setCellValue( map.get("like_count").toString());
+            cell4.setCellValue( map.get("dislike_count").toString());
+            cell5.setCellValue(map.get("hiredate").toString());
+            cell6.setCellValue(map.get("job_name").toString());
+            cell7.setCellValue(map.get("dept_name").toString());
+            cell8.setCellValue(map.get("tel").toString());
+            cell9.setCellValue(map.get("email").toString());
+
+
+
+            sheet.setDefaultRowHeight((short) (16.5 * 20));
+        }
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        OutputStream os = response.getOutputStream();
+        response.setHeader("Content-disposition", "attachment;filename=AddressBook.xls");//默认Excel名称
+        wb.write(os);
+        os.flush();
+        os.close();
+    }
+
+
+
+
+
+
+
+
 
     @PostMapping("/leaveRequest")
     public int LaunchALeaveRequest(HttpServletRequest request,@RequestBody Map<String,Object> leaveRequestInfo ){
