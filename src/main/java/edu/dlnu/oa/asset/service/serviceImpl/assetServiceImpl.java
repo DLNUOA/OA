@@ -24,6 +24,10 @@ public class assetServiceImpl implements AssetService {
         return mapper.update(asset);
     }
 
+
+    @Override
+    public  int setInventory(Integer assetId,Integer newInventory){return mapper.setNewInventory(assetId,newInventory);}
+
     @Override
     public  int deleteAsset(Integer assetId)
     {

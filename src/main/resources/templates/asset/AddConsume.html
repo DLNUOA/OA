@@ -203,6 +203,18 @@
                 },
 
                 addConsume:function () {
+
+                    var number=parseInt($('#consumeNumber').val());
+                    var oldinventory=parseInt(localStorage.getItem("assetinventory"));
+                    if(number>oldinventory)
+                    {
+                        layer.msg('库存不足，请少些消耗，或联系管理员')
+                        //alert("库存不足，请少些消耗，或联系管理员")
+                        return;
+                    }
+
+                    var newinventory= oldinventory-number;
+                    var assetid2=parseInt(assetid);
                     if ( !checkForm() )
                         return;
                         axios
@@ -221,6 +233,16 @@
                             .catch(function(error) {
                                 console.log(error);
                             });
+
+                    axios
+                        .post('/api/asset/updateInventory',{
+                            assetId: assetid2,
+                            assetInventory:newinventory
+                        })
+                        .then(response => response.data==1?(layer.msg('修改库存成功')):layer.msg('修改库存失败'))
+                        .catch(function(error) {
+                            console.log(error);
+                        });
 
                     }
                 },

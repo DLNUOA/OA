@@ -68,5 +68,22 @@ public class URLController {
     }
 
 
+    @RequestMapping("/Main")
+    public String Main(){
+        return "asset/Main";
+    }
+
+
+    @RequestMapping("/index2")
+    public String index2(){
+        return "asset/index";
+    }
+
+    @RequestMapping("/nav")
+    public String nav(){
+        return "asset/nav";
+    }
+
+
 
 }

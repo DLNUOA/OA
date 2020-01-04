@@ -43,6 +43,12 @@ public class AssetController {
         return service.updateAsset(asset);
     }
 
+    @RequestMapping(value = "/asset/updateInventory", method=POST)
+    public  int updateInventory(@RequestBody Map<String,Object> info) {
+        int assetId = (int) info.get("assetId");
+        int newInventory =(int) info.get("assetInventory");
+        return service.setInventory(assetId,newInventory);
+    }
 
     @RequestMapping(value = "/asset/delete/{assetId}", method= POST)
     public  int delete(@PathVariable Integer assetId) {
@@ -55,16 +61,10 @@ public class AssetController {
     }
 
 
-//    @RequestMapping(value = "/asset/queryByName/{assetName}", method=POST)
-//    public  List<Asset> queryByName(@PathVariable String assetName) {
-//        return  service.queryAssetByName(assetName);
-//    }
-
     @RequestMapping(value = "/asset/queryByName", method=POST)
     public  List<Asset> queryByName(@RequestBody Map<String,Object> info) {
         List<Asset> list=service.queryAssetByName(info.get("assetName").toString());
         return list;
-//        return  service.queryAssetByName(assetName);
     }
 
 }

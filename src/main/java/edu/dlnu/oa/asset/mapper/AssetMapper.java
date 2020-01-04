@@ -19,6 +19,17 @@ public interface AssetMapper {
             "asset_inventory= #{assetInventory} WHERE asset_id = #{assetId}")
     int update(Asset asset);
 
+
+    @Update("update asset set asset_inventory = #{newInventory} where asset_id = #{assetId} ")
+    int setNewInventory(@Param("assetId") Integer empId, @Param("newInventory") Integer newInventory);
+
+//
+//    @Update("update emp set emp_pwd = #{newPwd} where emp_id = #{empId} ")
+//    int setNewPwd(@Param("empId") int empId, @Param("newPwd") String newPwd);
+
+//    @Update("update asset set asset_inventory= #{assetInventory} WHERE asset_id = #{assetId}")
+//    int updateInventory(Integer newInventory);
+
 //
     @Delete("delete from asset where asset_id = #{id} ")
     int delete(Integer assetId);

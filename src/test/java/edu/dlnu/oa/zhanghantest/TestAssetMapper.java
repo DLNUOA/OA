@@ -19,6 +19,15 @@ public class TestAssetMapper {
         Asset asset=new Asset(4,"hhhGpp","hhh","hhh",200,100);
         mapper.update(asset);
     }
+
+    @Test
+    public  void testUpdateInventory()
+    {
+
+        mapper.setNewInventory(2,10);
+    }
+
+
     @Test
     public  void testInsert()
     {
