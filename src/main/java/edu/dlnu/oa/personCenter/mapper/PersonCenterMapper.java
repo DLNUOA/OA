@@ -1,10 +1,7 @@
 package edu.dlnu.oa.personCenter.mapper;
 
 import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -56,5 +53,30 @@ public interface PersonCenterMapper {
             "\tINNER JOIN dept ON emp.`emp_dept_id`=dept.`dept_id`\n" +
             ")ed ON  job.`job_id`=ed.emp_job_id")
     List<Map<String,Object>> getAddressBook();
+
+
+
+    @Select("SELECT emp_id,emp_name,emp_email\n" +
+            "FROM emp WHERE emp_job_id=3  AND   emp_dept_id =   \n" +
+            "    (SELECT emp_dept_id FROM emp e WHERE emp_id=#{id}  )  ")
+    Map<String,Object> getDeptManagerInfoByApplyRequesterId(int id);
+
+    @Insert("INSERT INTO leave_request (id,dept_manager_id,begin_date,end_date,STATUS,request_date,leave_staff_id,reason)\n" +
+            "VALUES(DEFAULT,#{deptManagerId},#{beginDate},#{endDate},'待审批',NOW(),#{requestStaffId},#{reason})")
+    int launchALeaveRequest(Map<String, Object> info);
+
+    @Select("SELECT * FROM leave_request,emp WHERE leave_staff_id = #{requesterId} AND emp_id=dept_manager_id")
+    List<Map<String, Object>> getLeaveRequest(int requesterId);
+
+    @Select("select emp_name from emp where emp_id = #{id}")
+    String getEmpNameById(int id);
+
+    @Delete("delete from  leave_request where id = #{id}")
+    int deleteLeaveRequestById(int id);
+
+    @Select("SELECT *  FROM leave_request  \n" +
+            "\tINNER JOIN emp  ON emp.`emp_id`= leave_request.`leave_staff_id` \n" +
+            "\tWHERE leave_request.`dept_manager_id`=#{id}")
+    List<Map<String, Object>> getDeptManagerLeaveRequest(int id);
 
 }

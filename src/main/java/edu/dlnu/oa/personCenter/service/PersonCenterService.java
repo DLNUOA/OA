@@ -21,4 +21,16 @@ public interface PersonCenterService {
     String getMyAvatar(int empId);
 
     List<Map<String, Object>> getAB();
+
+    Map<String,Object> getDeptManagerInfoByApplyRequesterId(int requesterId);
+
+    int launchALeaveRequest(Map<String, Object> leaveRequestInfo);
+
+    List<Map<String, Object>> getLeaveRequest(int requesterId);
+
+    String getEmpNameById(int id);
+
+    int deleteLeaveRequestById(int id);
+
+    List<Map<String, Object>> getDeptManagerLeaveRequest(int id);
 }

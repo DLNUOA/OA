@@ -2,10 +2,14 @@ package edu.dlnu.oa.personCenter.controller;
 
 import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 import edu.dlnu.oa.personCenter.service.PersonCenterService;
+import edu.dlnu.oa.utils.MailUtils;
+import edu.dlnu.oa.utils.RedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +29,8 @@ public class PersonCenterController {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private PersonCenterService personCenterService;
+    @Autowired
+    private RedisUtils redisUtils;
     @RequestMapping(value = "/personInfo/{id}",method = GET)
     public Map<String,Object> getPersonInfo(@PathVariable int id){
         log.info("getPersonInfo被访问了");
@@ -130,6 +136,39 @@ public class PersonCenterController {
     @GetMapping("/getAB")
     public List<Map<String,Object>> getAB(HttpServletRequest request, HttpServletResponse response){
         return personCenterService.getAB();
+    }
+
+    @PostMapping("/leaveRequest")
+    public int LaunchALeaveRequest(HttpServletRequest request,@RequestBody Map<String,Object> leaveRequestInfo ){
+
+        int requesterId = (int) request.getSession().getAttribute("empId");
+        Map<String, Object> deptManagerInfo = personCenterService.getDeptManagerInfoByApplyRequesterId(requesterId);
+        String deptManagerEmail = deptManagerInfo.get("emp_email").toString();
+        leaveRequestInfo.put("deptManagerId",deptManagerInfo.get("emp_id"));
+        leaveRequestInfo.put("requestStaffId",requesterId);
+        String requesterName = request.getSession().getAttribute("empName").toString();
+        String content = "您的员工"+requesterName+"发起了新的请假申请，快去查看吧！";
+        MailUtils.sendMail(deptManagerEmail,content,"新的请假申请");
+
+        redisUtils.add((Integer) deptManagerInfo.get("emp_id"));
+
+        return personCenterService.launchALeaveRequest(leaveRequestInfo);
+    }
+
+    @GetMapping("/leaveRequest")
+    public List<Map<String,Object>> getLeaveRequest(HttpServletRequest request){
+        int requesterId = (int) request.getSession().getAttribute("empId");
+        return personCenterService.getLeaveRequest(requesterId);
+    }
+    @DeleteMapping("/leaveRequest/{id}")
+    public int deleteLeaveRequestById(@PathVariable("id") int id,HttpServletRequest request){
+        return personCenterService.deleteLeaveRequestById(id);
+    }
+
+    @GetMapping("/deptManagerLeaveRequest")
+    public List<Map<String,Object>> getDeptManagerLeaveRequest(HttpServletRequest request){
+        int id = (int) request.getSession().getAttribute("empId");
+        return personCenterService.getDeptManagerLeaveRequest(id);
     }
 
 

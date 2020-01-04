@@ -59,4 +59,34 @@ public class PersonCenterServiceImpl implements PersonCenterService {
     public List<Map<String, Object>> getAB() {
         return personCenterMapper.getAddressBook();
     }
+
+    @Override
+    public Map<String, Object> getDeptManagerInfoByApplyRequesterId(int requesterId) {
+        return personCenterMapper.getDeptManagerInfoByApplyRequesterId(requesterId);
+    }
+
+    @Override
+    public int launchALeaveRequest(Map<String, Object> leaveRequestInfo) {
+        return personCenterMapper.launchALeaveRequest(leaveRequestInfo);
+    }
+
+    @Override
+    public List<Map<String, Object>> getLeaveRequest(int requesterId) {
+        return personCenterMapper.getLeaveRequest(requesterId);
+    }
+
+    @Override
+    public String getEmpNameById(int id) {
+        return personCenterMapper.getEmpNameById(id);
+    }
+
+    @Override
+    public int deleteLeaveRequestById(int id) {
+        return personCenterMapper.deleteLeaveRequestById(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> getDeptManagerLeaveRequest(int id) {
+        return personCenterMapper.getDeptManagerLeaveRequest(id);
+    }
 }

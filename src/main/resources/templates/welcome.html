@@ -41,7 +41,7 @@
 
             <div class="masthead clearfix">
                 <div class="inner">
-                    <h3 class="masthead-brand"><a href="/welcome">DLNU - OA</a></h3>
+                    <h3 class="masthead-brand"><a href="/welcome">D-OA</a></h3>
                     <nav>
                         <ul class="nav masthead-nav ">
                             <li class="active"><a href="/welcome">主页</a></li>
@@ -55,7 +55,7 @@
                                         <a href="/systemManage/empManage">员工管理</a>
                                     </li>
                                     <li>
-                                        <a href="#">职位管理</a>
+                                        <a href="/systemManage/JobManage.html">职位管理</a>
                                     </li>
                                     <li>
                                         <a href="#">角色管理</a>
@@ -63,9 +63,40 @@
                                     <li>
                                         <a href="#">权限管理</a>
                                     </li>
+                                    <li>
+                                        <a href="/systemManage/reply">批复管理</a>
+                                    </li>
                                 </ul>
                             </li>
                             <li><a href="#">车辆管理</a></li>
+
+
+
+
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown"  href="#">动态<span style="color: red" id="me"></span><b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <a onclick="openPageAndClearCount()" href="/systemManage/reply/rm">请假批复<span id="mememe"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="#">报销批复</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">用车批复</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+
+
+
+
+
+
+
                             <li><a href="/personCenter/myInfo">个人中心</a></li>
                             <li class="dropdown">
                                 <a id="sessionInfo"    class="dropdown-toggle" data-toggle="dropdown" ondblclick="window.location.href='/login'">
@@ -136,6 +167,61 @@
 <script src="/Vue/js/bootstrap.js"></script>
 
 <script src="/js/welcome.js"></script>
+
+<script>
+
+    /**
+     * 当用户点击消息是，我默认判断用户已阅，清零用户的计数器。
+     * @param page
+     */
+    function openPageAndClearCount(page) {
+        $.ajax({
+            type: "POST",
+            url: "/getCount/clearCount",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            data:JSON.stringify({
+                // hello:"hello"
+                // post_id:
+                // content: $("#reply").code(),
+            }),success:function(result){
+                if(result == true){
+                    console.log("cleared");
+                }else{
+                    console.log("cleared fail")
+                }
+                // $('#reply').summernote('code','');
+                // setTimeout( function(){
+                //     history.go(0);
+                // }, 1* 1000 );
+            }
+        });
+    }
+
+    //通过SSE实时监听后端传来的信息并更新前端页面
+    if ('EventSource' in window){
+        let urlll = "/getCount/push";
+        let source = new EventSource(urlll);
+        source.onmessage = (event) =>{
+            let data = event.data;
+            console.log(data);
+        };
+        source.addEventListener('like',function (event) {
+            let data = event.data;
+            console.log(data);
+            let me=document.getElementById('mememe');
+            if (data!=0){
+                me.innerText= data;
+                document.getElementById('me').innerText=data;
+            }
+        })
+    }
+
+
+</script>
+
+
+
 <script>
     $(function() {
         $(".dropdown-toggle").dropdown('toggle');
