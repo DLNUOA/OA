@@ -21,15 +21,20 @@
             <td>选择</td>
             <td>员工编号</td>
             <td>员工姓名</td>
+            <td>员工部门</td>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(emp,index) in empList">
             <td>
-                <label><input  type="radio" name="radio1" value="1" @click="toSelect2(emp.empId)"  /></label>
+                <label><input  type="radio" name="radio1" value="1" @click="toSelect2(emp.emp_id)"  /></label>
             </td>
-            <td>{{emp.empId}}</td>
-            <td>{{emp.empName}}</td>
+            <td>{{emp.emp_id}}</td>
+            <td>{{emp.emp_name}}</td>
+            <td>{{emp.dept_name}}</td>
+
+
+
         </tr>
         </tbody>
     </table>
@@ -79,7 +84,7 @@
         methods: {
             toSelect2: function (empId) {
                 empid=empId;
-                // alert(assetid);
+                 alert(empid);
             },
 
             okButton: function () {

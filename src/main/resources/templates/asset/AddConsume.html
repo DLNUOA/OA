@@ -49,7 +49,7 @@
                 <div class="col-lg-2">
 <!--                    <button type="button" class="btn btn-primary btn-xs" @click="select2()">-->
 
-                         <button type="button" class="btn btn-primary btn-xs" @click="">
+                         <button type="button" class="btn btn-primary btn-xs" @click="select2()">
 
                     <span class="glyphicon glyphicon-pencil"></span>
                         选择员工
@@ -105,31 +105,75 @@
         </form>
     </div>
 
+
     <script type="text/javascript" src="zhanghan_cloud_oa/js/jquery-3.4.1.js" ></script>
     <script type="text/javascript" src="zhanghan_cloud_oa/js/global.js" ></script>
     <script type="text/javascript" src="zhanghan_cloud_oa/js/layer/layer.js" ></script>
     <script type="text/javascript" src="zhanghan_cloud_oa/js/datetimepicker/jquery.datetimepicker.js" ></script>
     <script type="text/javascript" src="zhanghan_cloud_oa/js/vue.js" ></script>
 
-
-
-
     <!--下面引用js文件，有点多，以后优化-->
-    <script src="/Vue/js/jquery.js"></script>
-    <script src="Vue/js/vue.js"></script>
     <script src="/js/toastr.min.js"></script>
-
     <script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
     <script src="/Vue/js/axios.js"></script>
     <script src="/Vue/js/lodash.min.js"></script>
 
     <script>
-        // $('#consumeDate').datetimepicker({
-        //     lang:'ch',
-        //     format:'Y-m-d',
-        //     formatDate:'Y-m-d',
-        //     timepicker:false
-        // });
+        function checkForm() {
+
+            var consumeAssetId = $('#consumeAssetId');
+            if (consumeAssetId.val() == '') {
+                layer.msg('资产ID不能为空');
+                consumeAssetId.focus();
+                return false;
+            }
+            var consumeAssetName = $('#consumeAssetName');
+
+            if (consumeAssetName.val() == '') {
+                layer.msg('资产名称不能为空');
+                consumeAssetName.select();
+                return false;
+            }
+            var consumeAssetClasses = $('#consumeAssetClasses');
+
+            if (consumeAssetClasses.val() == '') {
+                layer.msg('资产类别不能为空');
+                consumeAssetClasses.select();
+                return false;
+            }
+            var consumeEmpId = $('#consumeEmpId');
+
+            if (consumeEmpId.val() == '') {
+                layer.msg('员工编号不能为空');
+                consumeEmpId.select();
+                return false;
+            }
+
+            var consumeEmpName = $('#consumeEmpName');
+
+            if (consumeEmpName.val() == '') {
+                layer.msg('员工姓名不能为空');
+                consumeEmpName.select();
+                return false;
+            }
+            var consumeNumber = $('#consumeNumber');
+
+            if (consumeNumber.val() == '') {
+                layer.msg('消耗数量不能为空');
+                consumeNumber.select();
+                return false;
+            }
+            var consumeDate = $('#consumeDate');
+
+            if (consumeDate.val() == '') {
+                layer.msg('消耗日期不能为空');
+                consumeDate.select();
+                return false;
+            }
+            return true;
+        }
+
+
 
         var vue = new Vue({
             el:'.container',
@@ -159,26 +203,10 @@
                 },
 
                 addConsume:function () {
-                    //var params = {
-                        // consumeAssetId:$('#consumeAssetId').val(),
-                        // consumeAssetName:$('#consumeAssetName').val(),
-                        // consumeAssetClasses:$('#consumeAssetClasses').val(),
-                        // consumeEmpId:$('#consumeEmpId').val(),
-                        // consumeEmpName:$('#consumeEmpName').val(),
-                        // consumeNumber:$('#consumeNumber').val(),
-                        // consumeDate:$('#consumeDate').val(),
-                        // consumeInfo:$('#consumeInfo').val()
-                    //}
+                    if ( !checkForm() )
+                        return;
                         axios
                             .post('/api/consume/add',{
-                                // consumeAssetId:this.bmm,
-                                // consumeAssetName:this.bml,
-                                // consumeAssetClasses:this.bmg,
-                                // consumeEmpId:this.bmd,
-                                // consumeEmpName:this.bmk,
-                                // consumeNumber:this.bmd,
-                                // consumeDate:this.bmd,
-                                // consumeInfo:this.bmk
                                 consumeAssetId:$('#consumeAssetId').val(),
                                 consumeAssetName:$('#consumeAssetName').val(),
                                 consumeAssetClasses:$('#consumeAssetClasses').val(),
@@ -189,7 +217,7 @@
                                 consumeInfo:$('#consumeInfo').val()
 
                             })
-                            .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                            .then(response => response.data==1?(layer.msg('添加成功')):layer.msg('添加失败'))
                             .catch(function(error) {
                                 console.log(error);
                             });
@@ -212,20 +240,27 @@
                         console.log(error);
                     });
 
-                // axios
-                //     .post('/api/emp/queryById/'+empid)////////gaig改革改革该改改
-                //     .then(function (response) {
-                //         this.emp = response.data;
-                //         document.getElementById("consumeEmpId").value=emp.empId;
-                //         document.getElementById("consumeEmpName").value=emp.empName;
-                //     })
-                //     .catch(function (error) { // 请求失败处理
-                //         console.log(error);
-                //     });
+                axios
+                    .post('/api/emp/queryById/'+empid)////////gaig改革改革该改改
+                    .then(function (response) {
+                        this.emp = response.data;
+                        document.getElementById("consumeEmpId").value=emp.empId;
+                        document.getElementById("consumeEmpName").value=emp.empName;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
 
 
             }
 
+        });
+
+        $('#consumeDate').datetimepicker({
+            lang:'ch',
+            format:'Y-m-d',
+            formatDate:'Y-m-d',
+            timepicker:false
         });
 
     </script>

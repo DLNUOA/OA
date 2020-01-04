@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -54,9 +55,16 @@ public class AssetController {
     }
 
 
-    @RequestMapping(value = "/asset/queryByName/{assetName}", method=POST)
-    public  List<Asset> queryByName(@PathVariable String assetName) {
-        return  service.queryAssetByName(assetName);
+//    @RequestMapping(value = "/asset/queryByName/{assetName}", method=POST)
+//    public  List<Asset> queryByName(@PathVariable String assetName) {
+//        return  service.queryAssetByName(assetName);
+//    }
+
+    @RequestMapping(value = "/asset/queryByName", method=POST)
+    public  List<Asset> queryByName(@RequestBody Map<String,Object> info) {
+        List<Asset> list=service.queryAssetByName(info.get("assetName").toString());
+        return list;
+//        return  service.queryAssetByName(assetName);
     }
 
 }

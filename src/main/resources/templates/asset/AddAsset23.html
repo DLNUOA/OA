@@ -2,7 +2,7 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>资产管理</title>
     <link href="/css/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="/Vue/css/toastr.css">
     <style type="text/css">
@@ -12,26 +12,26 @@
     </style>
 </head>
 <body>
-
 <div class="container">
-<!--    <div id="searchDiv">-->
-<!--        <div class="row" >-->
-<!--            <div class="col-lg-6">-->
-<!--                <div class="input-group">-->
-<!--                    <input v-model="message"  type="text"  class="form-control" placeholder="Search for...">-->
-<!--                    <span class="input-group-btn">-->
-<!--                        <button @click="search" class="btn btn-default" type="button">根据部门名字搜索</button>-->
-<!--                    </span>-->
-<!--                    <input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">-->
-<!--                </div>&lt;!&ndash; /input-group &ndash;&gt;-->
-<!--            </div>&lt;!&ndash; /.col-lg-6 &ndash;&gt;-->
-<!--        </div>&lt;!&ndash; /.row &ndash;&gt;-->
-<!--    </div>-->
+    <div id="searchDiv">
+        <div class="row" >
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input v-model="message"  type="text"  class="form-control" placeholder="根据资产名称搜索">
+                    <span class="input-group-btn">
+                        <button @click="search" class="btn btn-default" type="button">根据资产名称搜索</button>
+                    </span>
+                    <input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+    </div>
 
     <div style="padding:20px;" id="app">
         <div class="panel panel-primary">
             <!--            这里的部门管理要根据你自己功能改-->
             <div class="panel-heading">资产管理</div>
+
             <table class="table table-bordered table-hover table-striped text-center">
                 <thead>
                 <!--                下面也是动态改-->
@@ -160,6 +160,75 @@
 <script src="/Vue/js/axios.js"></script>
 <script src="/Vue/js/lodash.min.js"></script>
 <script type="text/javascript">
+
+
+
+   let searchDiv = new Vue({
+       el:'#searchDiv',
+       data(){
+           return{
+               result:null,
+               message:null
+           }
+       },
+       methods:{
+           search: function () {
+               let tempData = vue.data;
+               for (let temp of tempData) {
+                   if (this.message == temp.assetName){
+                       toastr.success('成功找到！');
+                       toastr.info('id:'+temp.assetId+'   名字:'+temp.assetName+'   ');
+                       this.result = 'id为'+temp.assetId+'   名字为'+temp.assetName;
+                       return;
+                   }
+               }
+               this.result=null;
+               toastr.error('未找到');
+           }
+       },
+   });
+
+    //
+    // let searchDiv = new Vue({
+    //     el:'#searchDiv',
+    //     data(){
+    //         return{
+    //             result:null,
+    //             message:null,
+    //         }
+    //     },
+    //     methods:{
+    //         search: function () {
+    //             let tempData = vue.data;
+    //             for (let temp of tempData) {
+    //                 if (this.message == temp.assetName){
+    //                     // toastr.success('成功找到！');
+    //                     //toastr.info('id:'+temp.deptId+'   名字:'+temp.deptName+'   地址:'+temp.deptLoc+'  描述:'+temp.deptIntro);
+    //                     //this.result = 'id为'+temp.deptId+'   名字为'+temp.deptName+'   地址为'+temp.deptLoc+'  描述为'+temp.deptIntro;
+    //
+    //                     //alert(temp.assetId,temp.assetName,temp.assetUnitPrice,temp.assetInventory);
+    //
+    //                 }
+    //             }
+    //             //this.result=
+    //             // if(k==1)
+    //             // {
+    //             //     for (var j=0;j<i;j++)
+    //             //     {
+    //             //
+    //             //
+    //             //     }
+    //             //
+    //             // }
+    //
+    //             if(k==0)
+    //             {
+    //                 toastr.error('未找到');
+    //             }
+    //
+    //         }
+    //     },
+    // });
 
 
     let vue = new Vue({
