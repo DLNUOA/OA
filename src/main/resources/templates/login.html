@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>登陆</title>
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" charset="utf-8"></script>-->
-    <script src="js/jquery-3.4.1.js" charset="UTF-8"></script>
-    <script src="./js/toastr.min.js"></script>
+    <script src="/js/jquery-3.4.1.js" charset="UTF-8"></script>
+    <script src="/js/toastr.min.js"></script>
     <script>
         toastr.options = {
             "closeButton": true,
@@ -169,8 +169,10 @@
                 "password" : $("#password").val()
             }),
             success : function (data) {
-                if (data){
+                if (data.result==1){
                     toastr.success("登陆成功😚,正在跳转到欢迎页面，不出意外的话，当你读完这行字的时候已经跳转成功了");
+                    let out = window.localStorage;
+                    out.setItem("token",data.token);
                     setTimeout( function(){
                         location.href="/welcome";
                     }, 500 );//延迟2000毫秒

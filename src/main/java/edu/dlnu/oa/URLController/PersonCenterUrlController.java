@@ -34,5 +34,10 @@ public class PersonCenterUrlController {
         return "personCenter/LeaveApply";
     }
 
+    @RequestMapping("/baoxiao")
+    public String bx(){
+        return "personCenter/BaoXiaoApply";
+    }
+
 
 }

@@ -46,5 +46,20 @@ public class URLController {
         return "signUp";
     }
 
+    @RequestMapping("/nav")
+    public String nav(){
+        return "nav";
+    }
+    @RequestMapping("/n")
+    public String n(){
+        return "navsidebar";
+    }
+
+    @RequestMapping("/index/pageNotFound")
+    public String notfound(){
+        return "404";
+    }
+
+
 
 }
