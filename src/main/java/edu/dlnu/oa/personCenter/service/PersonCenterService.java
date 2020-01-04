@@ -33,4 +33,42 @@ public interface PersonCenterService {
     int deleteLeaveRequestById(int id);
 
     List<Map<String, Object>> getDeptManagerLeaveRequest(int id);
+
+    int likeEmp(Integer empId);
+
+    int dislikeEmp(Integer empId);
+
+    List<Map<String, Object>> getEvaluate();
+
+    List<Map<String, Object>> getBaoXiaoApplyLogByEmpId(int empId);
+
+    int findDeptMByEmpId(int empId);
+
+    int findCashIdByEmpId(int empId);
+
+    Map<String, Object> getBaoXiaoApplyLogJilu(int id);
+
+    void postABaoXiaoApply(int empId, String purpose, String amount, int deptMId, int cashId);
+
+    void postABaoXiaoApplyToLog(int claimId);
+
+    int getMaxClaimIdByEmpId(int empId);
+
+    List<Map<String, Object>> getDeptBaoXiaoApply(int empId);
+
+    List<Map<String, Object>> getCashBaoXiaoApply(int empId);
+
+    int DeptUpdateBaoXiaoLog(Map<String, Object> info);
+
+    void DeptUpdateBaoXiaoLogToClaim(Map<String, Object> info);
+
+    int CashUpdateBaoXiaoLog(Map<String, Object> info);
+
+    void CashUpdateBaoXiaoLogToClaim(Map<String, Object> info);
+
+    void setPass(Map<String, Object> info);
+
+    int getJobIdByEmpId(int empId);
+
+    Map<String, Object> loglog(int id);
 }

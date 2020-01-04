@@ -89,4 +89,110 @@ public class PersonCenterServiceImpl implements PersonCenterService {
     public List<Map<String, Object>> getDeptManagerLeaveRequest(int id) {
         return personCenterMapper.getDeptManagerLeaveRequest(id);
     }
+
+    @Override
+    public int likeEmp(Integer empId) {
+        int flag =  personCenterMapper.existLikedEmp(empId);
+        if (flag==0){
+            return personCenterMapper.likeEmpInit(empId);
+        }else {
+            return personCenterMapper.likeEmp(empId);
+        }
+    }
+
+    @Override
+    public int dislikeEmp(Integer empId) {
+        int flag =  personCenterMapper.existDislikedEmp(empId);
+        if (flag==0){
+            return personCenterMapper.dislikeEmpInit(empId);
+        }else {
+            return personCenterMapper.dislikeEmp(empId);
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> getEvaluate() {
+        return personCenterMapper.getEvaluate();
+    }
+
+    @Override
+    public List<Map<String, Object>> getBaoXiaoApplyLogByEmpId(int empId) {
+        return personCenterMapper.getBaoXiaoApplyLogByEmpId(empId);
+    }
+
+    @Override
+    public int findDeptMByEmpId(int empId) {
+        return personCenterMapper.findDeptMByEmpId(empId);
+    }
+
+    @Override
+    public int findCashIdByEmpId(int empId) {
+        return personCenterMapper.findCashIdByEmpId(empId);
+    }
+
+    @Override
+    public Map<String, Object> getBaoXiaoApplyLogJilu(int id) {
+        return personCenterMapper.getBaoXiaoApplyLogJilu(id);
+    }
+
+    @Override
+    public void postABaoXiaoApply(int empId, String purpose, String amount, int deptMId, int cashId) {
+         personCenterMapper.postABaoXiaoApply(empId,purpose,amount,deptMId,cashId);
+    }
+
+    @Override
+    public void postABaoXiaoApplyToLog(int claimId) {
+        personCenterMapper.postABaoXiaoApplyToLog(claimId);
+    }
+
+    @Override
+    public int getMaxClaimIdByEmpId(int empId) {
+
+        return personCenterMapper.getMaxClaimIdByEmpId(empId);
+    }
+
+    @Override
+    public List<Map<String, Object>> getDeptBaoXiaoApply(int empId) {
+        return personCenterMapper.getDeptBaoXiaoApply(empId);
+    }
+
+    @Override
+    public List<Map<String, Object>> getCashBaoXiaoApply(int empId) {
+        return personCenterMapper.getCashBaoXiaoApply(empId);
+    }
+
+    @Override
+    public int DeptUpdateBaoXiaoLog(Map<String, Object> info) {
+        return personCenterMapper.DeptUpdateBaoXiaoLog(info);
+    }
+
+    @Override
+    public void DeptUpdateBaoXiaoLogToClaim(Map<String, Object> info) {
+         personCenterMapper.DeptUpdateBaoXiaoLogToClaim(info);
+    }
+
+    @Override
+    public int CashUpdateBaoXiaoLog(Map<String, Object> info) {
+        return personCenterMapper.CashUpdateBaoXiaoLog(info);
+    }
+
+    @Override
+    public void CashUpdateBaoXiaoLogToClaim(Map<String, Object> info) {
+        personCenterMapper.CashUpdateBaoXiaoLogToClaim(info);
+    }
+
+    @Override
+    public void setPass(Map<String, Object> info) {
+        personCenterMapper.setPass(info);
+    }
+
+    @Override
+    public int getJobIdByEmpId(int empId) {
+        return personCenterMapper.getJobIdByEmpId(empId);
+    }
+
+    @Override
+    public Map<String, Object> loglog(int id) {
+        return personCenterMapper.loglog(id);
+    }
 }

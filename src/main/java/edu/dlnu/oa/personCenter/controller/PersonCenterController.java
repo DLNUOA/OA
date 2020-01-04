@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -171,6 +169,151 @@ public class PersonCenterController {
         return personCenterService.getDeptManagerLeaveRequest(id);
     }
 
+
+    @PutMapping("/like/{empId}")
+    public int likeEmp(@PathVariable("empId") Integer empId,HttpServletRequest request){
+        return personCenterService.likeEmp(empId);
+    }
+
+    @PutMapping("/dislike/{empId}")
+    public int dislikeEmp(@PathVariable("empId") Integer empId,HttpServletRequest request){
+        return personCenterService.dislikeEmp(empId);
+    }
+
+    @GetMapping("/evaluate")
+    public List<Map<String,Object>> getEvaluate(HttpServletRequest request){
+        return personCenterService.getEvaluate();
+    }
+
+    /**
+     * 用户获取所有报销申请
+     * @param request
+     * @return
+     */
+    @GetMapping("/baoXiaoApplyLog")
+    public List<Map<String,Object>> getBaoXiaoApplyLog(HttpServletRequest request){
+        int empId = (int) request.getSession().getAttribute("empId");
+
+        return personCenterService.getBaoXiaoApplyLogByEmpId(empId);
+    }
+
+    /**
+     * 用户获取特定的报销申请
+     * @param request
+     * @param id
+     * @return
+     */
+    @GetMapping("/baoXiaoApplyLogJiLu/{id}")
+    public Map<String,Object> getBaoXiaoApplyLogJilu(HttpServletRequest request,@PathVariable("id") int id){
+        return personCenterService.getBaoXiaoApplyLogJilu(id);
+    }
+
+    /**
+     * 用户提交报销申请
+     * @param request
+     * @param info
+     * @return
+     */
+    @PostMapping("/baoXiaoApply")
+    public int postABaoXiaoApply(HttpServletRequest request,@RequestBody Map<String,Object> info){
+        int empId = (int) request.getSession().getAttribute("empId");
+        String purpose = info.get("purpose").toString();
+        String amount = info.get("amount").toString();
+        int deptMId =  personCenterService.findDeptMByEmpId(empId);
+        int cashId = personCenterService.findCashIdByEmpId(empId);
+        personCenterService.postABaoXiaoApply(empId, purpose, amount, deptMId, cashId);
+        int claimId = personCenterService.getMaxClaimIdByEmpId(empId);
+        personCenterService.postABaoXiaoApplyToLog(claimId);
+        return 1;
+    }
+
+    /**
+     * 部门经理获取所有的报销记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/deptBaoXiaoApply")
+    public List<Map<String,Object>> getDeptBaoXiaoApply(HttpServletRequest request){
+        int empId = (int) request.getSession().getAttribute("empId");
+        return personCenterService.getDeptBaoXiaoApply(empId);
+    }
+
+    /**
+     *采纳获取所有的报销记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/cashBaoXiaoApply")
+    public List<Map<String,Object>> getCashBaoXiaoApply(HttpServletRequest request){
+        int empId = (int) request.getSession().getAttribute("empId");
+        return personCenterService.getCashBaoXiaoApply(empId);
+    }
+
+    /**
+     * 部门经理更新用户报销申请
+     * @param request
+     * @param info
+     * @return
+     */
+    @PutMapping("/DeptUpdateBaoXiaoLog")
+    public int DeptUpdateBaoXiaoLog(HttpServletRequest request,@RequestBody Map<String,Object> info){
+
+        int empId = (int) request.getSession().getAttribute("empId");
+
+        int jobId = personCenterService.getJobIdByEmpId(empId);
+        if (jobId==3){
+            int i =  personCenterService.DeptUpdateBaoXiaoLog(info);
+            personCenterService.setPass(info);
+            personCenterService.DeptUpdateBaoXiaoLogToClaim(info);
+            return i;
+        }else if (jobId==11){
+            int i =  personCenterService.CashUpdateBaoXiaoLog(info);
+            personCenterService.CashUpdateBaoXiaoLogToClaim(info);
+            return i;
+        }else {
+
+        }
+        return 1;
+    }
+
+    /**
+     * 出纳更新用户报销申请
+     * @param request
+     * @param info
+     * @return
+     */
+    @PutMapping("/CashUpdateBaoXiaoLog")
+    public int CashUpdateBaoXiaoLog(HttpServletRequest request,@RequestBody Map<String,Object> info){
+
+        int i =  personCenterService.CashUpdateBaoXiaoLog(info);
+        personCenterService.CashUpdateBaoXiaoLogToClaim(info);
+        return i;
+    }
+
+    @PutMapping("/DeptUpdateBaoXiaoLogRefuse")
+    public int DeptUpdateBaoXiaoLogRefuse(HttpServletRequest request,@RequestBody Map<String,Object> info){
+
+
+        int empId = (int) request.getSession().getAttribute("empId");
+
+        int jobId = personCenterService.getJobIdByEmpId(empId);
+        if (jobId==3){
+            int i =  personCenterService.DeptUpdateBaoXiaoLog(info);
+            personCenterService.DeptUpdateBaoXiaoLogToClaim(info);
+        }else {
+
+        }
+        return 1;
+
+    }
+
+    /**
+     * -- 查看特定的报销申请日志记录
+     */
+    @GetMapping("/loglog/{id}")
+    public Map<String,Object> loglog(HttpServletRequest request,@PathVariable("id") int id){
+        return personCenterService.loglog(id);
+    }
 
 
 }

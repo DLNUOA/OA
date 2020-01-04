@@ -5,11 +5,12 @@
 	<title></title>
 	<link href="/css/bootstrap.css" rel="stylesheet" />
 	<link rel="stylesheet" href="/Vue/css/toastr.css">
+	<link rel="stylesheet" href="/Vue/css/simple-sidebar.css">
 	<style type="text/css">
 		table thead tr th {
 			text-align: center;
 		}
-		/*这个样式，是让表格在中心*/
+		这个样式，是让表格在中心
 	</style>
 </head>
 <body>
@@ -61,76 +62,88 @@
 	</div><!-- /.modal -->
 </div>
 <!--模态框结束-->
-<div class="container">
 
-	<div id="searchDiv">
-		<div class="row" >
-			<div class="col-lg-6">
-				<div class="input-group">
-					<input v-model="message"  type="text"  class="form-control" placeholder="Search for...">
-					<span class="input-group-btn">
+
+		<div class="container-fluid">
+
+
+				<div id="searchDiv">
+					<div class="row" >
+						<div class="col-lg-6">
+							<div class="input-group">
+								<input v-model="message"  type="text"  class="form-control" placeholder="Search for...">
+								<span class="input-group-btn">
                         <button @click="search" class="btn btn-default" type="button">根据部门名字搜索</button>
                     </span>
-					<input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">
-				</div><!-- /input-group -->
-			</div><!-- /.col-lg-6 -->
-		</div><!-- /.row -->
-	</div>
+								<input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+					</div><!-- /.row -->
+				</div>
 
-	<div style="padding:20px;" id="app">
-		<div class="panel panel-primary">
-			<!--            这里的部门管理要根据你自己功能改-->
-			<div class="panel-heading">部门管理</div>
-			<table class="table table-bordered table-hover table-striped text-center">
-				<thead>
-				<!--                下面也是动态改-->
-				<tr>
-					<th>部门名</th>
-					<th>部门ID</th>
-					<th>部门地址</th>
-					<th>部门介绍</th>
-					<th>操作</th>
-				</tr>
-				</thead>
-				<tbody>
-				<!--                row.xxxx   row后面写后端传过来的json对象属性-->
-				<template v-for="(row, index) in data ">
-					<tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">
-						<td>{{row.deptName}}</td>
-						<td>{{row.deptId}}</td>
-						<td>{{row.deptLoc}}</td>
-						<td>{{row.deptIntro}}</td>
-						<td>
-							<!-- 按钮触发模态框 通过data-target="#updateDeptModal"，找到相对应的id的模态框 -->
-							<button class="btn btn-primary " data-toggle="modal" data-target="#updateDeptModal" @click="LaunchUpdateDept(index)">修改</button>
-							<a @click="deleteDept(index)" class="btn btn-danger">删除</a>
-						</td>
-					</tr>
-				</template>
-				</tbody>
-			</table>
+				<div style="padding:20px;" id="app">
+					<div class="panel panel-primary">
+						<!--            这里的部门管理要根据你自己功能改-->
+						<div class="panel-heading">部门管理</div>
+						<table class="table table-bordered table-hover table-striped text-center">
+							<thead>
+							<!--                下面也是动态改-->
+							<tr>
+								<th>部门名</th>
+								<th>部门ID</th>
+								<th>部门地址</th>
+								<th>部门介绍</th>
+								<th>操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							<!--                row.xxxx   row后面写后端传过来的json对象属性-->
+							<template v-for="(row, index) in data ">
+								<tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">
+									<td>{{row.deptName}}</td>
+									<td>{{row.deptId}}</td>
+									<td>{{row.deptLoc}}</td>
+									<td>{{row.deptIntro}}</td>
+									<td>
+										<!-- 按钮触发模态框 通过data-target="#updateDeptModal"，找到相对应的id的模态框 -->
+										<button class="btn btn-primary " data-toggle="modal" data-target="#updateDeptModal" @click="LaunchUpdateDept(index)">修改</button>
+										<a @click="deleteDept(index)" class="btn btn-danger">删除</a>
+									</td>
+								</tr>
+							</template>
+							</tbody>
+						</table>
+					</div>
+					<!-- 这个增加按钮也会触发模态框 -->
+					<button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addDeptModal">增加部门</button>
+					<nav style="float:right;">
+						<ul class="pagination pagination-lg">
+							<!--                如果当前页面是第一页，那么就让上一页就点不了-->
+							<li v-if="curpage==1" class="disabled"><a href="#">上一页</a></li>
+							<!--                不是第一页的话，触发PrePage()方法-->
+							<li v-else v-on:click="PrePage()"><a href="#">上一页</a></li>
+							<!--                遍历所有页面并且显示-->
+							<template v-for="page in pageCount">
+								<!--                    如果页面==当前页，让按钮的class="active"-->
+								<li v-if="page==curpage" class="active" v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
+								<li v-else v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
+							</template>
+							<!--                下一页与上一页同理-->
+							<li v-if="curpage==pageCount" class="disabled"><a href="#">下一页</a></li>
+							<li v-else v-on:click="NextPage()"><a href="#">下一页</a></li>
+						</ul>
+					</nav>
+				</div>
+
+
+
+
 		</div>
-		<!-- 这个增加按钮也会触发模态框 -->
-		<button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addDeptModal">增加部门</button>
-		<nav style="float:right;">
-			<ul class="pagination pagination-lg">
-				<!--                如果当前页面是第一页，那么就让上一页就点不了-->
-				<li v-if="curpage==1" class="disabled"><a href="#">上一页</a></li>
-				<!--                不是第一页的话，触发PrePage()方法-->
-				<li v-else v-on:click="PrePage()"><a href="#">上一页</a></li>
-				<!--                遍历所有页面并且显示-->
-				<template v-for="page in pageCount">
-					<!--                    如果页面==当前页，让按钮的class="active"-->
-					<li v-if="page==curpage" class="active" v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
-					<li v-else v-on:click="NumPage(page, $event)"><a href="#">{{page}}</a></li>
-				</template>
-				<!--                下一页与上一页同理-->
-				<li v-if="curpage==pageCount" class="disabled"><a href="#">下一页</a></li>
-				<li v-else v-on:click="NextPage()"><a href="#">下一页</a></li>
-			</ul>
-		</nav>
-	</div>
-</div>
+
+
+
+
+
 <!--下面引用js文件，有点多，以后优化-->
 <script src="/Vue/js/jquery.js"></script>
 <script src="/Vue/js/vue.js"></script>
@@ -154,6 +167,13 @@
 	};
 </script>
 <script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<!-- Menu Toggle Script -->
+<script>
+	$("#menu-toggle").click(function(e) {
+		e.preventDefault();
+		$("#wrapper").toggleClass("toggled");
+	});
+</script>
 <script src="/Vue/js/axios.js"></script>
 <script src="/Vue/js/lodash.min.js"></script>
 <script type="text/javascript">

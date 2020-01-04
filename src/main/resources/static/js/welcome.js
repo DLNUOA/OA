@@ -12,7 +12,11 @@ var nav = new Vue({
     methods: {
         getSessionInfo:function () {
             axios
-                .get('/sessionInfo')
+                .get('/sessionInfo',{
+                    headers:{
+                        'Authorization': window.localStorage.token
+                    }
+                })
                 .then(function (response) {
                     this.empId =  response.data.empId;
                     this.empName = response.data.empName;
@@ -26,7 +30,11 @@ var nav = new Vue({
     mounted () {
         //当Vue实例挂载完成时，自动调用后端接口获取所有dept数据并且将数据渲染到html
         axios
-            .get('/sessionInfo')
+            .get('/sessionInfo',{
+                headers:{
+                    'Authorization': window.localStorage.token
+                }
+            })
             .then(response => (this.empName = response.data.empName))
             .catch(function (error) { // 请求失败处理
                 console.log(error);
