@@ -13,6 +13,7 @@ public interface AssetMapper {
 
     @Select("select * from asset")
     List<Asset> findAllAsset();
+
     @Select("SELECT asset_id ,asset_name FROM asset where asset_id>0")
     List<Map<String,Object>> getAssetIdAndAssetName();
 

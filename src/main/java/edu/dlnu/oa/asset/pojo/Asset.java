@@ -23,6 +23,15 @@ public class Asset{
     public Asset() {
     }
 
+    public Asset(Integer assetId) {
+        this.assetId = assetId;
+    }
+
+
+    public Asset(String assetName) {
+        this.assetName = assetName;
+    }
+
     public Asset(String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
         this.assetName = assetName;
         this.assetClasses = assetClasses;
@@ -30,7 +39,6 @@ public class Asset{
         this.assetUnitPrice = assetUnitPrice;
         this.assetInventory = assetInventory;
     }
-
 
     public Integer getAssetId() {
         return assetId;
@@ -79,7 +87,6 @@ public class Asset{
     public void setAssetInventory(Integer assetInventory) {
         this.assetInventory = assetInventory;
     }
-
     @Override
     public String toString() {
         return "Asset{" +

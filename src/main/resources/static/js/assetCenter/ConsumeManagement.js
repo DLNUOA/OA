@@ -56,7 +56,7 @@ var assetList = new Vue({
 });
 
 var updateAAssetModal = new Vue({
-    el:'#updateAAssetModal',
+    el:'#updateAssetModal',
     data:{
         assetId:null,
         assetName:null,
@@ -82,7 +82,7 @@ var updateAAssetModal = new Vue({
                     assetUnitPrice:this.assetUnitPrice,
                     assetInventory:this.assetInventory
                 })
-                .then(function (response ) {
+                .then(function (response) {
                     if (response.data==1){
                         toastr.success('修改库存成功');
                         assetList.asset[this.index].assetName=this.assetName;
@@ -109,8 +109,8 @@ var updateAAssetModal = new Vue({
 });
 
 
-var insertAsset = new Vue({
-    el:'#insertAsset',
+var addAsset = new Vue({
+    el:'#addAsset',
     data:{
         bmm:'',
         bmz:'',
@@ -120,7 +120,7 @@ var insertAsset = new Vue({
         bmb:''
     },
     methods:{
-        insertAsset:function (){
+        addAAsset:function (){
             axios
                 .post('/api/asset',{
                     assetId:this.bmm,
@@ -137,6 +137,8 @@ var insertAsset = new Vue({
             setTimeout(function () {
                 window.location.href = "/AssetManagement/QueryAsset";
             },1000);
+
         }
+
     }
 });

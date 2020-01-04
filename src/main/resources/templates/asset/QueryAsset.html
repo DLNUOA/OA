@@ -16,11 +16,11 @@
 <!--欢迎使用Vue表格分页插件，这是个示例模板-->
 <!--首先需要几个模态框，使用模态框可以不跳转页面实现更好的用户体验，模态框最好直接写在body标签下面，模态框开始-->
 <!--增加部门模态框-->
-<!--    注意这里的属性id="addAssetModal"，这里的id是拿来绑定模态框按钮的，点击按钮便可以通过id找到对应的模态框-->
-<div class="modal fade" id="addAssetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--    注意这里的属性id="insertAssetModal"，这里的id是拿来绑定模态框按钮的，点击按钮便可以通过id找到对应的模态框-->
+<div class="modal fade" id="insertAssetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <!--        下面这个div通过id与一个Vue实例绑定-->
-        <div class="modal-content" id="addAsset">
+        <div class="modal-content" id="insertAsset">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabelAdd">增加库存</h4>
@@ -36,7 +36,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <!--                给增加按钮添加单击事件-->
-                <button type="button" class="btn btn-primary" @click="addAsset">增加</button>
+                <button type="button" class="btn btn-primary" @click="insertAsset">增加</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -79,6 +79,7 @@
             </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
     </div>
+
     <div style="padding:20px;" id="app">
         <div class="panel panel-primary">
             <!--            这里的资产管理要根据你自己功能改-->
@@ -107,6 +108,7 @@
                         <td>{{row.assetUnitPrice}}</td>
                         <td>{{row.assetInventory}}</td>
                             <!-- 按钮触发模态框 通过data-target="#updateAssetModal"，找到相对应的id的模态框 -->
+                        <td>
                             <button class="btn btn-primary " data-toggle="modal" data-target="#updateAssetModal" @click="LaunchUpdateAsset(index)">修改</button>
                             <a @click="deleteAsset(index)" class="btn btn-danger">删除</a>
                         </td>
@@ -116,7 +118,7 @@
             </table>
         </div>
         <!-- 这个增加按钮也会触发模态框 -->
-        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addAssetModal">增加资产</button>
+        <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#insertAssetModal">增加资产</button>
         <nav style="float:right;">
             <ul class="pagination pagination-lg">
                 <!--                如果当前页面是第一页，那么就让上一页就点不了-->
@@ -186,7 +188,7 @@
                 toastr.error('未找到');
             }
         },
-    })
+    });
     let vue = new Vue({
         el: '#app',    //绑定元素
         data () {
@@ -304,7 +306,7 @@
                             vue.data[this.index].assetSpecification=this.assetSpecification;
                             vue.data[this.index].assetUnitPrice=this.assetUnitPrice;
                             vue.data[this.index].assetInventory=this.assetInventory;
-                            $('#addAssetModal').modal({
+                            $('#insertAssetModal').modal({
                                 show:false
                             });//这里使用Jquery不生效，来个大佬改bug啊！
                         }else {
@@ -322,8 +324,8 @@
             }
         }
     });
-    var addAsset = new Vue({
-        el:'#addAsset',
+    let insertAsset= new Vue({
+        el:'#insertAsset',
         //data里面也可以写空字符串哦！
         data:{
             bmm:'',
@@ -334,7 +336,7 @@
             bmb:''
         },
         methods:{
-            addAAsset:function (){
+            insertAsset:function (){
                 axios
                     .post('/api/asset',{
                         assetId:this.bmm,

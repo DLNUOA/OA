@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择员工</title>
+    <link rel="stylesheet" href="zhanghan_cloud_oa/js/bootstrap/css/bootstrap.css" />
+</head>
+<body>
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">OA系统</a></li>
+        <li><a href="#">资产管理</a></li>
+        <li>员工列表</li>
+    </ol>
+
+    <h2 class="page-header">员工列表</h2>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <td>选择</td>
+            <td>员工编号</td>
+            <td>员工姓名</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(emp,index) in empList">
+            <td>
+                <label><input  type="radio" name="radio1" value="1" @click="toSelect2(emp.empId)"  /></label>
+            </td>
+            <td>{{emp.empId}}</td>
+            <td>{{emp.empName}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-sm-offset-8 col-sm-4">
+            <input  type="button" value="确定" @click="okButton()" class="btn btn-primary" />
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="zhanghan_cloud_oa/js/jquery-3.4.1.js" ></script>
+<script type="text/javascript" src="zhanghan_cloud_oa/js/global.js" ></script>
+<script type="text/javascript" src="zhanghan_cloud_oa/js/layer/layer.js" ></script>
+<script type="text/javascript" src="zhanghan_cloud_oa/js/vue.js" ></script>
+
+
+
+
+<!--下面引用js文件，有点多，以后优化-->
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+
+<script>
+    var vue = new Vue({
+        el:'.container',
+        data:{
+            empList:[],
+            empid:1
+        },
+
+        // //2
+        mounted: function () {
+            axios
+                .post('/api/emp/query')/////改要
+                .then(response => (this.empList = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        },
+
+        methods: {
+            toSelect2: function (empId) {
+                empid=empId;
+                // alert(assetid);
+            },
+
+            okButton: function () {
+                setTimeout(function(){
+                    window.parent.layer.closeAll();
+                    //
+                    localStorage.setItem('empid',empid);
+                    // localStorage.setItem('empid',empid);
+                    window.parent.location.reload();
+                },500);
+
+            }
+        }
+
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

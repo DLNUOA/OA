@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +23,11 @@ public class AssetController {
     private AssetService assetService;
 
     @RequestMapping(value = "/asset",method = GET)
-    public List<Asset> getAllAsset(){
-        log.info("Asset被访问了");
+    public List<Asset> getAllAsset(HttpServletRequest request){
+//        List<Asset> list=assetService.findAllAsset();
+////        log.info("Asset被访问了");
+////        return list;
+        log.info("Asset被访问了---");
         return assetService.findAllAsset();
     }
 
@@ -42,10 +46,7 @@ public class AssetController {
 
     @GetMapping("/assetIdAndName")
     public List<Map<String, Object>> getAssetIdAndName(){
-        return assetService.getAssetIdAndName();
+        return  assetService.getAssetIdAndName();
     }
-
-
-
 
 }

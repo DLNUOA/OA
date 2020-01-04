@@ -108,8 +108,6 @@ var updateADeptModal = new Vue({
         }
     }
 });
-
-
 var addDept = new Vue({
     el:'#addDept',
     data:{

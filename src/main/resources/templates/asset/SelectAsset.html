@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择资产</title>
+    <link rel="stylesheet" href="/js/bootstrap/css/bootstrap.css" />
+</head>
+<body>
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">OA系统</a></li>
+        <li><a href="#">资产管理</a></li>
+        <li>资产列表</li>
+    </ol>
+
+    <h2 class="page-header">资产列表</h2>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <td>选择</td>
+            <td>库存编号</td>
+            <td>库存名称</td>
+            <td>库存类别</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(asset,index) in assetList">
+            <td>
+                <label><input  type="radio" name="radio1" value="1" @click="toSelect1(asset.assetId)"  /></label>
+            </td>
+            <td>{{asset.assetId}}</td>
+            <td>{{asset.assetName}}</td>
+            <td>{{asset.assetClasses}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-sm-offset-8 col-sm-4">
+            <input  type="button" value="确定" @click="okButton()" class="btn btn-primary" />
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/js/jquery-3.4.1.js" ></script>
+<script type="text/javascript" src="/js/global.js" ></script>
+<script type="text/javascript" src="/js/layer/layer.js" ></script>
+<script type="text/javascript" src="/js/vue.js" ></script>
+
+
+
+
+<!--下面引用js文件，有点多，以后优化-->
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+
+<script>
+    var vue = new Vue({
+        el:'.container',
+        data:{
+            assetList:[],
+            assetId:1
+        },
+
+        // //2
+        mounted: function () {
+            axios
+                .post('/api/asset/query')
+                .then(response => (this.assetList = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        },
+
+        methods: {
+            toSelect1: function (assetId) {
+                assetId=assetId;
+                // alert(assetid);
+            },
+
+            okButton: function () {
+                setTimeout(function(){
+                    window.parent.layer.closeAll();
+                    //
+                    localStorage.setItem('assetid',assetid);
+                    // localStorage.setItem('empid',empid);
+                    window.parent.location.reload();
+                },500);
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
