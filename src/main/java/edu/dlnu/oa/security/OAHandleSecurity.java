@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Time 2019年3月12日 13点47分
  * @Description 自定义拦截器OJHandleSecurity
  */
-public class OJHandleSecurity implements HandlerInterceptor {
+public class OAHandleSecurity implements HandlerInterceptor {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
     //实现preHandle方法
