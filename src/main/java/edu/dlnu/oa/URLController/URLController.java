@@ -61,5 +61,12 @@ public class URLController {
     }
 
 
+    @RequestMapping("/common/au")
+    public String au(){
+        return "aboutUs";
+    }
+
+
+
 
 }
