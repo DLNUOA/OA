@@ -72,15 +72,15 @@
                     <span class="next"> </span>
                     <ul>
                         <li>
-                            <a href="#"><img width="1280" height="402" src="/images/lunbo/20191220081221721023.jpg" /></a>
+                            <a href="https://www.dlnu.edu.cn/hhh/index.htm"><img width="1280" height="402" src="/images/lunbo/20191220081221721023.jpg" /></a>
 
                         </li>
                         <li>
-                            <a href="#"><img width="600" height="402" src="/images/lunbo/20191211071948343933.jpg" /></a>
+                            <a href="https://www.dlnu.edu.cn/hhh/index.htm"><img width="600" height="402" src="/images/lunbo/20191211071948343933.jpg" /></a>
 
                         </li>
                         <li>
-                            <a href="#"><img width="600" height="398" src="/images/lunbo/20190927191652273086.jpg" /></a>
+                            <a href="https://www.dlnu.edu.cn/hhh/index.htm"><img width="600" height="398" src="/images/lunbo/20190927191652273086.jpg" /></a>
 
                         </li>
 
@@ -128,7 +128,7 @@
                 this.aLi = this.wrap.getElementsByTagName("li");
                 this.prev = this.wrap.getElementsByTagName("span")[0];
                 this.next = this.wrap.getElementsByTagName("span")[1];
-                this.timer = 1000;
+                this.timer = 500;
                 this.aSort = [];
                 this.iCenter = 2;
                 this._doPrev = function () {return _this.doPrev.apply(_this)};
@@ -154,7 +154,7 @@
                 this.timer = setInterval(function ()
                 {
                     _this.doNext()
-                }, 3000);
+                }, 500);
                 this.wrap.onmouseover = function ()
                 {
                     clearInterval(_this.timer)
@@ -164,7 +164,7 @@
                     _this.timer = setInterval(function ()
                     {
                         _this.doNext()
-                    }, 3000);
+                    }, 1000);
                 }
             },
             doPrev : function ()

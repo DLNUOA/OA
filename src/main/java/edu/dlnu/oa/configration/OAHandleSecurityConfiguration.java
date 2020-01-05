@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class OAHandleSecurityConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] excludes = new String[]{"/signUp","/common/**","/userSignUp","/Vue/**", "/login/**", "/", "/css/**", "/js/**", "/fonts/**", "/error/**", "/static/**", "/index/**", "/vendor/**", "/upload/**","/userLogin","/contactUs"};
+        String[] excludes = new String[]{"/images/**","/signUp","/common/**","/userSignUp","/Vue/**", "/login/**", "/", "/css/**", "/js/**", "/fonts/**", "/error/**", "/static/**", "/index/**", "/vendor/**", "/upload/**","/userLogin","/contactUs"};
         registry.addInterceptor(new OAHandleSecurity()).addPathPatterns("/**").excludePathPatterns(excludes);
     }
 }
