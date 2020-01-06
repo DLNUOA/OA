@@ -116,6 +116,19 @@
     </div><!-- /.modal -->
 </div>
 <!--修改模态框-->
+<!--empId:null,-->
+<!--empName:null,-->
+<!--empLoginName:null,-->
+<!--empPwd:null,-->
+<!--empEmail:null,-->
+<!--empTel:null,-->
+<!--empGender:null,-->
+<!--empSalary:null,-->
+<!--empDeptId:null,-->
+<!--empJobId:null,-->
+<!--empRoleId:null,-->
+<!--jobs:null,-->
+<!--depts:null-->
 <!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
 <div class="modal fade" id="updateEmpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -127,45 +140,67 @@
             <div class="modal-body" >
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon1">姓名</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input v-model="emp.emp_name" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon2">登陆名</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input v-model="emp.emp_login_name" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon3">密码</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input  v-model="emp.emp_pwd" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon4">邮箱</span>
-                    <input type="email" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input v-model="emp.emp_email" type="email" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon5">电话</span>
-                    <input type="tel" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input v-model="emp.emp_phone" type="tel" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon7">性别</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input v-model="emp.emp_gender" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon8">工资</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+                    <input v-model="emp.emp_salary" type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon9">部门</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+
+                    <select v-model="selectedDept">
+                        <option disabled value="">请选择</option>
+                        <template v-for="(row,index) of depts">
+                            <option>{{row.dept_id}}:{{row.dept_name}}</option>
+                        </template>
+                    </select>
+
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon10">职位</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+
+
+                    <select v-model="selectedJob">
+                        <option disabled value="">请选择</option>
+                        <template v-for="(row,index) of jobs">
+                            <option>{{row.job_id}}:{{row.job_name}}</option>
+                        </template>
+                    </select>
+
+
+
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon" id="emp-addon11">角色</span>
-                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
-                </div>
 
+                    <select v-model="selectedRole">
+                        <option disabled value="">请选择</option>
+                        <template v-for="(row,index) of roles">
+                            <option>{{row.roleId}}:{{row.roleName}}</option>
+                        </template>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -298,10 +333,10 @@
             search: function () {
                 let tempData = vue.data;
                 for (let temp of tempData) {
-                    if (this.message == temp.deptName){
+                    if (this.message == temp.emp_name){
                         toastr.success('成功找到！');
-                        toastr.info('id:'+temp.deptId+'   名字:'+temp.deptName+'   地址:'+temp.deptLoc+'  描述:'+temp.deptIntro);
-                        this.result = 'id为'+temp.deptId+'   名字为'+temp.deptName+'   地址为'+temp.deptLoc+'  描述为'+temp.deptIntro;
+                        toastr.info('id:'+temp.emp_id+'   名字:'+temp.emp_name);
+                        this.result = 'id为'+temp.emp_id+' '+temp.emp_name;
                         return;
                     }
                 }
@@ -344,7 +379,6 @@
                     this.data.splice(index,1);//删除选定的部门
                 }
             },
-            //获取所有部门方法，这是个保留方法，只将获取到的数据打印到控制台
             getEmps:function(){
                 axios
                     .get('/api/emp')
@@ -353,13 +387,9 @@
                         console.log(error);
                     });
             },
-            //修改部门方法，修改部门需要调用修改模态框，在这里修改部门模态框也是一个实例，调用模态框实例传输参数即可
-            LaunchUpdateDept:function(index){
-                this.dept=(this.data[index]);
-                updateAEmpModal.deptId = this.dept.deptId;
-                updateAEmpModal.deptName = this.dept.deptName;
-                updateAEmpModal.deptLoc = this.dept.deptLoc;
-                updateAEmpModal.deptIntro = this.dept.deptIntro;
+            LaunchUpdateEmp:function(index){
+                this.emp=(this.data[index]);
+                updateAEmpModal.emp = this.emp;
                 updateAEmpModal.index = index;
             },
             //上一页方法
@@ -397,47 +427,80 @@
         }
     });
     let updateAEmpModal = new Vue({
-        el:'#updateADeptModal',
-        data:{
-            //下面的数据要根据后端传过来的json对象动态改，一般初始化为null
-            deptId:null,
-            deptName:null,
-            deptLoc:null,
-            deptIntro:null,
-            index:null
+        el:'#updateAEmpModal',
+        data () {
+            return {
+                empId:null,
+                empName:'',
+                empLoginName:null,
+                empPwd:null,
+                empEmail:null,
+                empTel:null,
+                empGender:null,
+                empSalary:null,
+                empDeptId:null,
+                empJobId:null,
+                empRoleId:null,
+                jobs:null,
+                depts:null,
+                roles:null,
+                emp:null,
+                index:null,
+                selectedDept:null,
+                selectedJob:null,
+                selectedRole:null
+            }
         },
         methods:{
             // 更新方法，使用put请求更新对象，参数放在请求体里，axios会自动将数据序列化为json对象
             updateADept:function(){
                 axios
-                    .put('/api/dept',{
-                        deptId:this.deptId,
-                        deptName:this.deptName,
-                        deptLoc:this.deptLoc,
-                        deptIntro:this.deptIntro
+                    .put('/api/emp',{
+                        emp:this.emp,
+                        deptId:parseInt(this.selectedDept),
+                        jobId:parseInt(this.selectedJob),
+                        roleId:parseInt(this.selectedRole)
                     })
                     .then(function (response) {
                         //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
                         if (response.data==1){
-                            toastr.success('修改部门成功');
-                            vue.data[this.index].deptName=this.deptName;
-                            vue.data[this.index].deptLoc=this.deptLoc;
-                            vue.data[this.index].deptIntro=this.deptIntro;
-                            $('#addDeptModal').modal({
-                                show:false
-                            });//这里使用Jquery不生效，来个大佬改bug啊！
+                            toastr.success('修改成功');
+                            // vue.data[this.index].deptName=this.deptName;
+                            // vue.data[this.index].deptLoc=this.deptLoc;
+                            // vue.data[this.index].deptIntro=this.deptIntro;
+                            // $('#addDeptModal').modal({
+                            //     show:false
+                            // });//这里使用Jquery不生效，来个大佬改bug啊！
                         }else {
-                            toastr.error('修改部门失败，请联系管理员');
+                            toastr.error('修改失败，请联系管理员');
                         }
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
-                vue.data[this.index].deptName=this.deptName;
-                vue.data[this.index].deptLoc=this.deptLoc;
-                vue.data[this.index].deptIntro=this.deptIntro;
             }
+        },
+        mounted:function () {
+            axios
+                .get('/api/deptsIdAndName')
+                .then(response => (this.depts = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            axios
+                .get('/api/jobInfo')
+                .then(response => (this.jobs = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            axios
+                .get('/api/roleInfo')
+                .then(response => (this.roles = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
         }
+
     });
     let addEmp = new Vue({
         el:'#addEmp',
@@ -455,7 +518,8 @@
                 jobs:null,
                 email:null,
                 tel:null,
-                salary: null
+                salary: null,
+                roles:null
             }
         },
         methods:{
@@ -491,6 +555,12 @@
             axios
                 .get('/api/jobInfo')
                 .then(response => (this.jobs = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            axios
+                .get('/api/roleInfo')
+                .then(response => (this.roles = response.data))
                 .catch(function (error) { // 请求失败处理
                     console.log(error);
                 });

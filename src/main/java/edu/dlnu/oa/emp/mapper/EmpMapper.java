@@ -1,9 +1,6 @@
 package edu.dlnu.oa.emp.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -36,4 +33,17 @@ public interface EmpMapper {
 
     @Delete("delete from emp where emp_id = #{empId}")
     int deleteEmpById(int empId);
+
+    @Update("update emp set emp_name=#{emp.emp_name}," +
+            "               emp_login_name=#{emp.emp_login_name}," +
+            "               emp_pwd=#{emp.emp_pwd}," +
+            "               emp_email=#{emp.emp_email}, " +
+            "               emp_phone=#{emp.emp_phone}," +
+            "               emp_gender=#{emp.emp_gender}," +
+            "               emp_salary=#{emp.emp_salary}," +
+            "               emp_dept_id = #{deptId}," +
+            "               emp_job_id = #{jobId}," +
+            "               emp_role_id = #{roleId} " +
+            "where emp_id=#{emp.emp_id} ")
+    int updateEmp(Map<String, Object> info);
 }

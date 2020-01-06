@@ -33,4 +33,11 @@ public class EmpController {
         return empService.deleteEmpById(empId);
     }
 
+    @PutMapping("/emp")
+    public int updateEmp(@RequestBody Map<String,Object> info,HttpServletRequest request){
+
+        return empService.updateEmp(info);
+    }
+
+
 }

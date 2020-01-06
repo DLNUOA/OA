@@ -9,4 +9,6 @@ public interface EmpService {
     int postAEmp(Map<String, Object> emp);
 
     int deleteEmpById(int empId);
+
+    int updateEmp(Map<String, Object> info);
 }

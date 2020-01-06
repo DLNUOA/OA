@@ -30,4 +30,9 @@ public class EmpServiceImpl implements EmpService {
     public int deleteEmpById(int empId) {
         return empMapper.deleteEmpById(empId);
     }
+
+    @Override
+    public int updateEmp(Map<String, Object> info) {
+        return empMapper.updateEmp(info);
+    }
 }

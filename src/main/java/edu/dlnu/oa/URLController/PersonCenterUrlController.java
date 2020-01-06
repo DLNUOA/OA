@@ -24,4 +24,15 @@ public class PersonCenterUrlController {
         return "personCenter/AddressBook";
     }
 
+    @RequestMapping("/ap")
+    public String ap(){
+        return "personCenter/ApplyCenter";
+    }
+
+    @RequestMapping("/LeaveApply")
+    public String leave(){
+        return "personCenter/LeaveApply";
+    }
+
+
 }

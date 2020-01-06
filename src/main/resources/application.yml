@@ -1,6 +1,8 @@
 server:
   port: 80
 spring:
+  jackson:
+    time-zone: GMT+8
   mvc:
     hiddenmethod:
       filter:
@@ -19,7 +21,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/oa1?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false
     username: root
-    password: jing
+    password: root
   #    hikari:
   #      maximum-pool-size: 10
   #      connection-timeout: 10000
