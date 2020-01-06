@@ -2,22 +2,41 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>资产管理</title>
     <link href="/css/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="/Vue/css/toastr.css">
     <style type="text/css">
         table thead tr th {
             text-align: center;
         }
+        #searchDiv
+        {
+            width: 600px;
+            margin: 30px auto;
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
+    <div id="searchDiv" >
+        <div class="row" >
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input v-model="message"  type="text" style="width:300px; height:37px;"  class="form-control" placeholder="根据资产名称搜索">
+                    <span class="input-group-btn">
+                        <button @click="search" class="btn btn-default" type="button">根据资产名称搜索</button>
+                    </span>
+                    <input   v-show="result!=null" v-model="result" type="text" class="form-control col-md-6" placeholder="搜索结果">
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+    </div>
+
     <div style="padding:20px;" id="app">
         <div class="panel panel-primary">
             <!--            这里的部门管理要根据你自己功能改-->
             <div class="panel-heading">资产管理</div>
+
             <table class="table table-bordered table-hover table-striped text-center">
                 <thead>
                 <!--                下面也是动态改-->
@@ -34,7 +53,7 @@
                 <tbody>
                 <!--                row.xxxx   row后面写后端传过来的json对象属性-->
                 <template v-for="(row, index) of data ">
-<!--                    <tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">-->
+                    <!--                    <tr v-if="index>=(curpage-1)*pagesize&&index<curpage*pagesize">-->
                     <tr >
 
                         <td>{{row.assetId}}</td>
@@ -43,6 +62,13 @@
                         <td>{{row.assetSpecification}}</td>
                         <td>{{row.assetUnitPrice}}</td>
                         <td>{{row.assetInventory}}</td>
+                        <td>
+                            <!-- 按钮触发模态框 通过data-target="#updateDeptModal"，找到相对应的id的模态框 -->
+                            <button class="btn btn-primary " data-toggle="modal" data-target="#updateAssetModal" @click="LaunchUpdateAsset(index)">修改</button>
+                            <a @click="deleteAsset(index)" class="btn btn-danger">删除</a>
+                        </td>
+
+
                     </tr>
                 </template>
                 </tbody>
@@ -86,6 +112,33 @@
     </div><!-- /.modal -->
 </div>
 
+<!--修改部门模态框-->
+<!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
+<div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div  class="modal-content" id="updateAAssetModal">
+            <div  class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改资产</h4>
+            </div>
+            <div class="modal-body" >
+                资产名称：<input v-model="assetName" placeholder="资产名称"><hr>
+                资产类别：<input v-model="assetClasses" placeholder="资产类别"><hr>
+                资产规格：<input v-model="assetSpecification" placeholder="资产规格">
+                资产单价：<input v-model="assetUnitPrice" placeholder="资产单价"><hr>
+                资产库存：<input v-model="assetInventory" placeholder="资产库存"><hr>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="updateAAsset">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+
 <!--下面引用js文件，有点多，以后优化-->
 <script src="/Vue/js/jquery.js"></script>
 <script src="Vue/js/vue.js"></script>
@@ -107,6 +160,8 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     };
+
+
 </script>
 <script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
 <script src="/Vue/js/axios.js"></script>
@@ -114,6 +169,55 @@
 <script type="text/javascript">
 
 
+//    function checkForm1() {
+//        var assetName = $('#bmm');
+//        // alert(assetName);
+//        console.log(assetName);
+//
+//        if (assetName.val() == '' ) {
+//            layer.msg('资产名称不能为空且最多10个字符');
+//            bmm.focus();
+//            return false;
+//        }
+
+        // //部门地址
+        // var deptLoc = $('#deptLoc');
+        //
+        // if (deptLoc.val() == '' || deptLoc.val().length > 20) {
+        //     layer.msg('部门地址不能为空且最多20字符');
+        //     deptLoc.select();
+        //     return false;
+        // }
+
+    //     return true;
+    // }
+
+
+
+    let searchDiv = new Vue({
+        el:'#searchDiv',
+        data(){
+            return{
+                result:null,
+                message:null
+            }
+        },
+        methods:{
+            search: function () {
+                let tempData = vue.data;
+                for (let temp of tempData) {
+                    if (this.message == temp.assetName){
+                        toastr.success('成功找到！');
+                        toastr.info('id:'+temp.assetId+'   名称:'+temp.assetName+'   '+'库存:'+temp.assetInventory);
+                        this.result = 'id为'+temp.assetId+'   名字为'+temp.assetName+'  库存:'+temp.assetInventory;
+                        return;
+                    }
+                }
+                this.result=null;
+                toastr.error('未找到');
+            }
+        },
+    });
     let vue = new Vue({
         el: '#app',    //绑定元素
         data () {
@@ -124,19 +228,52 @@
                 // curpage: 1,             //当前页面，默认为第一页
                 // pageCount: null,        //页面总数
                 asset: null              //组件之间传递参数的对象，这里指的是data一个特定的dept，
-                                        // 要根据后端传来的json对象动态修改，这里后端传来的json对象为dept，故写为dept
+                // 要根据后端传来的json对象动态修改，这里后端传来的json对象为dept，故写为dept
             }
         },
         methods: {
 
+            deleteAsset: function (index) {
+                //使用let定义局部变量，获取删除部门的deptId
+                let assetId = this.data[index].assetId;
+                if(confirm('确定删除该资产吗？资产id为'+assetId)){
+                    // 发起ajax请求使后端进行删除操作并返回操作结果
+                    axios
+                        .post('/api/asset/delete/'+assetId)// 根据RestFul风格，以delete请求发送
+                        //这里使用了箭头函数，进一步简化了匿名函数的书写，获取response的data数据，若为1则表示删除成功
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        //出错处理，若出错请到控制台查看出错信息
+                        .catch(function(error){
+                            console.log(error);
+                        });
+                    this.data.splice(index,1);//删除选定的部门
+                }
+            },
+
+
+
+
+
             //获取所有部门方法，这是个保留方法，只将获取到的数据打印到控制台
             getAssets:function(){
+
                 axios
                     .post('/api/asset/query')
                     .then(response => console.log(response.data))
                     .catch(function(error) {
                         console.log(error);
                     });
+            },
+
+            LaunchUpdateAsset:function(index){
+                this.asset=(this.data[index]);
+                updateAAssetModal.assetId = this.asset.assetId;
+                updateAAssetModal.assetName = this.asset.assetName;
+                updateAAssetModal.assetClasses = this.asset.assetClasses;
+                updateAAssetModal.assetSpecification = this.asset.assetSpecification;
+                updateAAssetModal.assetUnitPrice = this.asset.assetUnitPrice;
+                updateAAssetModal.assetInventory = this.asset.assetInventory;
+
             },
 
 
@@ -152,6 +289,87 @@
                 });
         },
 
+        // updated:function () {
+        //     this.pageCount = Math.ceil(this.data.length / this.pagesize);
+        // }
+
+    });
+
+    let updateAAssetModal = new Vue({
+        el:'#updateAAssetModal',
+        data:{
+            //下面的数据要根据后端传过来的json对象动态改，一般初始化为null
+            assetId:null,
+            assetName:null,
+            assetClasses:null,
+            assetSpecification:null,
+            assetUnitPrice:null,
+            assetInventory:null,
+
+            index:null
+        },
+        methods:{
+            // 更新方法，使用put请求更新对象，参数放在请求体里，axios会自动将数据序列化为json对象
+
+            updateAAsset:function(){
+
+                var r = /^\+?[1-9][0-9]*$/;　　//正整数
+                var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                if(!this.assetName)
+                {
+                    toastr.error("资产名称不能为空");
+                }else if(!this.assetClasses){
+                    toastr.error("资产类别不能为空");
+                }else if(!this.assetSpecification){
+                    toastr.error("资产规格不能为空");
+                }else if(!this.assetUnitPrice||!r2.test(this.assetUnitPrice)){
+                    toastr.error("资产单价不能为空,且为正浮点数");
+                }else if(!this.assetInventory||!r.test(this.assetInventory)){
+                    toastr.error("资产库存不能为空，且为正整数");
+                }else {
+                    axios
+                        .post('/api/asset/update', {
+                            assetId: this.assetId,
+                            assetName: this.assetName,
+                            assetClasses: this.assetClasses,
+                            assetSpecification: this.assetSpecification,
+                            assetUnitPrice: this.assetUnitPrice,
+                            assetInventory: this.assetInventory
+                        })
+                        .then(function (response) {
+                            //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
+                            if (response.data == 1) {
+                                toastr.success('修改资产成功');
+                                vue.data[this.index].assetName = this.assetName;
+                                vue.data[this.index].assetClasses = this.assetClasses;
+                                vue.data[this.index].assetSpecification = this.assetSpecification;
+                                vue.data[this.index].assetUnitPrice = this.assetUnitPrice;
+                                vue.data[this.index].assetInventory = this.assetInventory;
+
+
+                                $('#addAssetModal').modal({
+                                    show: false
+                                });//这里使用Jquery不生效，来个大佬改bug啊！
+                            } else {
+                                toastr.error('修改资产失败，请联系管理员');
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    // vue.data[this.index].assetName=this.assetName;
+                    // vue.data[this.index].assetClasses=this.assetClasses;
+                    // vue.data[this.index].assetSpecification=this.assetSpecification;
+                    // vue.data[this.index].assetUnitPrice=this.assetUnitPrice;
+                    // vue.data[this.index].assetInventory=this.assetInventory;
+                    setTimeout(function () {
+                        window.location.href = "/AddAsset";
+                        // window.location.href = "/fy";
+                    }, 1000);
+                }
+
+            }
+        }
     });
 
     let addAsset = new Vue({
@@ -167,23 +385,42 @@
         },
         methods:{
             addAAsset:function (){
-                axios
-                    .post('/api/asset/add',{
+                var r = /^\+?[1-9][0-9]*$/;　　//正整数
+                var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
 
-                        assetName:this.bmm,
-                        assetClasses:this.bml,
-                        assetSpecification:this.bmg,
-                        assetUnitPrice:this.bmd,
-                        assetInventory:this.bmk
+                if(!this.bmm)
 
-                    })
-                    .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                setTimeout(function () {
-                    window.location.href = "/AddAsset";
-                },1000);
+                {
+                    toastr.error("资产名称不能为空");
+                }else if(!this.bml){
+                    toastr.error("资产类别不能为空");
+                }else if(!this.bmg){
+                    toastr.error("资产规格不能为空");
+                }else if(!this.bmd||!r2.test(this.bmd)){
+                // }else if(!this.bmd){
+                    toastr.error("资产单价不能为空,且为正浮点数");
+                }else if(!this.bmk||!r.test(this.bmk)){
+                    toastr.error("资产库存不能为空,且为正整数");
+                }else {
+                    axios
+                        .post('/api/asset/add', {
+
+                            assetName: this.bmm,
+                            assetClasses: this.bml,
+                            assetSpecification: this.bmg,
+                            assetUnitPrice: this.bmd,
+                            assetInventory: this.bmk
+
+                        })
+                        .then(response => response.data == 1 ? (toastr.success('添加成功')) : toastr.error('失败'))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    setTimeout(function () {
+                        window.location.href = "/AddAsset";
+                        // window.location.href = "/fy";
+                    }, 1000);
+                }
             }
         }
     });

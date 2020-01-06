@@ -158,8 +158,16 @@
             }
             var consumeNumber = $('#consumeNumber');
 
-            if (consumeNumber.val() == '') {
-                layer.msg('消耗数量不能为空');
+
+            var r = /^\+?[1-9][0-9]*$/;　　//正整数
+            // String str = "123";
+            // boolean flag=r.test(str);
+            // 如果判断为正整数，则flag为true
+
+            if (consumeNumber.val() == ''||!r.test(consumeNumber.val()))
+
+            {
+                layer.msg('消耗数量不能为空,且为正整数');
                 consumeNumber.select();
                 return false;
             }

@@ -40,7 +40,7 @@ public class URLController {
 //zhanghan
     @RequestMapping("/AddAsset")
     public String AddAsset(){
-            return "asset/AddAsset23";
+            return "asset/AddAsset";
     }
     @RequestMapping("/AddConsume")
     public String AddConsume(){
