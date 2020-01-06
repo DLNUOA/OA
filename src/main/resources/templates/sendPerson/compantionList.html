@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>合作公司列表</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #queryId {
+            color: #0f0f0f;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                外派人才库 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./peopleSendList.html">外派人员列表</a></li>
+                <li><a href="./compantionList.html">合作公司列表</a></li>
+                <li><a href="./comDemandList.html">公司需求列表</a></li>
+                <li><a href="./sendReordList.html">外派记录显示</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover " id='comList'>
+            <caption>
+                <h1 align="center">合作公司信息列表</h1>
+            </caption>
+            <thead>
+            <tr>
+                <td>公司编号</td>
+                <td>公司名称</td>
+                <td>联系人姓名</td>
+                <td>联系人电话</td>
+                <td>联系人QQ</td>
+                <td>备注</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody >
+            <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+            <tr v-for="(com,index) of comList"  v-bind:key = 'com.comId' >
+                <td>{{com.comId}}</td>
+                <td>{{com.comName}}</td>
+                <td>{{com.comLinkmanName}}</td>
+                <td>{{com.comLinkmanPhone}}</td>
+                <td>{{com.comLinkmanQq}}</td>
+                <td>{{com.comInfo}}</td>
+                <td>
+                    <!-- 按钮触发模态框 -->
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#queryDemandModal" @click="queryDemand(index)">查看需求</button>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateComModal" @click="LaunchUpdateCom(index)">修改</button>
+                    <a @click="deleteCom(index)" class="btn btn-danger btn-sm">删除</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-success " data-toggle="modal" data-target="#addComModal">增加合作公司</button>
+    </div>
+</div>
+
+<!-- 添加合作公司模态框（Modal） -->
+<div class="modal fade" id="addComModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="addCom">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelAdd">添加外派人员信息</h4>
+            </div>
+            <div class="modal-body" >
+                公司  名称：<input v-model="comName" placeholder="公司名称"><hr>
+                联系人姓名：<input v-model="comLinkmanName" placeholder="联系人姓名"><hr>
+                联系人电话：<input v-model="comLinkmanPhone" placeholder="联系人电话"><hr>
+                联系人  QQ：<input v-model="comLinkmanQq" placeholder="联系人QQ"><hr>
+                备      注：<input v-model="comInfo" placeholder="备注"><hr>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="add">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 修改外派人员信息模态框（Modal） -->
+<div class="modal fade" id="updateComModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="updateCom">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改合作公司信息</h4>
+            </div>
+            <div class="modal-body" >
+                公司  编号：<input v-model="comId" placeholder="公司编号"><hr>
+                公司  名称：<input v-model="comName" placeholder="公司名称"><hr>
+                联系人姓名：<input v-model="comLinkmanName" placeholder="联系人姓名"><hr>
+                联系人电话：<input v-model="comLinkmanPhone" placeholder="联系人电话"><hr>
+                联系人  QQ：<input v-model="comLinkmanQq" placeholder="联系人QQ"><hr>
+                备      注：<input v-model="comInfo" placeholder="备注"><hr>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="update">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- 公司需求信息模态框（Modal） -->
+<div class="modal fade" id="queryDemandModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="queryId">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" >
+                <table class="table table-hover " id='queryIdList'>
+                    <caption>
+                        <h1 align="center">此公司需求信息列表</h1>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <td>公司编号</td>
+                        <td>公司名称</td>
+                        <td>职位需求</td>
+                        <td>工作类型</td>
+                        <td>工资/月</td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+                    <tr v-for="(dem,index) of list"  v-bind:key = 'dem.demId' >
+                        <td>{{dem.dem_id}}</td>
+                        <td>{{dem.com_name}}</td>
+                        <td>{{dem.dem_job}}</td>
+                        <td>{{dem.dem_job_type}}</td>
+                        <td>{{dem.dem_salay}}</td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/layer/layer.js"></script>
+<script src="/Vue/js/toastr.min.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var updateCom = new Vue({
+        el:'#updateCom',
+        data:{
+            comId:'',
+            comName:'',
+            comLinkmanName:'',
+            comLinkmanPhone:'',
+            comLinkmanQq:'',
+            comInfo:''
+        },
+        methods:{
+            update:function(){
+                this.spstate=$("input[type='radio']:checked").val();
+                axios
+                    .put(host+'/api/com/update/',{
+                        comId:this.comId,
+                        comName:this.comName,
+                        comLinkmanName:this.comLinkmanName,
+                        comLinkmanPhone:this.comLinkmanPhone,
+                        comLinkmanQq:this.comLinkmanQq,
+                        comInfo:this.comInfo
+                    })
+                    .then( response => response.data ==1 ? ( toastr.success('合作公司信息修改成功') ) : ( toastr.error('合作公司修改信息失败，请联系管理员') ) )
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                setTimeout(function(){
+                    window.location.href="compantionList.html";
+                },1000);
+            }
+        }
+    });
+
+    //添加
+    var addPeople = new Vue({
+        el:'#addCom',
+        data:{
+            comName:'',
+            comLinkmanName:'',
+            comLinkmanPhone:'',
+            comLinkmanQq:'',
+            comInfo:''
+        },
+        methods: {
+            add:function (){
+                if(!this.comName) {
+                    toastr.error("公司名称不能为空");
+                } else if(!this.comLinkmanName) {
+                    toastr.error("联系人姓名不能为空");
+                } else if(!this.comLinkmanPhone) {
+                    toastr.error("联系人电话不能为空");
+                } else if(!this.comLinkmanQq) {
+                    toastr.error("联系人QQ不能为空");
+                } else {
+                    axios
+                        .post(host+'/api/com/add',{
+                            comName:this.comName,
+                            comLinkmanName:this.comLinkmanName,
+                            comLinkmanPhone:this.comLinkmanPhone,
+                            comLinkmanQq:this.comLinkmanQq,
+                            comInfo:this.comInfo
+                        })
+                        .then(function (response) {
+
+                            if(response.data == 1){
+                                toastr.success('合作公司信息增加成功');
+                                setTimeout(function(){
+                                    window.location.href="compantionList.html";
+                                },1000);
+
+                            }else{
+                                toastr.success('合作公司信息增加失败，请联系管理员');
+                            }
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+
+                }
+            }
+        },
+    });
+
+    var queryId = new Vue({
+       el:'#queryId',
+       data:{
+           list:null
+       }
+    });
+
+    var queryList = new Vue({
+        el:'#comList',
+        data () {
+            return {
+                comList: null,
+                com:null,
+                change:null,
+                list:null
+            }
+        },
+        methods:{
+            query: function () {
+                //当Vue实例挂载完成时，自动调用后端接口获取所有合作公司人员数据并且将数据渲染到html
+                axios
+                    .get(host+'/api/com/query')
+                    .then(response => (this.comList = response.data))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            },
+            LaunchUpdateCom:function (index) {
+                let spId = this.comList[index].spId;
+                this.com=(this.comList[index]);
+                updateCom.comId = this.com.comId;
+                updateCom.comName = this.com.comName;
+                updateCom.comLinkmanName = this.com.comLinkmanName;
+                updateCom.comLinkmanPhone = this.com.comLinkmanPhone;
+                updateCom.comLinkmanQq = this.com.comLinkmanQq;
+                updateCom.comInfo = this.com.comInfo;
+            },
+
+            deleteCom:function (index) {
+                //使用let定义局部变量
+                let comId = this.comList[index].comId;
+                if(confirm('确定删除该外派人员信息吗？')){
+                    this.comList.splice(index,1);
+                    axios
+                        .delete(host+'/api/comC/delete/'+comId)
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            },
+
+            queryDemand:function (index) {
+                let comId = this.comList[index].comId;
+                axios
+                    .get(host+'/api/com/queryComById/'+comId)
+                    .then(function (response) {
+                        queryId.list=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+
+            }
+        },
+        mounted() {
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>

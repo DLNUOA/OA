@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>外派记录</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #updateDem {
+            color: #0f0f0f;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                外派人才库 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./peopleSendList.html">外派人员列表</a></li>
+                <li><a href="./compantionList.html">合作公司列表</a></li>
+                <li><a href="./comDemandList.html">公司需求列表</a></li>
+                <li><a href="./sendReordList.html">外派记录显示</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover " id='queryDemList'>
+            <caption>
+                <h1 align="center">外派情况列表</h1>
+            </caption>
+            <thead>
+            <tr>
+                <td>外派编号</td>
+                <td>员工编号</td>
+                <td>公司编号</td>
+                <td>员工姓名</td>
+                <td>公司名称</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody >
+            <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+            <tr v-for="(send,index) of sendList"  v-bind:key = 'send.sendId' >
+                <td>{{send.sendId}}</td>
+                <td>{{send.sendSpId}}</td>
+                <td>{{send.sendComId}}</td>
+                <td>{{send.sendPeopleName}}</td>
+                <td>{{send.sendComName}}</td>
+                <td>
+                    <a @click="deleteSend(index)" class="btn btn-danger btn-sm">删除</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-success " onclick="addNewSend()">增加新的外派</button>
+    </div>
+</div>
+
+<script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/layer/layer.js"></script>
+<script src="/Vue/js/toastr.min.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script>
+
+   function addNewSend(){
+       window.location.href='addNewSendList.html';
+   }
+    var queryList = new Vue({
+        el:'#queryDemList',
+        data () {
+            return {
+                sendList: null,
+            }
+        },
+        methods:{
+            //查询全部
+            query: function () {
+                //当Vue实例挂载完成时，自动调用后端接口获取所有合作公司人员数据并且将数据渲染到html
+                axios
+                    .get(host+'/api/sendList/query')
+                    .then(response => (this.sendList = response.data))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            },
+
+            //删除
+            deleteSend:function (index) {
+                //使用let定义局部变量
+                let sendId = this.sendList[index].sendId;
+                if(confirm('确定删除该外派人员信息吗？')){
+                    this.sendList.splice(index,1);
+                    axios
+                        .delete(host+'/api/sendList/delete/'+sendId)
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        },
+        mounted() {
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.omg.CORBA.OBJ_ADAPTER;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -18,17 +19,17 @@ import java.util.Map;
 @Mapper
 public interface CarRentMapper {
 
-    //查询派车记录
+    //查询派车记录//left join才对  空余时间改一下
     @Select("SELECT r.* ,e.*, c.* FROM rent_list r  INNER JOIN emp e ON r.`rent_emp_id`=e.`emp_id` INNER JOIN car c ON r.`rent_car_id`=c.`car_id`")
     List<Map<String,Object>> queryByState();
 
-    //待派车列表
-    @Select("SELECT c.*, e.*, e2.* FROM car_rent c INNER JOIN emp e ON c.`emp_apply_id`=e.`emp_id` LEFT OUTER JOIN emp e2 ON c.`emp_checkman_id`=e2.`emp_id` WHERE car_rent_state=0")
-    List<Map<String, Object>> queryCarRentList();
-
-    //查询租车人和审批人的ID
+    //查询租车人和审批人的ID(派车中)
     @Select("SELECT * FROM car_rent WHERE car_rent_state = 0")
     List<Map<String,Object>> queryPeopleId();
+
+    //查询租车人和审批人的ID(审批中)
+    @Select("SELECT * FROM car_rent WHERE car_rent_state = 1")
+    List<Map<String,Object>> queryPeopleId2();
 
     //查询员工的ID和姓名
     @Select("SELECT emp_id, emp_name FROM emp")
@@ -66,4 +67,9 @@ public interface CarRentMapper {
     @Insert("INSERT INTO rent_car VALUES(default, #{carRentLine}, #{carRentInfo}, #{carApplyTime}, #{carRentStime}, #{carRentOtime}," +
             "1,0,#{empApplyId},#{empCheckmanId})")
     int insertApply(Map<String, Object> apply);
+
+    //个人中心查询自己的申请租车列表
+    @Select("SELECT c.*, e.emp_name FROM car_rent c INNER JOIN emp e ON c.`emp_apply_id`=e.`emp_id` WHERE emp_apply_id=#{empApplyId}")
+    List<Map<String,Object>> queryListSelf(int empApplyId);
+
 }

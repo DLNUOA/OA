@@ -29,4 +29,12 @@ public class CarRentMapperTest {
 //        mapper.updateCarState(6);
 //    }
 
+    @Test
+    public void testQuerySelf() {
+        List<Map<String,Object>> list = mapper.queryListSelf(10);
+        for(Map<String,Object> map : list) {
+            System.out.println(map);
+        }
+    }
+
 }

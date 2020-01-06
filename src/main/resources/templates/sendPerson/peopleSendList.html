@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>外派人员信息列表</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #queryNameModal {
+            color: #0f0f0f;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                外派人才库 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./peopleSendList.html">外派人员列表</a></li>
+                <li><a href="./compantionList.html">合作公司列表</a></li>
+                <li><a href="./comDemandList.html">公司需求列表</a></li>
+                <li><a href="./sendReordList.html">外派记录显示</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover " id='peopleList'>
+            <caption>
+                <h1 align="center">外派人员信息列表</h1>
+                <div class="input-group">
+                    <input type="text" id="keyword" name="keyword" placeholder="请输入员工的姓名" value="" class="form-control">
+                    <span class="input-group-btn">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#queryNameModal" @click="serchByName">全文检索</button>
+                </span>
+                </div>
+            </caption>
+            <thead>
+            <tr>
+                <td>员工编号</td>
+                <td>员工姓名</td>
+                <td>教育经历</td>
+                <td>工作经验</td>
+                <td>技能特长</td>
+                <td>户口</td>
+                <td>工资/月</td>
+                <td>人才状态</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody >
+            <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+            <tr v-for="(send,index) of sendList"  v-bind:key = 'send.spId' >
+                <td>{{send.spId}}</td>
+                <td>{{send.spName}}</td>
+                <td>{{send.spEdu}}</td>
+                <td>{{send.spWork}}</td>
+                <td>{{send.spAbility}}</td>
+                <td>{{send.spLoc}}</td>
+                <td>{{send.spSalay}}</td>
+                <td>{{send.spState==0?'闲置中':'已外派'}}</td>
+                <td>
+                    <!-- 按钮触发模态框 -->
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updatePeopleModal" @click="LaunchUpdatePeople(index)">修改</button>
+                    <a @click="deletePeople(index)" class="btn btn-danger btn-sm">删除</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-success " data-toggle="modal" data-target="#addPeopleModal">增加外派人员</button>
+    </div>
+</div>
+
+<!-- 添加外派人员信息模态框（Modal） -->
+<div class="modal fade" id="addPeopleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="addPeople">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelAdd">添加外派人员信息</h4>
+            </div>
+            <div class="modal-body" >
+                员工姓名：<input v-model="spname" placeholder="员工姓名"><hr>
+                教育经历：<input v-model="spedu" placeholder="教育经历"><hr>
+                工作经验：<input v-model="spwork" placeholder="工作经验"><hr>
+                技能特长：<input v-model="spability" placeholder="技能特长"><hr>
+                户口：     <input v-model="sploc" placeholder="户口"><hr>
+                工资/月：<input v-model="spsalay" placeholder="工资/月"><hr>
+                <div  id="stateAdd">
+                    外派状态：
+                    <label for="radio1" class="radio-inline">
+                        <input type="radio"  name="assemp.available" value="0">闲置中</label>
+
+                    <label for="radio2" class="radio-inline">
+                        <input type="radio"  name="assemp.available" value="1">外派中</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="add">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 修改外派人员信息模态框（Modal） -->
+<div class="modal fade" id="updatePeopleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="updatePeople">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改外派人员信息</h4>
+            </div>
+            <div class="modal-body" >
+                员工编号：<input v-model="spid" placeholder="员工编号"><hr>
+                员工姓名：<input v-model="spname" placeholder="员工姓名"><hr>
+                教育经历：<input v-model="spedu" placeholder="教育经历"><hr>
+                工作经验：<input v-model="spwork" placeholder="工作经验"><hr>
+                技能特长：<input v-model="spability" placeholder="技能特长"><hr>
+                户口：     <input v-model="sploc" placeholder="户口"><hr>
+                工资/月：<input v-model="spsalay" placeholder="工资/月"><hr>
+                <div  id="state">
+                    外派状态：
+                    <label for="radio1" class="radio-inline">
+                        <input type="radio" id="radio1" name="assemp.available" value="0">闲置中</label>
+
+                    <label for="radio2" class="radio-inline">
+                        <input type="radio" id="radio2" name="assemp.available" value="1">外派中</label>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="update">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 检索人员信息模态框（Modal） -->
+<div class="modal fade" id="queryNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="queryName">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" >
+                <table class="table table-hover " id='peopleNameList'>
+                    <caption>
+                        <h1 align="center">检索到的信息列表</h1>
+                    </caption>
+                    <thead>
+                    <tr>
+                        <td>员工编号</td>
+                        <td>员工姓名</td>
+                        <td>教育经历</td>
+                        <td>工作经验</td>
+                        <td>技能特长</td>
+                        <td>户口</td>
+                        <td>工资/月</td>
+                        <td>人才状态</td>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+                    <tr v-for="(send,index) of list"  v-bind:key = 'send.spId' >
+                        <td>{{send.spId}}</td>
+                        <td>{{send.spName}}</td>
+                        <td>{{send.spEdu}}</td>
+                        <td>{{send.spWork}}</td>
+                        <td>{{send.spAbility}}</td>
+                        <td>{{send.spLoc}}</td>
+                        <td>{{send.spSalay}}</td>
+                        <td>{{send.spState==0?'闲置中':'已外派'}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/layer/layer.js"></script>
+<script src="/Vue/js/toastr.min.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var updatePeople = new Vue({
+        el:'#updatePeople',
+        data:{
+            spid:'',
+            spname:'',
+            spedu:'',
+            spwork:'',
+            spability:'',
+            sploc:'',
+            spsalay:'',
+            spstate:''
+        },
+        methods:{
+            update:function(){
+                this.spstate=$("input[type='radio']:checked").val();
+                axios
+                        .post(host+'/api/send/update/',{
+                            spId:this.spid,
+                            spName:this.spname,
+                            spEdu:this.spedu,
+                            spWork:this.spwork,
+                            spAbility:this.spability,
+                            spLoc:this.sploc,
+                            spSalay:this.spsalay,
+                            spState:this.spstate
+                        })
+                        .then( response => response.data ==1 ? ( toastr.success('外派人员信息修改成功') ) : ( toastr.error('外派人员修改信息失败，请联系管理员') ) )
+                        .catch(function(error) {
+                            console.log(error);
+                        });
+                    setTimeout(function(){
+                        window.location.href="peopleSendList.html";
+                    },1000);
+            }
+        }
+    });
+
+    //添加
+    var addPeople = new Vue({
+        el:'#addPeople',
+        data:{
+            spname:'',
+            spedu:'',
+            spwork:'',
+            spability:'',
+            sploc:'',
+            spsalay:'',
+            spstate:''
+        },
+        methods: {
+            add:function (){
+                this.spstate=$("input[type='radio']:checked").val();
+                    if(!this.spname) {
+                        toastr.error("外派人员姓名不能为空");
+                    } else if(!this.spedu) {
+                        toastr.error("教育经历不能为空");
+                    } else if(!this.spwork) {
+                        toastr.error("工作经验不能为空");
+                    } else if(!this.spability) {
+                        toastr.error("技能特长不能为空");
+                    } else if(!this.sploc) {
+                        toastr.error("户口不能为空");
+                    }else if(!this.spsalay) {
+                        toastr.error("工资不能为空");
+                    } else {
+                        axios
+                            .post(host+'/api/send/add',{
+                                spId:this.spid,
+                                spName:this.spname,
+                                spEdu:this.spedu,
+                                spWork:this.spwork,
+                                spAbility:this.spability,
+                                spLoc:this.sploc,
+                                spSalay:this.spsalay,
+                                spState:this.spstate
+                            })
+                            .then(function (response) {
+
+                                if(response.data == 1){
+                                    toastr.success('增加车辆信息成功');
+                                    setTimeout(function(){
+                                        window.location.href="peopleSendList.html";
+                                    },1000);
+
+                                }else{
+                                    toastr.success('增加车辆信息失败，请联系管理员');
+                                }
+                            })
+                            .catch(function(error) {
+                                console.log(error);
+                            })
+
+                    }
+            }
+        },
+    });
+
+    var queryName = new Vue({
+       el:'#queryName',
+       data:{
+           list:null
+       }
+    });
+
+    var queryList = new Vue({
+        el:'#peopleList',
+        data () {
+            return {
+                sendList: null,
+                send:null,
+                change:null,
+                list:null
+            }
+        },
+        methods:{
+            query: function () {
+                //当Vue实例挂载完成时，自动调用后端接口获取所有外派人员数据并且将数据渲染到html
+                axios
+                    .get(host+'/api/send/query')
+                    .then(response => (this.sendList = response.data))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            },
+            serchByName:function () {
+                var spName = document.getElementById('keyword').value;
+                axios
+                    .post(host+'/api/send/queryByName', {
+                        spName:spName
+                    })
+                    .then(function (response) {
+                        queryName.list= response.data;
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            LaunchUpdatePeople:function (index) {
+                let spId = this.sendList[index].spId;
+                this.send=(this.sendList[index]);
+                if(this.send.spState == 0){
+                    this.change = $('input:radio:first').attr('checked', 'checked');
+                } else if(this.send.spState==1) {
+                    this.change=$('input:radio').eq(1).attr('checked', 'true');
+                }
+                updatePeople.spid = this.send.spId;
+                updatePeople.spname = this.send.spName;
+                updatePeople.spedu = this.send.spEdu;
+                updatePeople.spwork = this.send.spWork;
+                updatePeople.spability = this.send.spAbility;
+                updatePeople.sploc = this.send.spLoc;
+                updatePeople.spsalay = this.send.spSalay;
+                updatePeople.spstate = $('input:radio:checked').val();
+            },
+            deletePeople:function (index) {
+                //使用let定义局部变量
+                let spId = this.sendList[index].spId;
+                if(confirm('确定删除该外派人员信息吗？')){
+                    this.sendList.splice(index,1);
+                    axios
+                        .delete(host+'/api/send/delete/'+spId)
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        },
+        mounted() {
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>

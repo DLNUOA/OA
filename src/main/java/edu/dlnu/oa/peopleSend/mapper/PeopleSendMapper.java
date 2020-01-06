@@ -22,20 +22,20 @@ public interface PeopleSendMapper {
     int insert(ComSendPeople csp);
 
     //删除外派人员信息
-    @Delete("DELETE FROM com_send_people sp_id = #{spId}")
+    @Delete("DELETE FROM com_send_people WHERE sp_id=#{spId}")
     int delete(int spId);
 
     //修改外派人员信息
     @Update("UPDATE com_send_people SET sp_name=#{spName}, sp_edu=#{spEdu}, sp_work=#{spWork}, sp_ability=#{spAbility}, sp_loc=#{spLoc}," +
-            "sp_salay=#{apSalay}, sp_state=#{spState}")
-    int update(ComSendPeople csp);
+            "sp_salay=#{spSalay}, sp_state=#{spState} WHERE sp_id=#{spId}")
+    int update(Map<String,Object> csp);
 
     //根据ID搜索员工信息
     @Select("SELECT * FROM com_send_people WHERE sp_id=#{spId}")
     ComSendPeople queryById(int spId);
 
-    //根据姓名搜素人员信息
-    @Select("SELECT * FROM com_send_people WHERE sp_name=#{spName}")
-    ComSendPeople queryByName(String spName);
+    //根据姓名搜素人员信息 模糊查询
+    @Select("SELECT * FROM com_send_people WHERE sp_name LIKE concat('%',#{spName},'%')")
+    List<ComSendPeople> queryByName(String spName);
 
 }
