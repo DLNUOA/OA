@@ -1,24 +1,13 @@
 package edu.dlnu.oa.asset.pojo;
 
+public class Asset {
+    private Integer assetId;//资产编号
+    private String assetName;//资产名称
+    private  String assetClasses;//资产类别
+    private  String assetSpecification;//资产规格（个，本，台）
+    private  double assetUnitPrice;//资产单价
+    private  Integer assetInventory;//资产库存数量
 
-
-public class Asset{
-
-    private Integer assetId;
-    private String assetName;
-    private String assetClasses;
-    private String assetSpecification;
-    private double assetUnitPrice;
-    private Integer assetInventory;
-
-    public Asset(Integer assetId, String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
-        this.assetId = assetId;
-        this.assetName = assetName;
-        this.assetClasses = assetClasses;
-        this.assetSpecification = assetSpecification;
-        this.assetUnitPrice = assetUnitPrice;
-        this.assetInventory = assetInventory;
-    }
 
     public Asset() {
     }
@@ -33,6 +22,15 @@ public class Asset{
     }
 
     public Asset(String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
+        this.assetName = assetName;
+        this.assetClasses = assetClasses;
+        this.assetSpecification = assetSpecification;
+        this.assetUnitPrice = assetUnitPrice;
+        this.assetInventory = assetInventory;
+    }
+
+    public Asset(Integer assetId, String assetName, String assetClasses, String assetSpecification, double assetUnitPrice, Integer assetInventory) {
+        this.assetId = assetId;
         this.assetName = assetName;
         this.assetClasses = assetClasses;
         this.assetSpecification = assetSpecification;
@@ -87,6 +85,7 @@ public class Asset{
     public void setAssetInventory(Integer assetInventory) {
         this.assetInventory = assetInventory;
     }
+
     @Override
     public String toString() {
         return "Asset{" +
@@ -99,4 +98,3 @@ public class Asset{
                 '}';
     }
 }
-

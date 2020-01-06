@@ -2,6 +2,9 @@ package edu.dlnu.oa.common.controller;
 
 import edu.dlnu.oa.common.service.LoginValidService;
 import edu.dlnu.oa.emp.pojo.Emp;
+import edu.dlnu.oa.utils.JwtUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -23,25 +26,33 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @RestController
 public class LoginController {
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private LoginValidService loginValidService;
     @RequestMapping(value = "/userLogin",method = POST)
-    public int LoginValid(@RequestBody Map<String,String> loginInfo, HttpServletRequest request){
+    public Map<String,Object> LoginValid(@RequestBody Map<String,String> loginInfo, HttpServletRequest request){
         List<Emp> emps = loginValidService.loginValid(loginInfo);
+        Map<String,Object> info = new HashMap<>();
         if (emps.size()==1){
             HttpSession session = request.getSession();
             Emp emp = emps.get(0);
             session.setAttribute("empId",emp.getEmpId());
             session.setAttribute("empName",emp.getEmpName());
             session.setAttribute("empRoleId",emp.getEmpRoleId());
-            return 1;
+            String token = JwtUtils.generateToken(emp.getEmpName(), emp.getEmpId(), emp.getEmpRoleId());
+            info.put("result","1");
+            info.put("token",token);
         }else {
-            return 0;
+            info.put("result","0");
         }
+        return info;
     }
     @GetMapping("/sessionInfo")
     public Map<String,Object> getSessionInfo(HttpServletRequest request, HttpServletResponse response){
         Map<String,Object> sessionInfo = new HashMap<>();
+        String token = request.getHeader("Authorization");
+//        JwtUtils.validateToken(token);
+//        log.info(token);
         Object empName = request.getSession().getAttribute("empName");
         if (empName==null){
             sessionInfo.put("empName",null);

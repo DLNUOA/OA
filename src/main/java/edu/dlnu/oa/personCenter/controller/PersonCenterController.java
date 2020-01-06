@@ -4,15 +4,18 @@ import edu.dlnu.oa.personCenter.dto.SaveUpdateDto;
 import edu.dlnu.oa.personCenter.service.PersonCenterService;
 import edu.dlnu.oa.utils.MailUtils;
 import edu.dlnu.oa.utils.RedisUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +141,90 @@ public class PersonCenterController {
         return personCenterService.getAB();
     }
 
+    /**
+     *导出通讯录到excel
+     * @author Wuhan
+     * @date 2019/10/27
+     * @param response 功能是将excel格数据以二进制流输出
+     * @param request 得到session，获取教师id，这个导出成绩表的功能是只返回教师所教的学生的信息
+     * @throws IOException
+     */
+    @GetMapping("/getABExcel")
+    @ResponseBody
+    public void export(HttpServletResponse response,HttpServletRequest request) throws IOException {
+
+        List<Map<String, Object>> ab = personCenterService.getAB();
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("公司通讯录");
+        HSSFCellStyle yellowStyle = wb.createCellStyle();
+        yellowStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        yellowStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        HSSFCellStyle redStyle = wb.createCellStyle();
+        redStyle.setFillForegroundColor(IndexedColors.RED.getIndex());
+        redStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        HSSFRow row = null;
+        row = sheet.createRow(0);//创建第一个单元格
+        row.setHeight((short)(20*20));
+        row.createCell(0).setCellValue("姓名 ");
+        row.createCell(1).setCellValue("登陆名");
+        row.createCell(2).setCellValue("性别");
+        row.createCell(3).setCellValue("赞数");
+        row.createCell(4).setCellValue("无语数");
+        row.createCell(5).setCellValue("入职日期");
+        row.createCell(6).setCellValue("职位");
+        row.createCell(7).setCellValue("部门");
+        row.createCell(8).setCellValue("电话");
+        row.createCell(9).setCellValue("电子邮箱");
+
+
+
+        //表格第一行设置完成，接下来就是取数据了
+        for(int v=0;v<ab.size();v++) {
+            row = sheet.createRow(v + 1);
+            Map<String,Object> map = ab.get(v);
+            HSSFCell cell = row.createCell(0);
+            String s = (String) map.get("NAME");
+            cell.setCellValue(s);
+            HSSFCell cell1 = row.createCell(1);
+            HSSFCell cell2 = row.createCell(2);
+            HSSFCell cell3 = row.createCell(3);
+            HSSFCell cell4 = row.createCell(4);
+            HSSFCell cell5 = row.createCell(5);
+            HSSFCell cell6 = row.createCell(6);
+            HSSFCell cell7 = row.createCell(7);
+            HSSFCell cell8 = row.createCell(8);
+            HSSFCell cell9 = row.createCell(9);
+            cell1.setCellValue( map.get("login_name").toString());
+            cell2.setCellValue( map.get("gender").toString());
+            cell3.setCellValue( map.get("like_count").toString());
+            cell4.setCellValue( map.get("dislike_count").toString());
+            cell5.setCellValue(map.get("hiredate").toString());
+            cell6.setCellValue(map.get("job_name").toString());
+            cell7.setCellValue(map.get("dept_name").toString());
+            cell8.setCellValue(map.get("tel").toString());
+            cell9.setCellValue(map.get("email").toString());
+
+
+
+            sheet.setDefaultRowHeight((short) (16.5 * 20));
+        }
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        OutputStream os = response.getOutputStream();
+        response.setHeader("Content-disposition", "attachment;filename=AddressBook.xls");//默认Excel名称
+        wb.write(os);
+        os.flush();
+        os.close();
+    }
+
+
+
+
+
+
+
+
+
     @PostMapping("/leaveRequest")
     public int LaunchALeaveRequest(HttpServletRequest request,@RequestBody Map<String,Object> leaveRequestInfo ){
 
@@ -171,6 +258,151 @@ public class PersonCenterController {
         return personCenterService.getDeptManagerLeaveRequest(id);
     }
 
+
+    @PutMapping("/like/{empId}")
+    public int likeEmp(@PathVariable("empId") Integer empId,HttpServletRequest request){
+        return personCenterService.likeEmp(empId);
+    }
+
+    @PutMapping("/dislike/{empId}")
+    public int dislikeEmp(@PathVariable("empId") Integer empId,HttpServletRequest request){
+        return personCenterService.dislikeEmp(empId);
+    }
+
+    @GetMapping("/evaluate")
+    public List<Map<String,Object>> getEvaluate(HttpServletRequest request){
+        return personCenterService.getEvaluate();
+    }
+
+    /**
+     * 用户获取所有报销申请
+     * @param request
+     * @return
+     */
+    @GetMapping("/baoXiaoApplyLog")
+    public List<Map<String,Object>> getBaoXiaoApplyLog(HttpServletRequest request){
+        int empId = (int) request.getSession().getAttribute("empId");
+
+        return personCenterService.getBaoXiaoApplyLogByEmpId(empId);
+    }
+
+    /**
+     * 用户获取特定的报销申请
+     * @param request
+     * @param id
+     * @return
+     */
+    @GetMapping("/baoXiaoApplyLogJiLu/{id}")
+    public Map<String,Object> getBaoXiaoApplyLogJilu(HttpServletRequest request,@PathVariable("id") int id){
+        return personCenterService.getBaoXiaoApplyLogJilu(id);
+    }
+
+    /**
+     * 用户提交报销申请
+     * @param request
+     * @param info
+     * @return
+     */
+    @PostMapping("/baoXiaoApply")
+    public int postABaoXiaoApply(HttpServletRequest request,@RequestBody Map<String,Object> info){
+        int empId = (int) request.getSession().getAttribute("empId");
+        String purpose = info.get("purpose").toString();
+        String amount = info.get("amount").toString();
+        int deptMId =  personCenterService.findDeptMByEmpId(empId);
+        int cashId = personCenterService.findCashIdByEmpId(empId);
+        personCenterService.postABaoXiaoApply(empId, purpose, amount, deptMId, cashId);
+        int claimId = personCenterService.getMaxClaimIdByEmpId(empId);
+        personCenterService.postABaoXiaoApplyToLog(claimId);
+        return 1;
+    }
+
+    /**
+     * 部门经理获取所有的报销记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/deptBaoXiaoApply")
+    public List<Map<String,Object>> getDeptBaoXiaoApply(HttpServletRequest request){
+        int empId = (int) request.getSession().getAttribute("empId");
+        return personCenterService.getDeptBaoXiaoApply(empId);
+    }
+
+    /**
+     *采纳获取所有的报销记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/cashBaoXiaoApply")
+    public List<Map<String,Object>> getCashBaoXiaoApply(HttpServletRequest request){
+        int empId = (int) request.getSession().getAttribute("empId");
+        return personCenterService.getCashBaoXiaoApply(empId);
+    }
+
+    /**
+     * 部门经理更新用户报销申请
+     * @param request
+     * @param info
+     * @return
+     */
+    @PutMapping("/DeptUpdateBaoXiaoLog")
+    public int DeptUpdateBaoXiaoLog(HttpServletRequest request,@RequestBody Map<String,Object> info){
+
+        int empId = (int) request.getSession().getAttribute("empId");
+
+        int jobId = personCenterService.getJobIdByEmpId(empId);
+        if (jobId==3){
+            int i =  personCenterService.DeptUpdateBaoXiaoLog(info);
+            personCenterService.setPass(info);
+            personCenterService.DeptUpdateBaoXiaoLogToClaim(info);
+            return i;
+        }else if (jobId==11){
+            int i =  personCenterService.CashUpdateBaoXiaoLog(info);
+            personCenterService.CashUpdateBaoXiaoLogToClaim(info);
+            return i;
+        }else {
+
+        }
+        return 1;
+    }
+
+    /**
+     * 出纳更新用户报销申请
+     * @param request
+     * @param info
+     * @return
+     */
+    @PutMapping("/CashUpdateBaoXiaoLog")
+    public int CashUpdateBaoXiaoLog(HttpServletRequest request,@RequestBody Map<String,Object> info){
+
+        int i =  personCenterService.CashUpdateBaoXiaoLog(info);
+        personCenterService.CashUpdateBaoXiaoLogToClaim(info);
+        return i;
+    }
+
+    @PutMapping("/DeptUpdateBaoXiaoLogRefuse")
+    public int DeptUpdateBaoXiaoLogRefuse(HttpServletRequest request,@RequestBody Map<String,Object> info){
+
+
+        int empId = (int) request.getSession().getAttribute("empId");
+
+        int jobId = personCenterService.getJobIdByEmpId(empId);
+        if (jobId==3){
+            int i =  personCenterService.DeptUpdateBaoXiaoLog(info);
+            personCenterService.DeptUpdateBaoXiaoLogToClaim(info);
+        }else {
+
+        }
+        return 1;
+
+    }
+
+    /**
+     * -- 查看特定的报销申请日志记录
+     */
+    @GetMapping("/loglog/{id}")
+    public Map<String,Object> loglog(HttpServletRequest request,@PathVariable("id") int id){
+        return personCenterService.loglog(id);
+    }
 
 
 }

@@ -1,52 +1,70 @@
 package edu.dlnu.oa.asset.controller;
 
-
 import edu.dlnu.oa.asset.pojo.Asset;
 import edu.dlnu.oa.asset.service.AssetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+/**
+ * @author wuhan
+ * @date 2019/12/20 21:01
+ */
 @RestController
 @RequestMapping("/api")
 public class AssetController {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private AssetService assetService;
+    private AssetService service;
 
-    @RequestMapping(value = "/asset",method = GET)
-    public List<Asset> getAllAsset(HttpServletRequest request){
-//        List<Asset> list=assetService.findAllAsset();
-////        log.info("Asset被访问了");
-////        return list;
-        log.info("Asset被访问了---");
-        return assetService.findAllAsset();
+    @RequestMapping(value = "/asset/add", method = POST)
+    public int add(@RequestBody Asset asset ){
+        return service.addAsset(asset);
     }
 
-    @RequestMapping(value = "/asset/{id}",method = DELETE)
-    public int deleteAssetById(@PathVariable int id){return assetService.deleteAssetById(id);}
-
-    @RequestMapping(value = "/asset", method = POST)
-    public int postAsset(@RequestBody Asset asset ){
-        return assetService.insertAsset(asset);
+    @RequestMapping(value = "/asset/query", method=POST)
+    public  List<Asset>  query() {
+        List<Asset> list=service.queryAsset();
+        return list;
     }
 
-    @RequestMapping(value = "/asset" ,method = PUT)
-    public int updateAsset(@RequestBody Asset asset){
-        return assetService.updateAsset(asset);
+    @RequestMapping(value = "/asset/update", method=POST)
+    public  int update(@RequestBody Asset asset) {
+        return service.updateAsset(asset);
     }
 
-    @GetMapping("/assetIdAndName")
-    public List<Map<String, Object>> getAssetIdAndName(){
-        return  assetService.getAssetIdAndName();
+    @RequestMapping(value = "/asset/updateInventory", method=POST)
+    public  int updateInventory(@RequestBody Map<String,Object> info) {
+        int assetId = (int) info.get("assetId");
+        int newInventory =(int) info.get("assetInventory");
+        return service.setInventory(assetId,newInventory);
+    }
+
+    @RequestMapping(value = "/asset/delete/{assetId}", method= POST)
+    public  int delete(@PathVariable Integer assetId) {
+        return service.deleteAsset(assetId);
+    }
+
+    @RequestMapping(value = "/asset/queryById/{assetId}", method=POST)
+    public  Asset queryById(@PathVariable Integer assetId) {
+        return  service.queryAssetById(assetId);
+    }
+
+
+    @RequestMapping(value = "/asset/queryByName", method=POST)
+    public  List<Asset> queryByName(@RequestBody Map<String,Object> info) {
+        List<Asset> list=service.queryAssetByName(info.get("assetName").toString());
+        return list;
     }
 
 }

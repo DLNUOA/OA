@@ -51,6 +51,8 @@ public class CarRentServiceImpl implements CarRentService {
         return list1;
     }
 
+
+
     //查询可派车辆列表
     @Override
     public List<Map<String,Object>> queryCarPlan() {
@@ -86,4 +88,8 @@ public class CarRentServiceImpl implements CarRentService {
     //提交申请
     @Override
     public int addApply(Map<String, Object> apply) {return mapper.insertApply(apply);}
+
+    //查询自己所有的车辆申请
+    @Override
+    public List<Map<String,Object>> querySelf(int empApplyId) { return mapper.queryListSelf(empApplyId);}
 }

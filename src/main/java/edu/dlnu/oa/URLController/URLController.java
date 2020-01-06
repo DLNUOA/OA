@@ -46,10 +46,63 @@ public class URLController {
         return "signUp";
     }
 
-    @RequestMapping("/AssetManagement")
-    public String AssetManagement(){
-        return "asset/AssetManagement";
+//    @RequestMapping("/nav")
+//    public String nav(){
+//        return "nav";
+//    }
+    @RequestMapping("/n")
+    public String n(){
+        return "navsidebar";
     }
+
+    @RequestMapping("/index/pageNotFound")
+    public String notfound(){
+        return "404";
+    }
+
+
+    @RequestMapping("/common/au")
+    public String au(){
+        return "aboutUs";
+    }
+
+    @RequestMapping("/AddAsset")
+    public String Asset(){
+        return "asset/AddAsset";
+    }
+
+    @RequestMapping("/Main")
+    public String fight(){
+        return "asset/Main";
+    }
+
+    @RequestMapping("/znav")
+    public String znav(){
+        return "asset/znav";
+    }
+
+    @RequestMapping("/AddConsume")
+    public String addconsume(){
+        return "asset/AddConsume";
+    }
+
+    @RequestMapping("/Select1")
+    public String select1(){
+        return "asset/Select1";
+    }
+
+    @RequestMapping("/Select2")
+    public String select2(){
+        return "asset/Select2";
+    }
+
+
+
+
+
+
+
+
 
 
 

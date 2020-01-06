@@ -15,13 +15,13 @@ spring:
   jackson:
     time-zone: GMT+8
   mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
     view:
       prefix: classpath:/templates/
       suffix: .html
     static-path-pattern: /**
-    hiddenmethod:
-      filter:
-        enabled: true
   resources:
     static-locations: classpath:/static/,classpath:/templates
   devtools:
@@ -32,8 +32,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/oa1?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false
     username: root
-    password: 123456
-
+    password: jing
   #    hikari:
   #      maximum-pool-size: 10
   #      connection-timeout: 10000

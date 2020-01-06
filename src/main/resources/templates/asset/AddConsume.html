@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>增加消耗</title>
-    <link rel="stylesheet" href="/js/bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/js/datetimepicker/jquery.datetimepicker.css"/>
+    <link rel="stylesheet" href="zhanghan_cloud_oa/js/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="zhanghan_cloud_oa/js/datetimepicker/jquery.datetimepicker.css"/>
 </head>
 <body>
     <div class="container">
@@ -17,7 +17,7 @@
 
         <form class="form-horizontal" id="form1">
             <div class="form-group">
-                <label for="consumeAssetId" class="col-sm-2 control-label">资产编号</label>
+                <label for="" class="col-sm-2 control-label">资产编号</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="请选择资产编号" id="consumeAssetId" class="form-control" readonly/>
                 </div>
@@ -29,19 +29,19 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeAssetName" class="col-sm-2 control-label">资产名称</label>
+                <label for="" class="col-sm-2 control-label">资产名称</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="请选择资产名称" id="consumeAssetName" class="form-control" readonly/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeAssetClasses" class="col-sm-2 control-label">资产类别</label>
+                <label for="" class="col-sm-2 control-label">资产类别</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="请选择资产类别" id="consumeAssetClasses" class="form-control" readonly/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeEmpId" class="col-sm-2 control-label">员工编号</label>
+                <label for="" class="col-sm-2 control-label">员工编号</label>
 
                 <div class="col-sm-6">
                     <input type="text" placeholder="请选择员工编号" id="consumeEmpId" class="form-control" readonly/>
@@ -49,7 +49,7 @@
                 <div class="col-lg-2">
 <!--                    <button type="button" class="btn btn-primary btn-xs" @click="select2()">-->
 
-                         <button type="button" class="btn btn-primary btn-xs" @click="">
+                         <button type="button" class="btn btn-primary btn-xs" @click="select2()">
 
                     <span class="glyphicon glyphicon-pencil"></span>
                         选择员工
@@ -57,25 +57,25 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeEmpName" class="col-sm-2 control-label">员工姓名</label>
+                <label for="" class="col-sm-2 control-label">员工姓名</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="请选择员工姓名" id="consumeEmpName" class="form-control" readonly/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeNumber" class="col-sm-2 control-label">消耗数量</label>
+                <label for="" class="col-sm-2 control-label">消耗数量</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="请输入消耗数量" id="consumeNumber" class="form-control"/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeDate" class="col-sm-2 control-label">消耗日期</label>
+                <label for="" class="col-sm-2 control-label">消耗日期</label>
                 <div class="col-sm-6">
                     <input type="text" placeholder="请选择消耗日期" id="consumeDate" class="form-control" readonly/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="consumeInfo" class="col-sm-2 control-label">详述</label>
+                <label for="" class="col-sm-2 control-label">详述</label>
                 <div class="col-sm-6">
                     <textarea id="consumeInfo" name="consumeInfo" placeholder="请输入消耗详述" class="form-control"></textarea>
                 </div>
@@ -105,31 +105,83 @@
         </form>
     </div>
 
-    <script type="text/javascript" src="/js/jquery-3.4.1.js" ></script>
-    <script type="text/javascript" src="/js/global.js" ></script>
-    <script type="text/javascript" src="/js/layer/layer.js" ></script>
-    <script type="text/javascript" src="/js/datetimepicker/jquery.datetimepicker.js" ></script>
-    <script type="text/javascript" src="/js/vue.js" ></script>
 
-
-
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/jquery-3.4.1.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/global.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/layer/layer.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/datetimepicker/jquery.datetimepicker.js" ></script>
+    <script type="text/javascript" src="zhanghan_cloud_oa/js/vue.js" ></script>
 
     <!--下面引用js文件，有点多，以后优化-->
-    <script src="/Vue/js/jquery.js"></script>
-    <script src="Vue/js/vue.js"></script>
     <script src="/js/toastr.min.js"></script>
-
     <script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
     <script src="/Vue/js/axios.js"></script>
     <script src="/Vue/js/lodash.min.js"></script>
 
     <script>
-        // $('#consumeDate').datetimepicker({
-        //     lang:'ch',
-        //     format:'Y-m-d',
-        //     formatDate:'Y-m-d',
-        //     timepicker:false
-        // });
+        function checkForm() {
+
+            var consumeAssetId = $('#consumeAssetId');
+            if (consumeAssetId.val() == '') {
+                layer.msg('资产ID不能为空');
+                consumeAssetId.focus();
+                return false;
+            }
+            var consumeAssetName = $('#consumeAssetName');
+
+            if (consumeAssetName.val() == '') {
+                layer.msg('资产名称不能为空');
+                consumeAssetName.select();
+                return false;
+            }
+            var consumeAssetClasses = $('#consumeAssetClasses');
+
+            if (consumeAssetClasses.val() == '') {
+                layer.msg('资产类别不能为空');
+                consumeAssetClasses.select();
+                return false;
+            }
+            var consumeEmpId = $('#consumeEmpId');
+
+            if (consumeEmpId.val() == '') {
+                layer.msg('员工编号不能为空');
+                consumeEmpId.select();
+                return false;
+            }
+
+            var consumeEmpName = $('#consumeEmpName');
+
+            if (consumeEmpName.val() == '') {
+                layer.msg('员工姓名不能为空');
+                consumeEmpName.select();
+                return false;
+            }
+            var consumeNumber = $('#consumeNumber');
+
+
+            var r = /^\+?[1-9][0-9]*$/;　　//正整数
+            // String str = "123";
+            // boolean flag=r.test(str);
+            // 如果判断为正整数，则flag为true
+
+            if (consumeNumber.val() == ''||!r.test(consumeNumber.val()))
+
+            {
+                layer.msg('消耗数量不能为空,且为正整数');
+                consumeNumber.select();
+                return false;
+            }
+            var consumeDate = $('#consumeDate');
+
+            if (consumeDate.val() == '') {
+                layer.msg('消耗日期不能为空');
+                consumeDate.select();
+                return false;
+            }
+            return true;
+        }
+
+
 
         var vue = new Vue({
             el:'.container',
@@ -159,26 +211,22 @@
                 },
 
                 addConsume:function () {
-                    //var params = {
-                        // consumeAssetId:$('#consumeAssetId').val(),
-                        // consumeAssetName:$('#consumeAssetName').val(),
-                        // consumeAssetClasses:$('#consumeAssetClasses').val(),
-                        // consumeEmpId:$('#consumeEmpId').val(),
-                        // consumeEmpName:$('#consumeEmpName').val(),
-                        // consumeNumber:$('#consumeNumber').val(),
-                        // consumeDate:$('#consumeDate').val(),
-                        // consumeInfo:$('#consumeInfo').val()
-                    //}
+
+                    var number=parseInt($('#consumeNumber').val());
+                    var oldinventory=parseInt(localStorage.getItem("assetinventory"));
+                    if(number>oldinventory)
+                    {
+                        layer.msg('库存不足，请少些消耗，或联系管理员')
+                        //alert("库存不足，请少些消耗，或联系管理员")
+                        return;
+                    }
+
+                    var newinventory= oldinventory-number;
+                    var assetid2=parseInt(assetid);
+                    if ( !checkForm() )
+                        return;
                         axios
                             .post('/api/consume/add',{
-                                // consumeAssetId:this.bmm,
-                                // consumeAssetName:this.bml,
-                                // consumeAssetClasses:this.bmg,
-                                // consumeEmpId:this.bmd,
-                                // consumeEmpName:this.bmk,
-                                // consumeNumber:this.bmd,
-                                // consumeDate:this.bmd,
-                                // consumeInfo:this.bmk
                                 consumeAssetId:$('#consumeAssetId').val(),
                                 consumeAssetName:$('#consumeAssetName').val(),
                                 consumeAssetClasses:$('#consumeAssetClasses').val(),
@@ -189,10 +237,20 @@
                                 consumeInfo:$('#consumeInfo').val()
 
                             })
-                            .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                            .then(response => response.data==1?(layer.msg('添加成功')):layer.msg('添加失败'))
                             .catch(function(error) {
                                 console.log(error);
                             });
+
+                    axios
+                        .post('/api/asset/updateInventory',{
+                            assetId: assetid2,
+                            assetInventory:newinventory
+                        })
+                        .then(response => response.data==1?(layer.msg('修改库存成功')):layer.msg('修改库存失败'))
+                        .catch(function(error) {
+                            console.log(error);
+                        });
 
                     }
                 },
@@ -212,20 +270,27 @@
                         console.log(error);
                     });
 
-                // axios
-                //     .post('/api/emp/queryById/'+empid)////////gaig改革改革该改改
-                //     .then(function (response) {
-                //         this.emp = response.data;
-                //         document.getElementById("consumeEmpId").value=emp.empId;
-                //         document.getElementById("consumeEmpName").value=emp.empName;
-                //     })
-                //     .catch(function (error) { // 请求失败处理
-                //         console.log(error);
-                //     });
+                axios
+                    .post('/api/emp/queryById/'+empid)////////gaig改革改革该改改
+                    .then(function (response) {
+                        this.emp = response.data;
+                        document.getElementById("consumeEmpId").value=emp.empId;
+                        document.getElementById("consumeEmpName").value=emp.empName;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
 
 
             }
 
+        });
+
+        $('#consumeDate').datetimepicker({
+            lang:'ch',
+            format:'Y-m-d',
+            formatDate:'Y-m-d',
+            timepicker:false
         });
 
     </script>

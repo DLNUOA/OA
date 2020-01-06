@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>公司需求情况</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #updateDem {
+            color: #0f0f0f;
+        }
+        #addDem {
+            color: #0f0f0f;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                外派人才库 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./peopleSendList.html">外派人员列表</a></li>
+                <li><a href="./compantionList.html">合作公司列表</a></li>
+                <li><a href="./comDemandList.html">公司需求列表</a></li>
+                <li><a href="./sendReordList.html">外派记录显示</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover " id='queryDemList'>
+            <caption>
+                <h1 align="center">公司需求情况</h1>
+            </caption>
+            <thead>
+            <tr>
+                <td>公司编号</td>
+                <td>公司名称</td>
+                <td>职位需求</td>
+                <td>工作类型</td>
+                <td>工资/月</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody >
+            <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+            <tr v-for="(dem,index) of demList"  v-bind:key = 'dem.demId' >
+                <td>{{dem.dem_com_id}}</td>
+                <td>{{dem.com_name}}</td>
+                <td>{{dem.dem_job}}</td>
+                <td>{{dem.dem_job_type}}</td>
+                <td>{{dem.dem_salay}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateDemModal" @click="LaunchUpdateDem(index)">修改</button>
+                    <a @click="deleteDem(index)" class="btn btn-danger btn-sm">删除</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-success " data-toggle="modal" data-target="#addDemModal">增加新的需求</button>
+    </div>
+</div>
+
+<!-- 添加合作公司模态框（Modal） -->
+<div class="modal fade" id="addDemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="addDem">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabelAdd">添加需求信息</h4>
+            </div>
+            <div class="modal-body" >
+                公司名称：<input v-model="com_name" placeholder="公司名称"><hr>
+                职位需求：<input v-model="dem_job" placeholder="职位需求"><hr>
+                工作类型：<input v-model="dem_job_type" placeholder="工作类型"><hr>
+                每月工资：<input v-model="dem_salay" placeholder="每月工资"><hr>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="add">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 修改外派人员信息模态框（Modal） -->
+<div class="modal fade" id="updateDemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="updateDem">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">修改公司需求信息</h4>
+            </div>
+            <div class="modal-body" >
+                <p style="color: #0f0f0f;font-size: 20px">公司编号：{{dem_com_id}} &nbsp;&nbsp;&nbsp;&nbsp; 公司名称：{{com_name}}</p>
+                职位需求：<input v-model="dem_job" placeholder="职位需求"><hr>
+                工作类型：<input v-model="dem_job_type" placeholder="工作类型"><hr>
+                工 资/月：<input v-model="dem_salay" placeholder="工资/月"><hr>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" @click="update">修改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/layer/layer.js"></script>
+<script src="/Vue/js/toastr.min.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var updateDem = new Vue({
+        el:'#updateDem',
+        data:{
+            dem_id:'',
+            dem_com_id:'',
+            com_name:'',
+            dem_job:'',
+            dem_job_type:'',
+            dem_salay:''
+        },
+        methods:{
+            update:function(){
+                axios
+                    .put(host+'/api/dem/update/',{
+                        demId:this.dem_id,
+                        demJob:this.dem_job,
+                        demJobType:this.dem_job_type,
+                        demSalay:this.dem_salay,
+                        demComId:this.dem_com_id
+                    })
+                    .then( response => response.data ==1 ? ( toastr.success('需求修改成功') ) : ( toastr.error('需求修改信息失败，请联系管理员') ) )
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                setTimeout(function(){
+                    window.location.href="comDemandList.html";
+                },1000);
+            }
+        }
+    });
+
+    //添加
+    var addDem = new Vue({
+        el:'#addDem',
+        data:{
+            com_name:'',
+            dem_job:'',
+            dem_job_type:'',
+            dem_salay:''
+        },
+        methods: {
+            add:function (){
+                if(!this.com_name) {
+                    toastr.error("公司名称不能为空");
+                } else if(!this.dem_job) {
+                    toastr.error("职位需求不能为空");
+                } else if(!this.dem_job_type) {
+                    toastr.error("工作类型不能为空");
+                } else if(!this.dem_salay) {
+                    toastr.error("工资不能为空");
+                } else {
+                    axios
+                        .post(host+'/api/dem/add',{
+                            comName:this.com_name,
+                            demJob:this.dem_job,
+                            demJobType:this.dem_job_type,
+                            demSalay:this.dem_salay
+                        })
+                        .then(function (response) {
+
+                            if(response.data == 1){
+                                toastr.success('新需求增加成功');
+                                setTimeout(function(){
+                                    window.location.href="comDemandList.html";
+                                },1000);
+
+                            } else if(response.data == 2){
+                                toastr.error('新需求增加失败，公司名称不准确');
+                            } else{
+                                toastr.success('新需求添加失败，请联系管理员');
+                            }
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                        })
+
+                }
+            }
+        },
+    });
+
+    var queryList = new Vue({
+        el:'#queryDemList',
+        data () {
+            return {
+                demList: null,
+                com:null,
+                change:null,
+                list:null
+            }
+        },
+        methods:{
+            //查询全部
+            query: function () {
+                //当Vue实例挂载完成时，自动调用后端接口获取所有合作公司人员数据并且将数据渲染到html
+                axios
+                    .get(host+'/api/dem/query')
+                    .then(response => (this.demList = response.data))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            },
+
+            //修改
+            LaunchUpdateDem:function (index) {
+                let spId = this.demList[index].dem_id;
+                this.dem=(this.demList[index]);
+                updateDem.dem_id = this.dem.dem_id;
+                updateDem.dem_com_id = this.dem.dem_com_id;
+                updateDem.com_name = this.dem.com_name;
+                updateDem.dem_job = this.dem.dem_job;
+                updateDem.dem_job_type = this.dem.dem_job_type;
+                updateDem.dem_salay = this.dem.dem_salay;
+            },
+
+            //删除
+            deleteDem:function (index) {
+                //使用let定义局部变量
+                let demId = this.demList[index].dem_id;
+                if(confirm('确定删除该需求信息吗？')){
+                    this.demList.splice(index,1);
+                    axios
+                        .delete(host+'/api/dem/delete/'+demId)
+                        .then(response => response.data==1?(toastr.success('删除成功')):toastr.error('删除失败'))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        },
+        mounted() {
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>

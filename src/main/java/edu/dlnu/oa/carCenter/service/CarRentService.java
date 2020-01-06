@@ -33,4 +33,7 @@ public interface CarRentService {
 
     //提交申请
     int addApply(Map<String, Object> apply);
+
+    //查询自己所有的车辆申请
+    List<Map<String ,Object>> querySelf(int empApplyId);
 }

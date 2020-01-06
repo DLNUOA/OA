@@ -7,9 +7,9 @@ import java.util.List;
 @Primary
 public interface ConsumeService {
 
-    int addConsume(Consume consume);
+     int addConsume(Consume consume);
 //    int updateConsume(Consume asset);
 //    int deleteConsume(Integer assetId);
 //    Consume queryConsumeById(Integer assetId);
-    List<Consume> queryConsume();
+      List<Consume> queryConsume();
 }

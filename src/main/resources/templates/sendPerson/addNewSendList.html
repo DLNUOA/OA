@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>指定新的外派记录</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #serchPeopleModal {
+            color: #0f0f0f;
+        }
+        #serchComModal {
+            color: #0f0f0f;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+        #addBody {
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                外派人才库 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./peopleSendList.html">外派人员列表</a></li>
+                <li><a href="./compantionList.html">合作公司列表</a></li>
+                <li><a href="./comDemandList.html">公司需求列表</a></li>
+                <li><a href="./sendReordList.html">外派记录显示</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+       <div id="addBody">
+           <h4  id="peopelAdd">指定新的外派</h4>
+           <br><br><br>
+           员工编号：<input id="peo_id" placeholder="员工编号" style="width:360px;" data-toggle="modal" data-target="#serchPeopleModal" @click="queryPeople"><br><br>
+           员工姓名：<input id="peo_name" placeholder="员工姓名" style="width:360px;" data-toggle="modal" data-target="#serchPeopleModal" @click="queryPeople"><br><br>
+           公司编号：<input id="com_id" placeholder="公司编号" style="width:360px;" data-toggle="modal" data-target="#serchComModal" @click="queryCom"><br><br>
+           公司名称：<input id="com_name" placeholder="公司名称" style="width:360px;" data-toggle="modal" data-target="#serchComModal" @click="queryCom"><br><br>
+           <div  id="stateAdd">
+               外派状态：
+               <label for="radio1" class="radio-inline">
+                   <input type="radio"  name="assemp.available" value=0>闲置中</label>
+
+               <label for="radio2" class="radio-inline">
+                   <input type="radio"  name="assemp.available" value=1>外派中</label>
+           </div>
+       </div>
+        <br><br>
+        <button class="btn btn-success " onclick="add();">增加</button>
+        <button class="btn btn-primary " onclick="back();">返回上一层</button>
+    </div>
+</div>
+
+<!-- 选择外派人员信息模态框（Modal） -->
+<div class="modal fade" id="serchPeopleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="peopleList">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">外派人员信息</h4>
+            </div>
+            <table class="table table-hover ">
+                <thead>
+                <tr>
+                    <td>员工编号</td>
+                    <td>员工姓名</td>
+                    <td>教育经历</td>
+                    <td>工作经验</td>
+                    <td>技能特长</td>
+                    <td>人才状态</td>
+                    <td>员工选择</td>
+                </tr>
+                </thead>
+                <tbody >
+                <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+                <tr v-for="(send,index) of peopleList"  v-bind:key = 'send.spId' >
+                    <td>{{send.spId}}</td>
+                    <td>{{send.spName}}</td>
+                    <td>{{send.spEdu}}</td>
+                    <td>{{send.spWork}}</td>
+                    <td>{{send.spAbility}}</td>
+                    <td>{{send.spState==0?'闲置中':'已外派'}}</td>
+                    <td><input  type="radio" name="radio1" value="1" @click="select(send.spId,send.spName)" /></td>
+<!--                    <td><button type="button" class="btn btn-primary" @click="select(send.spId,send.spName)">选择</button></td>-->
+                </tr>
+
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- 选择外派人员信息模态框（Modal） -->
+<div class="modal fade" id="serchComModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="comList">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="mycomModalLabel">合作公司信息</h4>
+            </div>
+            <table class="table table-hover ">
+                <thead>
+                <tr>
+                    <td>公司编号</td>
+                    <td>公司名称</td>
+                    <td>联系人姓名</td>
+                    <td>联系人电话</td>
+                    <td>联系人QQ</td>
+                    <td>备注</td>
+                    <td>公司选择</td>
+                </tr>
+                </thead>
+                <tbody >
+                <!-- 以后写vue循环时候推荐下面这样写，v-bind:key = 'dept.deptId'这句一定不能漏掉然后{{这里面只能使用一个表达式}} -->
+                <tr v-for="(com,index) of comList"  v-bind:key = 'com.comId' >
+                    <td>{{com.comId}}</td>
+                    <td>{{com.comName}}</td>
+                    <td>{{com.comLinkmanName}}</td>
+                    <td>{{com.comLinkmanPhone}}</td>
+                    <td>{{com.comLinkmanQq}}</td>
+                    <td>{{com.comInfo}}</td>
+                    <td><input  type="radio" name="radio1" @click="selectCom(com.comId,com.comName)"/></td>
+<!--                    <td><button type="button" class="btn btn-primary" @click="selectCom(com.comId,com.comName)">选择</button></td>-->
+                </tr>
+
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/layer/layer.js"></script>
+<script src="/Vue/js/toastr.min.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script>
+
+    function back() {
+        window.location.href='sendReordList.html';
+    }
+
+    function add() {
+        var comName = document.getElementById('com_name').value;
+        var comId = parseInt(document.getElementById('com_id').value);
+        var spName = document.getElementById('peo_name').value;
+        var spId = parseInt(document.getElementById('peo_id').value);
+        var spState = parseInt($("input[type='radio']:checked").val());
+        console.log("哈哈"+spState);
+        if(!comName) {
+            toastr.error("合作公司不能为空");
+        } else if(!spName) {
+            toastr.error("外派人员不能为空");
+        } else{
+            axios
+                .post(host+'/api/sendList/add/',{
+                    comId:comId,
+                    comName:comName,
+                    spId:spId,
+                    spName:spName,
+                    spState:spState
+                })
+                .then(function (response) {
+                        if(response.data==1) {
+                            toastr.success("添加成功");
+                            setTimeout(function(){
+                                window.location.href="sendReordList.html";
+                            },1000);
+                        }else{
+                            toastr.error("添加失败,重新添加吧");
+                            setTimeout(function(){
+                                window.location.href="addNewSendList.html";
+                            },1000);
+                        }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+    }
+
+    var queryPeople = new Vue({
+        el:'#peopleList',
+        data:{
+            peopleList:null,
+            spId:null,
+            spName:null,
+        },
+        methods: {
+            select:function (spId,spName) {
+                this.spId=spId;
+                document.getElementById('peo_name').value=spName;
+                this.spName=spName;
+                document.getElementById('peo_id').value=spId;
+            },
+
+        }
+    });
+
+    var queryCom = new Vue({
+        el:'#comList',
+        data:{
+            comList:null,
+            spId:null,
+            spName:null,
+            comId:null,
+            comName:null
+        },
+        methods: {
+            selectCom:function (comId,comName) {
+                this.comId=comId;
+                this.comName=comName;
+                document.getElementById('com_name').value=comName;
+                document.getElementById('com_id').value=comId;
+            },
+        }
+    });
+
+    var queryList = new Vue({
+        el:'#addBody',
+        data () {
+            return {
+                sendList: null,
+            }
+        },
+        methods:{
+
+            //获取外派人员列表
+            queryPeople:function(){
+              axios
+                .get(host+'/api/send/query')
+                .then(function (response) {
+                    queryPeople.peopleList=response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            },
+
+            //获取合作公司
+            queryCom:function () {
+                axios
+                    .get(host+'/api/com/query')
+                    .then(function (response) {
+                        queryCom.comList=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+
+        },
+        mounted() {
+        }
+    });
+</script>
+</body>
+</html>

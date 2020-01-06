@@ -12,32 +12,6 @@ public class Consume {
     private Date consumeDate;
     private String consumeInfo;
 
-    public Consume(int consumeAssetId, String shi, char 个, int consumeEmpId, String zhang, int consumeNumber, Date consumeDate, String infoyayay) {
-    }
-
-    public Consume(Integer consumeAssetId, String consumeAssetName, String consumeAssetClasses, Integer consumeEmpId, String consumeEmpName, Integer consumeNumber, Date consumeDate, String consumeInfo) {
-        this.consumeAssetId = consumeAssetId;
-        this.consumeAssetName = consumeAssetName;
-        this.consumeAssetClasses = consumeAssetClasses;
-        this.consumeEmpId = consumeEmpId;
-        this.consumeEmpName = consumeEmpName;
-        this.consumeNumber = consumeNumber;
-        this.consumeDate = consumeDate;
-        this.consumeInfo = consumeInfo;
-    }
-
-    public Consume(Integer consumeId, Integer consumeAssetId, String consumeAssetName, String consumeAssetClasses, Integer consumeEmpId, String consumeEmpName, Integer consumeNumber, Date consumeDate, String consumeInfo) {
-        this.consumeId = consumeId;
-        this.consumeAssetId = consumeAssetId;
-        this.consumeAssetName = consumeAssetName;
-        this.consumeAssetClasses = consumeAssetClasses;
-        this.consumeEmpId = consumeEmpId;
-        this.consumeEmpName = consumeEmpName;
-        this.consumeNumber = consumeNumber;
-        this.consumeDate = consumeDate;
-        this.consumeInfo = consumeInfo;
-    }
-
     public Integer getConsumeId() {
         return consumeId;
     }
@@ -46,20 +20,20 @@ public class Consume {
         this.consumeId = consumeId;
     }
 
-    public String getConsumeAssetName() {
-        return consumeAssetName;
-    }
-
-    public void setConsumeAssetName(String consumeAssetName) {
-        this.consumeAssetName = consumeAssetName;
-    }
-
     public Integer getConsumeAssetId() {
         return consumeAssetId;
     }
 
     public void setConsumeAssetId(Integer consumeAssetId) {
         this.consumeAssetId = consumeAssetId;
+    }
+
+    public String getConsumeAssetName() {
+        return consumeAssetName;
+    }
+
+    public void setConsumeAssetName(String consumeAssetName) {
+        this.consumeAssetName = consumeAssetName;
     }
 
     public String getConsumeAssetClasses() {
@@ -78,7 +52,6 @@ public class Consume {
         this.consumeEmpId = consumeEmpId;
     }
 
-
     public String getConsumeEmpName() {
         return consumeEmpName;
     }
@@ -86,7 +59,6 @@ public class Consume {
     public void setConsumeEmpName(String consumeEmpName) {
         this.consumeEmpName = consumeEmpName;
     }
-
 
     public Integer getConsumeNumber() {
         return consumeNumber;
@@ -109,6 +81,32 @@ public class Consume {
     }
 
     public void setConsumeInfo(String consumeInfo) {
+        this.consumeInfo = consumeInfo;
+    }
+
+    public Consume() {
+    }
+
+    public Consume(Integer consumeId, Integer consumeAssetId, String consumeAssetName, String consumeAssetClasses, Integer consumeEmpId, String consumeEmpName, Integer consumeNumber, Date consumeDate, String consumeInfo) {
+        this.consumeId = consumeId;
+        this.consumeAssetId = consumeAssetId;
+        this.consumeAssetName = consumeAssetName;
+        this.consumeAssetClasses = consumeAssetClasses;
+        this.consumeEmpId = consumeEmpId;
+        this.consumeEmpName = consumeEmpName;
+        this.consumeNumber = consumeNumber;
+        this.consumeDate = consumeDate;
+        this.consumeInfo = consumeInfo;
+    }
+
+    public Consume(Integer consumeAssetId, String consumeAssetName, String consumeAssetClasses, Integer consumeEmpId, String consumeEmpName, Integer consumeNumber, Date consumeDate, String consumeInfo) {
+        this.consumeAssetId = consumeAssetId;
+        this.consumeAssetName = consumeAssetName;
+        this.consumeAssetClasses = consumeAssetClasses;
+        this.consumeEmpId = consumeEmpId;
+        this.consumeEmpName = consumeEmpName;
+        this.consumeNumber = consumeNumber;
+        this.consumeDate = consumeDate;
         this.consumeInfo = consumeInfo;
     }
 

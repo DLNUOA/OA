@@ -19,11 +19,14 @@ public class consumeServiceImpl implements ConsumeService {
     public int addConsume(Consume consume) {//具体的方法  与  AssetService  I  接口对应
         return mapper.insert(consume);//与AssetMapper对应
     }
+
+
     @Override
     public List<Consume> queryConsume()
     {
         return mapper.query();
     }
+
 
 }
 

@@ -26,6 +26,12 @@ public class SystemManageURLController {
     public String rm(){
         return "systemManage/ReplyManage";
     }
+
+    @RequestMapping("/reply/baoxiao")
+    public String baoxiao(){
+        return "systemManage/BaoxiaoReply";
+    }
+
     @RequestMapping("/reply")
     public String reply(){
         return "systemManage/ReplyCenter";
