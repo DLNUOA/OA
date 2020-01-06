@@ -18,8 +18,8 @@ public interface CompantionService {
     //修改合作公司信息
     int updateCom(Compantion com);
 
-    //根据id查找合作信息
-    Compantion queryComById(int comId);
+    //根据id查找合作公司需求信息
+    List<Map<String,Object>> queryComById(int comId);
 
     //添加新的合作公司
     int addCom(Compantion com);
@@ -33,6 +33,9 @@ public interface CompantionService {
     //添加新的需求
     int addDem(Map<String,Object> dem);
 
+    //按照公司名称查找id
+    int selectId(String comName);
+
     //修改公司需求
     int updateDem(Map<String,Object> dem);
 
@@ -41,4 +44,7 @@ public interface CompantionService {
 
     //删除公司需求
     int deleteDem(int demId);
+
+    //按名字查找公司是否存在
+    String selectComName(String comName);
 }

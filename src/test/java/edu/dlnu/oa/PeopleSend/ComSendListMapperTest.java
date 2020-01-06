@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 外派记录
@@ -24,10 +25,14 @@ public class ComSendListMapperTest {
             System.out.println(csl);
         }
     }
+//    @Test
+//    public void add() {
+//        Map<String,Object> csl = new ComSendList(1,1,"张三","中软");
+//        mapper.insert(csl);
+//
+//    }
     @Test
-    public void add() {
-        ComSendList csl = new ComSendList(1,1,"张三","中软");
-        mapper.insert(csl);
-
+    public void upatestate() {
+        mapper.update(1,2);
     }
 }

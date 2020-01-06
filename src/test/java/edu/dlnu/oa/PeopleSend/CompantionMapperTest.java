@@ -100,4 +100,9 @@ public class CompantionMapperTest {
         mapper.deleteDem(4);
     }
 
+    ///测试按照名字找id
+    @Test
+    public void selectId(){mapper.selectComId("小米");
+        System.out.println(mapper.selectComId("小米"));
+    }
 }

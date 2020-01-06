@@ -65,7 +65,7 @@ public class CarRentController {
         Integer applyId = (Integer) request.getSession().getAttribute("empId");
         Map<String, Object> map = service.queryJobList("行政主管");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-       ;// new Date()为获取当前系统时间
+       // new Date()为获取当前系统时间
         Map<String, Object> list = new HashMap<>();
         list.put("carRentLine", apply.get("carRentLine"));
         list.put("carRentInfo", apply.get("carRentInfo"));

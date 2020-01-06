@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * service接口实现类
@@ -27,11 +28,13 @@ public class PeopleSendServiceImpl implements PeopleSendService {
     public int deleteCsp(int spId) { return mapper.delete(spId); }
 
     @Override
-    public int updateCsp(ComSendPeople csp) {return mapper.update(csp);}
+    public int updateCsp(Map<String,Object> csp) {return mapper.update(csp);}
 
     @Override
     public ComSendPeople queryCspId(int spId) { return mapper.queryById(spId);}
 
     @Override
     public List<ComSendPeople> queryCspName(String spName) { return mapper.queryByName(spName); }
+
+
 }

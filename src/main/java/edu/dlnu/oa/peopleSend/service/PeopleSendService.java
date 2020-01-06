@@ -1,9 +1,11 @@
 package edu.dlnu.oa.peopleSend.service;
 
 import edu.dlnu.oa.peopleSend.pojo.ComSendPeople;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.context.annotation.Primary;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 外派人员的service接口
@@ -21,7 +23,7 @@ public interface PeopleSendService {
     int deleteCsp(int cspId);
 
     //修改外派人员信息
-    int updateCsp(ComSendPeople csp);
+    int updateCsp(Map<String,Object> csp);
 
     //根据ID搜索员工信息
     ComSendPeople queryCspId(int spId);

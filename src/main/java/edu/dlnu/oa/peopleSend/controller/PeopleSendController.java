@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -31,18 +32,18 @@ public class PeopleSendController {
     public int add(@RequestBody ComSendPeople csp) { return service.addCsp(csp); }
 
     //根据ID查人员信息
-    @RequestMapping(value = "/send/queryById", method = GET)
+    @RequestMapping(value = "/send/queryById/{spId}", method = GET)
     public ComSendPeople queryById(@PathVariable int spId) { return service.queryCspId(spId); }
 
     //根据姓名模糊查询人员信息
-    @RequestMapping(value = "/send/queryByName", method = GET)
-    public  List<ComSendPeople> queryByName(String spName) { return service.queryCspName(spName); }
+    @RequestMapping(value = "/send/queryByName", method = POST)
+    public  List<ComSendPeople> queryByName(@RequestBody Map<String,String> map) { return service.queryCspName(map.get("spName")); }
 
     //删除人员信息
-    @RequestMapping(value = "/send/delete", method = DELETE)
-    public int delete(@RequestBody int spId) { return service.deleteCsp(spId); }
+    @RequestMapping(value = "/send/delete/{spId}", method = DELETE)
+    public int delete(@PathVariable  int spId) { return service.deleteCsp(spId); }
 
     //更改人员信息
-    @RequestMapping(value = "/send/update", method = PUT)
-    public int update(@RequestBody ComSendPeople csp) { return service.updateCsp(csp); }
+    @RequestMapping(value = "/send/update", method = POST)
+    public int update(@RequestBody Map<String,Object> csp) { return service.updateCsp(csp); }
 }

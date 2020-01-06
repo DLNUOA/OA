@@ -298,7 +298,7 @@
             }
         },
         mounted () {
-            //当Vue实例挂载完成时，自动调用后端接口获取所有dept数据并且将数据渲染到html
+            //当Vue实例挂载完成时，自动调用后端接口获取所有car数据并且将数据渲染到html
             axios
                 .get(host+'/api/car/query')
                 .then(response => (this.carList = response.data))

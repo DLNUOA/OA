@@ -26,9 +26,9 @@ public class CompantionServiceImpl implements CompantionService {
     @Override
     public int updateCom(Compantion com) {return mapper.update(com); }
 
-    //按照id查找公司信息
+    //按照id查找合作公司需求信息
     @Override
-    public Compantion queryComById(int comId) { return mapper.queryById(comId); }
+    public List<Map<String,Object>> queryComById(int comId) { return mapper.queryById(comId); }
 
     //删除公司信息
     @Override
@@ -47,6 +47,10 @@ public class CompantionServiceImpl implements CompantionService {
     @Override
     public  int addDem(Map<String,Object> dem) { return mapper.addDemand(dem);}
 
+    //根据名称差id
+    @Override
+    public int selectId(String comName) { return mapper.selectComId(comName);}
+
     //修改公司需求
     @Override
     public  int updateDem(Map<String,Object> dem) { return mapper.updateDemand(dem);}
@@ -58,4 +62,8 @@ public class CompantionServiceImpl implements CompantionService {
     //删除公司需求
     @Override
     public  int  deleteDem(int demId) { return mapper.deleteDem(demId);}
+
+    //按名字查找公司是否存在
+    @Override
+    public String selectComName(String comName) { return mapper.selectName(comName); }
 }

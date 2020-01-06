@@ -28,7 +28,7 @@ public interface PeopleSendMapper {
     //修改外派人员信息
     @Update("UPDATE com_send_people SET sp_name=#{spName}, sp_edu=#{spEdu}, sp_work=#{spWork}, sp_ability=#{spAbility}, sp_loc=#{spLoc}," +
             "sp_salay=#{spSalay}, sp_state=#{spState} WHERE sp_id=#{spId}")
-    int update(ComSendPeople csp);
+    int update(Map<String,Object> csp);
 
     //根据ID搜索员工信息
     @Select("SELECT * FROM com_send_people WHERE sp_id=#{spId}")

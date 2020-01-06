@@ -6,7 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Handler;
 
 /**
  * 外派人员mapper测试
@@ -48,12 +51,20 @@ public class PeopleSendMapperTest {
 
         mapper.delete(2);
     }
-
+//
     //测试更改
     @Test
-    public void  update() {
-        ComSendPeople csp = new ComSendPeople(3,"赵六","本科","一年","Java",
-                "河北",8000,0);
-        mapper.update(csp);
+    public void  update(){
+        Map<String,Object> send = new HashMap<>();
+        send.put("spId",5);
+        send.put("spName","王张张");
+        send.put("spEdu","高中");
+        send.put("spWork","一年");
+        send.put("spAbility","ds");
+        send.put("spLoc","dcv");
+        send.put("spSalay",9000);
+        send.put("spState",1);
+        mapper.update(send);
     }
+
 }
