@@ -66,18 +66,14 @@ var updateAAssetModal = new Vue({
         assetInventory:null,
         index:null
     },
-    // .then(function (response) {
-    // 	this.empId =  response.data.empId;
-    // 	this.empName = response.data.empName;
-    // 	this.empRoleId = response.data.empRoleId;
-    // })
+
     methods:{
         UpdateAAsset:function(){
             axios
                 .put('/api/asset',{
                     assetId:this.assetId,
                     assetName:this.assetName,
-                    assetClasses:this.assetClasses,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      assetClasses:this.assetClasses,
                     assetSpecification:this.assetSpecification,
                     assetUnitPrice:this.assetUnitPrice,
                     assetInventory:this.assetInventory

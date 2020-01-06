@@ -114,10 +114,10 @@
 						deptLoc:this.deptLoc,
 						deptIntro:this.deptIntro
 					})
-					.then( response => response.data ==1 ? ( alert('修改部门成功') ) : ( alert('修改部门失败，请联系管理员') ) )
+					.then( response => response.data ==1 ? (alert('修改部门成功') ) : ( alert('修改部门失败，请联系管理员') ) )
 					.catch(function(error) {
 						console.log(error);
-					});
+					})
 			}
 		}
 	});

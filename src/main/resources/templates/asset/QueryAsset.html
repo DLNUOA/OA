@@ -59,7 +59,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" @click="updateAsset">修改</button>
+                <button type="button" class="btn btn-primary" @click="UpdateAAsset">修改</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -290,7 +290,6 @@
             UpdateAAsset:function(){
                 axios
                     .put('/api/asset',{
-                        assetId:this.assetId,
                         assetName:this.assetName,
                         assetClasses:this.assetClasses,
                         assetSpecification:this.assetSpecification,
