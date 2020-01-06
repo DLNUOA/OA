@@ -1,6 +1,19 @@
 server:
   port: 80
 spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+    timeout: 10000
+  jackson:
+    time-zone: GMT+8
   mvc:
     hiddenmethod:
       filter:

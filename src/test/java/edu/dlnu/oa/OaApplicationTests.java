@@ -2,9 +2,12 @@ package edu.dlnu.oa;
 
 import edu.dlnu.oa.dept.pojo.Dept;
 import edu.dlnu.oa.dept.service.DeptService;
+import edu.dlnu.oa.utils.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
 
@@ -12,6 +15,8 @@ import java.util.List;
 class OaApplicationTests {
     @Autowired
     private DeptService deptService;
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Test
     void contextLoads() {
@@ -35,5 +40,6 @@ class OaApplicationTests {
         int i1 = deptService.deleteDeptById(i);
         System.out.println(i1);
     }
+
 
 }

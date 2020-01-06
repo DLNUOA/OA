@@ -12,11 +12,11 @@
     <title>ContactUs</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Vue/css/bootstrap.css" rel="stylesheet">
     <!--    <link rel="stylesheet" href="css/uikit.css">-->
 
     <!-- Custom styles for this template -->
-    <link href="css/cover.css" rel="stylesheet">
+    <link href="/css/cover.css" rel="stylesheet">
 
 </head>
 
@@ -35,13 +35,40 @@
                         <ul class="nav masthead-nav">
                             <li ><a href="/">主页</a></li>
                             <li class="active"><a href="/contactUs">联系我们</a></li>
-                            <li><a href="/contactUs">关于我们</a></li>
+                            <li><a href="/common/au">关于我们</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
             <div id="contactInfo">
+                <div id="slidershow" class="carousel slide" data-ride="carousel" data-interval = 2000 data-pause = "hover" data-wrap="true" style="margin-top: 5rem; width: 100%;height: 100%; margin-left:auto; margin-right:auto;">
+                    <!-- 设置图片轮播的顺序 -->
+                    <ol class="carousel-indicators">
+                        <li class="active" data-target="#slidershow" data-slide-to="0" ></li>
+                        <li data-target="#slidershow" data-slide-to="1"></li>
+                        <li data-target="#slidershow" data-slide-to="2"></li>
+                    </ol>
+                    <!--设置轮播的图片-->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <a href="https://www.dlnu.edu.cn/hhh/index.htm"><img src="/images/lunbo/20191220081221721023.jpg" alt="cat1"></a>
+                        </div>
+                        <div class="item">
+                            <a href="https://www.dlnu.edu.cn/hhh/index.htm"><img src="/images/lunbo/20191211071948343933.jpg" alt="cat2"></a>
+                        </div>
+                        <div class="item">
+                            <a href="https://www.dlnu.edu.cn/hhh/index.htm"><img src="/images/lunbo/20190927191652273086.jpg" alt="cat3"></a>
+                        </div>
+                    </div>
+                    <a class="left carousel-control" href="#slidershow" role="button" data-slide="prev" >
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#slidershow" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
                 <h1>F214</h1>
+                <h6>联系地址：辽宁省大连市大连民族大学金石滩校区F214</h6>
             </div>
 
 
@@ -62,9 +89,8 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/Vue/js/jquery.js"></script>
+<script src="/Vue/js/bootstrap.js"></script>
 <!--<script src="js/uikit.js"></script>-->
 </body>
 </html>

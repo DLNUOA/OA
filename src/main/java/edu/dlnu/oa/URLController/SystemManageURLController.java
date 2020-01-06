@@ -14,4 +14,29 @@ public class SystemManageURLController {
     public String deptManage(){
         return "systemManage/DeptManage";
     }
+<<<<<<< HEAD
+=======
+    @RequestMapping("/empManage")
+    public String empManage(){
+        return "systemManage/EmpManage";
+    }
+    @RequestMapping("/job")
+    public String job(){
+        return "systemManage/JobManage";
+    }
+    @RequestMapping("/reply/rm")
+    public String rm(){
+        return "systemManage/ReplyManage";
+    }
+
+    @RequestMapping("/reply/baoxiao")
+    public String baoxiao(){
+        return "systemManage/BaoxiaoReply";
+    }
+
+    @RequestMapping("/reply")
+    public String reply(){
+        return "systemManage/ReplyCenter";
+    }
+>>>>>>> 13c562ae6f524e798f73818135bf8ce80b9f2e44
 }

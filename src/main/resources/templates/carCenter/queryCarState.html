@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆申请代办</title>
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <!-- Custom styles for this template -->
+    <link href="/Vue/css/cover.css" rel="stylesheet">
+    <style>
+        .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+            background-color: rgba(0,0,0,0);
+            border-color: #0f0f0f;
+        }
+        input {
+            color: #0f0f0f;
+        }
+        body {
+            text-shadow: 2px 2px 8px black;
+        }
+        #mange {
+            padding: 6px 45px;
+            margin-top: 110px
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-md-4">
+        <!-- Single button -->
+        <div class="btn-group">
+            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                车辆管理 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="./queryCarCenter.html">车辆查看</a></li>
+                <li><a href="./queryCarState.html">派车代办</a></li>
+                <li><a href="./queryCarRent.html">派车记录</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-hover" id="carRentList">
+            <caption><h1 align="center">待派车列表</h1></caption>
+            <thead>
+            <tr>
+                <td>申请员工</td>
+                <td>申请原因</td>
+                <td>部门领导</td>
+                <td>当前审批流程</td>
+                <td>申请提交日期</td>
+                <td>审批</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(car,index) of list" v-bind:key = 'car.carRentId'>
+                <td>{{car.emp_apply_name}}</td>
+                <td>{{car.car_rent_info}}</td>
+                <td>{{car.emp_checkman_name}}</td>
+                <td>{{"车队派车"}}</td>
+                <td>{{car.car_apply_time}}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#planCarModal" @click="PlanCar(car.car_rent_id)">安排车辆</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade" id="planCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"  id="planCar">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">可安排车辆列表</h4>
+            </div>
+            <div class="modal-body" >
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <td>车辆编号</td>
+                        <td>车辆类型</td>
+                        <td>车辆牌照</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(car, index) of list" v-bind:key = 'car.carId'>
+                        <td>{{car.car_id}}</td>
+                        <td>{{car.car_type}}</td>
+                        <td>{{car.car_num}}</td>
+                        <td>
+                            <!-- 按钮触发模态框 -->
+<!--                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#queryCarModal" @click="QueryByIdCar(car.car_id)">查看图片</button>-->
+                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#planCarModal" @click="PlanThisCar(car.car_id)">派出</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/vue.js"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/common.js"></script>
+<script src="/Vue/js/layer/layer.js"></script>
+<script src="/Vue/js/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var planCar = new Vue({
+        el:'#planCar',
+        data:{
+            list:[],
+            carRentId:null
+        },
+        methods:{
+            PlanThisCar:function (carId) {
+                axios
+                    .put(host+'/api/car/updateState',{
+                        carId:carId,
+                        carRentId:this.carRentId
+                    })
+                    // .then(response => response.data==1?( toastr.success('车辆派出') ) : ( toastr.error('派车操作信息失败，请联系管理员') ))
+                    .then(function (response) {
+                        if(response.data==1){
+                            toastr.success('车辆派出');
+                            setTimeout(function(){
+                                window.location.href="queryCarState.html";
+                            },1000);
+                        }else{
+                            toastr.error('派车操作信息失败，请联系管理员');
+                            setTimeout(function(){
+                                window.location.href="queryCarState.html";
+                            },1000);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        }
+    });
+
+
+    //派车记录
+    var carRent = new Vue({
+        el:'#carRentList' ,
+        data:{
+            list:[],
+            car:null,
+            rentList:[]
+        },
+        methods:{
+            query:function () {
+                axios
+                    .get(host+'/api/car/queryRentList')
+                    .then(response => (this.list=response.data))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    })
+            },
+            PlanCar:function(carRentId){
+                axios
+                    .get(host+'/api/car/queryPlan')
+                    // .then(response => (planCar.list=response.data))
+                    .then(function (response) {
+                            planCar.list=response.data;
+                            planCar.carRentId=carRentId;
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    })
+            },
+        },
+        mounted: function(){
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>
