@@ -324,7 +324,13 @@ public class PersonCenterController {
     @GetMapping("/deptBaoXiaoApply")
     public List<Map<String,Object>> getDeptBaoXiaoApply(HttpServletRequest request){
         int empId = (int) request.getSession().getAttribute("empId");
-        return personCenterService.getDeptBaoXiaoApply(empId);
+        int jobIdByEmpId = personCenterService.getJobIdByEmpId(empId);
+        if (jobIdByEmpId==3){
+            return personCenterService.getDeptBaoXiaoApply(empId);
+        }else {
+            return personCenterService.getCashBaoXiaoApply(empId);
+        }
+
     }
 
     /**

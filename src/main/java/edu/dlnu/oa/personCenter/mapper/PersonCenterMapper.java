@@ -156,7 +156,7 @@ public interface PersonCenterMapper {
     @Select("SELECT * FROM claim  INNER JOIN emp ON claim.`apply_emp_id` = emp.`emp_id`     WHERE claim.`dept_managerId` = #{empId} \n \n")
     List<Map<String, Object>> getDeptBaoXiaoApply(int empId);
 
-    @Select("SELECT * FROM claim WHERE claim.`cashier_id` = #{empId} AND flag = 1\n")
+    @Select("SELECT * FROM claim  INNER JOIN emp ON claim.`apply_emp_id` = emp.`emp_id`     WHERE claim.`cashier_id` = #{empId} AND flag = 1\n")
     List<Map<String, Object>> getCashBaoXiaoApply(int empId);
 
     @Update("UPDATE claim_log SET dept_opinion=#{deptOpinion} ,dept_result=#{deptResult},dept_exec_time=NOW() WHERE claim_log.`claim_id` =  #{claimId}")

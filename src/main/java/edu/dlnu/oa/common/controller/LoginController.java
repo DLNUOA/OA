@@ -30,7 +30,7 @@ public class LoginController {
     @Autowired
     private LoginValidService loginValidService;
     @RequestMapping(value = "/userLogin",method = POST)
-    public Map<String,Object> LoginValid(@RequestBody Map<String,String> loginInfo, HttpServletRequest request){
+    public Map<String,Object> LoginValid(@RequestBody Map<String,String> loginInfo, HttpServletRequest request,HttpServletResponse response){
         List<Emp> emps = loginValidService.loginValid(loginInfo);
         Map<String,Object> info = new HashMap<>();
         if (emps.size()==1){
