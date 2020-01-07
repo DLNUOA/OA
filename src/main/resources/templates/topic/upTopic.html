@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+</head>
+<body>
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="#">OA系统</a></li>
+        <li><a href="#">系统公告</a></li>
+        <li>修改公告</li>
+    </ol>
+
+    <h2 class="page-header">修改公告</h2>
+
+    <!-- 表单提交能用 post 不用 get -->
+    <!-- post 传输的数据比较大 -->
+    <!-- get 明文显示在地址栏， post 不会 -->
+    <!-- 如果不用 method 设置的话 默认是 get -->
+    <!-- / 是根目录，没有 / 的话 是相对路径 -->
+    <form class="form-horizontal" id="form1">
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">发布日期</label>
+            <div class="col-sm-8">
+                <input type="text" readonly placeholder="请输入日期" id="affData" name="affData" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">公告题目</label>
+            <div class="col-sm-8">
+                <input type="text" placeholder="请输入" id="affName" name="ffName" class="form-control"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label">公告</label>
+            <div class="col-sm-8">
+                <textarea id="affCont" name="affCont" placeholder="请输入" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <input id="addBtn" type="button" value="修改公告" class="btn btn-primary" />
+                <input type="button" value="返回" class="btn btn-warning" onclick="history.back();" />
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script>
+    // 设置提示框的属性
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript">
+    $('#affData').datetimepicker({
+        lang:'ch',
+        format:'Y-m-d',
+        formatDate:'Y-m-d',
+        timepicker:false
+    });
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
+    });
+</script>
+<script>
+
+    //获得部门id
+    var affId = getParam('affId');
+
+    //调用后端功能，获取部门数据，表单回显
+    $.getJSON(baseUrl + '',{affId:affId},function(data) {
+        $('#affName').val(data.affName);
+        $('#affCont').val(data.affCont);
+        $('#affData').val(data.affData);
+    });
+
+    //表单验证函数
+    $('#affData').datetimepicker({
+        lang:'ch',
+        format:'Y-m-d',
+        formatDate:'Y-m-d',
+        timepicker:false
+    });
+
+    function checkForm()
+    {
+        var r;
+
+        var affName = $('#affName');
+
+        if(affName.val() == '' || affName.val().length > 20)
+        {
+            layer.msg('主题不能为空，且最多20个字符');
+            affName.focus();
+            return false;
+        }
+
+        var affCont = $('#affCont');
+
+        if(affCont.val() == '')
+        {
+            layer.msg('内容不能为空');
+            affName.focus();
+            return false;
+        }
+
+
+        return true;
+    }
+
+    //修改部门
+    $('#updateBtn').click(function() {
+
+        //调用验证函数
+        $//如果验证失败 则返回，不再继续往下执行
+        if ( !checkForm() ) {
+            return;
+        }
+
+        //请求参数
+        var params = $('#form1').serialize();
+
+        //调用后端功能
+        $.post(baseUrl + '/Aff/update',params,function(data) {
+
+            layer.msg('修改公告成功');
+
+            setTimeout(function() {
+                location.href = 'queryTopic.html';
+            },500)
+        });
+
+    });
+
+</script>
+</html>
