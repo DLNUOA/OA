@@ -5,6 +5,7 @@
     <title>nav</title>
     <link rel="stylesheet" href="zhanghan_cloud_oa/js/bootstrap/css/bootstrap.css" />
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -12,6 +13,9 @@
 
         body {
             background: #333333;
+        }
+        #h2{
+            color: white;
         }
 
         /*左侧导航菜单*/
@@ -34,9 +38,11 @@
     <!--左侧导航菜单开始-->
     <div class="row nav-left">
         <div class="list-group">
-            <p>资产管理</p>
+            <h2 id="h2">资产管理</h2>
+            <a class="list-group-item" href="/welcome" target="_top">OA主页</a>
             <a class="list-group-item" href="AddAsset" target="content">资产管理</a>
             <a class="list-group-item" href="AddConsume" target="content">增加资产消耗</a>
+            <a class="list-group-item" href="QueryConsume" target="content">查看资产消耗记录</a>
         </div>
     </div>
 

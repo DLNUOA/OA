@@ -75,6 +75,7 @@
             </table>
         </div>
         <!-- 这个增加按钮也会触发模态框 -->
+<!--        data-toggle指以什么事件触发，常用的如modal,popover,tooltips还有上面贴的代码中的dropdown等，而data-target指事件的目标,可以为id属性或者类等等，-->
         <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addAssetModal">增加资产</button>
 
     </div>
@@ -91,13 +92,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabelAdd">增加资产</h4>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body" style="height:370px">
                 <!--                这里的使用v-model实现双向数据绑定-->
 
 
                 资产名称：<input v-model="bmm" placeholder="资产名称"><hr>
                 资产类别：<input v-model="bml" placeholder="资产类别"><hr>
-                资产规格：<input v-model="bmg" placeholder="资产规格">
+                资产规格：<input v-model="bmg" placeholder="资产规格"><hr>
                 资产单价：<input v-model="bmd" placeholder="资产单价"><hr>
                 资产库存：<input v-model="bmk" placeholder="资产库存"><hr>
 
@@ -116,15 +117,15 @@
 <!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
 <div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div  class="modal-content" id="updateAAssetModal">
+        <div  class="modal-content" id="updateAAssetModal" >
             <div  class="modal-header" >
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">修改资产</h4>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body" style="height:370px">
                 资产名称：<input v-model="assetName" placeholder="资产名称"><hr>
                 资产类别：<input v-model="assetClasses" placeholder="资产类别"><hr>
-                资产规格：<input v-model="assetSpecification" placeholder="资产规格">
+                资产规格：<input v-model="assetSpecification" placeholder="资产规格"><hr>
                 资产单价：<input v-model="assetUnitPrice" placeholder="资产单价"><hr>
                 资产库存：<input v-model="assetInventory" placeholder="资产库存"><hr>
             </div>
@@ -266,6 +267,7 @@
             },
 
             LaunchUpdateAsset:function(index){
+                // 回显
                 this.asset=(this.data[index]);
                 updateAAssetModal.assetId = this.asset.assetId;
                 updateAAssetModal.assetName = this.asset.assetName;
@@ -314,7 +316,8 @@
             updateAAsset:function(){
 
                 var r = /^\+?[1-9][0-9]*$/;　　//正整数
-                var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                //var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                var r2=/^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
                 if(!this.assetName)
                 {
                     toastr.error("资产名称不能为空");
@@ -340,11 +343,11 @@
                             //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
                             if (response.data == 1) {
                                 toastr.success('修改资产成功');
-                                vue.data[this.index].assetName = this.assetName;
-                                vue.data[this.index].assetClasses = this.assetClasses;
-                                vue.data[this.index].assetSpecification = this.assetSpecification;
-                                vue.data[this.index].assetUnitPrice = this.assetUnitPrice;
-                                vue.data[this.index].assetInventory = this.assetInventory;
+                                // vue.data[this.index].assetName = this.assetName;
+                                // vue.data[this.index].assetClasses = this.assetClasses;
+                                // vue.data[this.index].assetSpecification = this.assetSpecification;
+                                // vue.data[this.index].assetUnitPrice = this.assetUnitPrice;
+                                // vue.data[this.index].assetInventory = this.assetInventory;
 
 
                                 $('#addAssetModal').modal({
@@ -386,7 +389,8 @@
         methods:{
             addAAsset:function (){
                 var r = /^\+?[1-9][0-9]*$/;　　//正整数
-                var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                var r2= /^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                // var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
 
                 if(!this.bmm)
 

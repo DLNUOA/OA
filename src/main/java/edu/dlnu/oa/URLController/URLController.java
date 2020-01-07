@@ -96,6 +96,11 @@ public class URLController {
         return "asset/Select2";
     }
 
+    @RequestMapping("/QueryConsume")
+    public String QueryConsume(){
+        return "asset/QueryConsume";
+    }
+
 
 
 
