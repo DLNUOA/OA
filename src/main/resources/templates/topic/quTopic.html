@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/Vue/css/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/Vue/css/toastr.css">
+    <link rel="stylesheet" href="/Vue/css/cover.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap-datetimepicker.css">
+</head>
+<body>
+<div class="container" id="quTopic_">
+    <div class="col-md-12">
+
+        <div>
+            <h3 class="page-header">
+                公告栏
+
+                <!-- 添加新的公告，通过shiro拦截只有管理员才可以操作 -->
+
+                <!-- 通过shiro进行拦截操作完  -->
+
+            </h3>
+
+        </div>
+        <input id="pageCount" type="hidden" value="1">
+
+        <div id="wholeNotice">
+
+            <div class="panel panel-success isTop1">
+                <div class="panel-heading">
+                    <h2>{{affName}}</h2>
+                </div>
+                <div>
+                    <div id="two21" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <h4>{{affData}}</h4>
+                            <br>
+
+                            <h2>{{affCont}}</h2>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+            <input type="button" value="返回" class="btn btn-warning" onclick="history.back();" />
+        </div>
+    </div>
+</div>
+
+</body>
+<!--下面引用js文件，有点多，以后优化-->
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+<script src="Vue/js/layer/layer.js"></script>
+<script>
+    // 设置提示框的属性
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "onclick": null,
+        "showDuration": "1000",
+        "hideDuration": "1000",
+        "timeOut": "5500",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+</script>
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
+    });
+</script>
+<script>
+
+
+
+    var quTopic_ = new Vue({
+        el:'#quTopic_',
+        data:{
+            affList:null,
+            pager:null
+        },
+        methods: {
+            //查询数据
+            query: function (affId) {
+                //请求参数
+                var param = affId;
+                //调用后端功能
+                $.getJSON(baseUrl + '/dept/queryById/'+param,function(data){
+                    $('#affData').val(data.affData);
+                    $('#affName').val(data.affName);
+                    $('#affCont').val(data.affCont);
+                });
+            },
+        }
+        mounted:function(){ //网页渲染完毕调用
+            axios
+                .get('/Aff/query')
+                .then(response => (this.affList = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        }
+    });
+
+</script>
+
+</html>
