@@ -1,4 +1,7 @@
 package edu.dlnu.oa.asset.pojo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.sql.Date;
 
 public class Consume {
@@ -9,6 +12,8 @@ public class Consume {
     private  Integer consumeEmpId;
     private  String consumeEmpName;
     private  Integer consumeNumber;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",locale = "zh",timezone = "GMT+8")
     private Date consumeDate;
     private String consumeInfo;
 
