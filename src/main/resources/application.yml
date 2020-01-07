@@ -14,7 +14,7 @@ spring:
     timeout: 10000
   jackson:
     time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
+    date-format:  yyyy-MM-dd HH:mm:ss
   mvc:
     hiddenmethod:
       filter:
@@ -33,7 +33,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/oa1?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useAffectedRows=true&useSSL=false
     username: root
-    password: root
+    password: 123456
   #    hikari:
   #      maximum-pool-size: 10
   #      connection-timeout: 10000
