@@ -51,7 +51,38 @@ public class CarRentServiceImpl implements CarRentService {
         return list1;
     }
 
+    //查询自己的用车申请
+    @Override
+    public  List<Map<String,Object>> queryMyRentList(int empApplyId) {
+        List<Map<String,Object>> list1 = mapper.queryEmpInfo();
+        List<Map<String,Object>> list2 = mapper.queryMyList(empApplyId);
+        for(int i = 0; i< list2.size(); i++) {
+            for (int j = 0; j < list1.size(); j++) {
+                if(list2.get(i).get("emp_checkman_id") == list1.get(j).get("emp_id")) {
+                    list2.get(i).put("emp_checkman_name",list1.get(j).get("emp_name"));
+                }
 
+            }
+        }
+        return list2;
+    }
+
+    //查询所有行政审批的用车信息
+    @Override
+    public  List<Map<String,Object>> queryXingList(int empCheckmanId) {
+        List<Map<String,Object>> list2 = mapper.queryXingZheng(6);
+        List<Map<String,Object>> list1 = mapper.queryEmpInfo();
+        for(int i = 0; i< list2.size(); i++) {
+            for (int j = 0; j < list1.size(); j++) {
+                if(list2.get(i).get("emp_apply_id") == list1.get(j).get("emp_id")) {
+                    list2.get(i).put("emp_apply_name",list1.get(j).get("emp_name"));
+                }
+                if(list2.get(i).get("emp_checkman_id") == list1.get(j).get("emp_id")) {
+                    list2.get(i).put("emp_checkman_name",list1.get(j).get("emp_name"));
+                }
+            }
+        }
+        return list2;}
 
     //查询可派车辆列表
     @Override
@@ -92,4 +123,9 @@ public class CarRentServiceImpl implements CarRentService {
     //查询自己所有的车辆申请
     @Override
     public List<Map<String,Object>> querySelf(int empApplyId) { return mapper.queryListSelf(empApplyId);}
+
+    //通过审批
+    @Override
+    public int updateXZ(int carRentId) { return  mapper.updateRentS(carRentId);}
+
 }

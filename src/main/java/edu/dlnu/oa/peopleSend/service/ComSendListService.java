@@ -13,7 +13,7 @@ import java.util.Map;
 public interface ComSendListService {
 
     //查询所有外派记录
-    List<ComSendList> querySList();
+    List<Map<String,Object>> querySList();
 
     //添加外派记录
     int addList(Map<String,Object> csl);

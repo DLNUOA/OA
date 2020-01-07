@@ -25,4 +25,12 @@ public class CarCenterUrlController {
     //公用列表测试
     @RequestMapping("/CarMenu")
     public String carMenu() {return "carCenter/comMenu";}
+
+    //自己的用车申请
+    @RequestMapping("/carApply")
+    public String carApply() {return "carCenter/carApply";}
+
+    //行政主管的用车申请列表
+    @RequestMapping("/applyProcess")
+    public String applyProcess() {return "carCenter/applyProcess";}
 }
