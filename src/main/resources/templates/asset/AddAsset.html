@@ -30,86 +30,6 @@
 
 </head>
 <body>
-<nav class="navbar navbar-default navbar-inverse ">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand "  href="/welcome">OA</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/welcome">主页 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">车辆管理</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理 <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li> <a href="/systemManage/deptManage">部门管理</a></li>
-                        <li> <a href="/systemManage/empManage">员工管理</a></li>
-                        <li> <a href="/systemManage/JobManage.html">职位管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">权限管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/systemManage/reply">批复管理</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown"  href="#">动态<span style="color: red" id="me"></span><b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-
-                        <li>
-                            <a onclick="openPageAndClearCount()" href="/systemManage/reply/rm">请假批复<span id="mememe"></span></a>
-                        </li>
-                        <li>
-                            <a href="#">报销批复</a>
-                        </li>
-                        <li>
-                            <a href="#">用车批复</a>
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="/personCenter/myInfo">个人中心</a></li>
-            </ul>
-
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a id="sessionInfo"    class="dropdown-toggle" data-toggle="dropdown" ondblclick="window.location.href='/login'">
-                        <img id="avatar"  v-bind:src="avatar==false? ` /images/upAvatar.jpg ` : avatar " alt="avatar" class="img-responsive img-circle">
-                        {{(empName==null)?"双击登录":empName}}  <b class="caret"></b>
-
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a id="action-1" href="#">功能</a>
-                        </li>
-                        <li>
-                            <a href="#">功能</a>
-                        </li>
-                        <li>
-                            <a href="/personCenter/addressBook">通讯录</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">切换用户</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="/loginOut">退出</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
 
 <div class="container">
     <div id="searchDiv" >
@@ -169,6 +89,7 @@
             </table>
         </div>
         <!-- 这个增加按钮也会触发模态框 -->
+<!--        data-toggle指以什么事件触发，常用的如modal,popover,tooltips还有上面贴的代码中的dropdown等，而data-target指事件的目标,可以为id属性或者类等等，-->
         <button  class="btn btn-success col-xs-offset-4" data-toggle="modal" data-target="#addAssetModal">增加资产</button>
 
     </div>
@@ -185,13 +106,13 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabelAdd">增加资产</h4>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body" style="height:370px">
                 <!--                这里的使用v-model实现双向数据绑定-->
 
 
                 资产名称：<input v-model="bmm" placeholder="资产名称"><hr>
                 资产类别：<input v-model="bml" placeholder="资产类别"><hr>
-                资产规格：<input v-model="bmg" placeholder="资产规格">
+                资产规格：<input v-model="bmg" placeholder="资产规格"><hr>
                 资产单价：<input v-model="bmd" placeholder="资产单价"><hr>
                 资产库存：<input v-model="bmk" placeholder="资产库存"><hr>
 
@@ -210,15 +131,15 @@
 <!--这里的模态框与上一个模态框实现几乎一样，就是改改id，文本之类的-->
 <div class="modal fade" id="updateAssetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div  class="modal-content" id="updateAAssetModal">
+        <div  class="modal-content" id="updateAAssetModal" >
             <div  class="modal-header" >
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">修改资产</h4>
             </div>
-            <div class="modal-body" >
+            <div class="modal-body" style="height:370px">
                 资产名称：<input v-model="assetName" placeholder="资产名称"><hr>
                 资产类别：<input v-model="assetClasses" placeholder="资产类别"><hr>
-                资产规格：<input v-model="assetSpecification" placeholder="资产规格">
+                资产规格：<input v-model="assetSpecification" placeholder="资产规格"><hr>
                 资产单价：<input v-model="assetUnitPrice" placeholder="资产单价"><hr>
                 资产库存：<input v-model="assetInventory" placeholder="资产库存"><hr>
             </div>
@@ -360,6 +281,7 @@
             },
 
             LaunchUpdateAsset:function(index){
+                // 回显
                 this.asset=(this.data[index]);
                 updateAAssetModal.assetId = this.asset.assetId;
                 updateAAssetModal.assetName = this.asset.assetName;
@@ -408,7 +330,8 @@
             updateAAsset:function(){
 
                 var r = /^\+?[1-9][0-9]*$/;　　//正整数
-                var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                //var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                var r2=/^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
                 if(!this.assetName)
                 {
                     toastr.error("资产名称不能为空");
@@ -434,11 +357,11 @@
                             //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
                             if (response.data == 1) {
                                 toastr.success('修改资产成功');
-                                vue.data[this.index].assetName = this.assetName;
-                                vue.data[this.index].assetClasses = this.assetClasses;
-                                vue.data[this.index].assetSpecification = this.assetSpecification;
-                                vue.data[this.index].assetUnitPrice = this.assetUnitPrice;
-                                vue.data[this.index].assetInventory = this.assetInventory;
+                                // vue.data[this.index].assetName = this.assetName;
+                                // vue.data[this.index].assetClasses = this.assetClasses;
+                                // vue.data[this.index].assetSpecification = this.assetSpecification;
+                                // vue.data[this.index].assetUnitPrice = this.assetUnitPrice;
+                                // vue.data[this.index].assetInventory = this.assetInventory;
 
 
                                 $('#addAssetModal').modal({
@@ -480,7 +403,8 @@
         methods:{
             addAAsset:function (){
                 var r = /^\+?[1-9][0-9]*$/;　　//正整数
-                var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                var r2= /^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
+                // var r2=/^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$/;
 
                 if(!this.bmm)
 

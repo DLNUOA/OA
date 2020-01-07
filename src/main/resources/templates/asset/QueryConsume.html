@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资产消耗记录查看</title>
+    <link rel="stylesheet" href="zhanghan_cloud_oa/js/bootstrap/css/bootstrap.css" />
+</head>
+<body>
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">OA系统</a></li>
+        <li><a href="#">资产管理</a></li>
+        <li>资产消耗列表</li>
+    </ol>
+
+    <h2 class="page-header">资产消耗列表</h2>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+            <td>消耗编号</td>
+            <td>资产编号</td>
+            <td>资产名称</td>
+            <td>资产类别</td>
+            <td>员工编号</td>
+            <td>员工姓名</td>
+            <td>消耗数量</td>
+            <td>消耗日期</td>
+            <td>消耗备注描述</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(consume,index) in consumeList">
+
+            <td>{{consume.consumeId}}</td>
+            <td>{{consume.consumeAssetId}}</td>
+            <td>{{consume.consumeAssetName}}</td>
+            <td>{{consume.consumeAssetClasses}}</td>
+            <td>{{consume.consumeEmpId}}</td>
+            <td>{{consume.consumeEmpName}}</td>
+            <td>{{consume.consumeNumber}}</td>
+            <td>{{consume.consumeDate}}</td>
+            <td>{{consume.consumeInfo}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script type="text/javascript" src="zhanghan_cloud_oa/js/jquery-3.4.1.js" ></script>
+<script type="text/javascript" src="zhanghan_cloud_oa/js/global.js" ></script>
+<script type="text/javascript" src="zhanghan_cloud_oa/js/layer/layer.js" ></script>
+<script type="text/javascript" src="zhanghan_cloud_oa/js/vue.js" ></script>
+
+
+
+
+<!--下面引用js文件，有点多，以后优化-->
+<script src="/Vue/js/jquery.js"></script>
+<script src="Vue/js/vue.js"></script>
+<script src="/js/toastr.min.js"></script>
+
+<script src="/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/axios.js"></script>
+<script src="/Vue/js/lodash.min.js"></script>
+
+<script>
+    var vue = new Vue({
+        el:'.container',
+        data:{
+            consumeList:[],
+            // assetid:1,
+            // assetinventory:1
+        },
+
+        // //2
+        mounted: function () {
+            axios
+                .post('/api/consume/query')
+                .then(response => (this.consumeList = response.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        },
+
+        // methods: {
+        //     toSelect1: function (assetId,assetInventory) {
+        //         assetid=assetId;
+        //         assetinventory=assetInventory;        /////////////////////
+        //         // alert(assetid);
+        //     },
+        //
+        //     okButton: function () {
+        //         setTimeout(function(){
+        //             window.parent.layer.closeAll();
+        //             //
+        //             localStorage.setItem('assetid',assetid);
+        //             localStorage.setItem('assetinventory',assetinventory);
+        //             // localStorage.setItem('empid',empid);
+        //             window.parent.location.reload();
+        //         },500);
+        //
+        //     }
+        // }
+
+    });
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
