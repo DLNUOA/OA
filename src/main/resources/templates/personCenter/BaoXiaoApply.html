@@ -451,7 +451,24 @@
                         purpose:this.reason,
                         amount:this.amount
                     })
+                    // .then(function (response) {
+                    //
+                    // })
                     .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                    // .then(function (response) {
+                    //     //这里使用了匿名函数，而不是箭头函数，因为我们要写多条函数。返回数据为1则修改部门成功
+                    //     if (response.data==1){
+                    //         toastr.success('修改部门成功');
+                    //         vue.data[this.index].deptName=this.deptName;
+                    //         vue.data[this.index].deptLoc=this.deptLoc;
+                    //         vue.data[this.index].deptIntro=this.deptIntro;
+                    //         $('#addDeptModal').modal({
+                    //             show:false
+                    //         });//这里使用Jquery不生效，来个大佬改bug啊！
+                    //     }else {
+                    //         toastr.error('修改部门失败，请联系管理员');
+                    //     }
+                    // })
                     .catch(function(error) {
                         console.log(error);
                     });
