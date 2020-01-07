@@ -32,8 +32,15 @@ public class SystemManageURLController {
         return "systemManage/BaoxiaoReply";
     }
 
+    @RequestMapping("/reply/car")
+    public String car(){
+        return "carCenter/applyProcess";
+    }
+
     @RequestMapping("/reply")
     public String reply(){
         return "systemManage/ReplyCenter";
     }
+
+
 }

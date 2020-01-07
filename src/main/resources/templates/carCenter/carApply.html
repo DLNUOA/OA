@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>车辆申请代办</title>
+    <title>车辆申请</title>
     <link rel="stylesheet" href="/Vue/css/toastr.css">
     <link rel="stylesheet" href="/Vue/css/bootstrap.css">
+    <link rel="stylesheet" href="/Vue/css/bootstrap-datetimepicker.css">
     <!-- Custom styles for this template -->
     <link href="/Vue/css/cover.css" rel="stylesheet">
     <style>
@@ -15,12 +16,18 @@
         input {
             color: #0f0f0f;
         }
+        #addApplyModal {
+            color: #0f0f0f;
+        }
         body {
             text-shadow: 2px 2px 8px black;
         }
         #mange {
             padding: 6px 45px;
             margin-top: 110px
+        }
+        .dropdown-menu {
+            color: #0f0f0f;
         }
     </style>
 </head>
@@ -96,88 +103,91 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+
 <div class="row">
-    <div class="col-md-4">
-        <!-- Single button -->
-        <div class="btn-group">
-            <button id="mange" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                车辆管理 <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="./queryCarCenter.html">车辆查看</a></li>
-                <li><a href="./queryCarState.html">派车代办</a></li>
-                <li><a href="./queryCarRent.html">派车记录</a></li>
-            </ul>
-        </div>
-    </div>
+    <div class="col-md-2"></div>
     <div class="col-md-8">
         <table class="table table-hover" id="carRentList">
-            <caption><h1 align="center">待派车列表</h1></caption>
+            <caption><h1 align="center">我的车辆申请记录</h1></caption>
             <thead>
             <tr>
-                <td>申请员工</td>
+                <td>申请编号</td>
+                <td>员工姓名</td>
+                <td>行政主管</td>
+                <td>开始日期</td>
+                <td>结束日期</td>
+                <td>申请时间</td>
+                <td>申请状态</td>
                 <td>申请原因</td>
-                <td>部门领导</td>
-                <td>当前审批流程</td>
-                <td>申请提交日期</td>
-                <td>审批</td>
+                <td>行车路线</td>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(car,index) of list" v-bind:key = 'car.carRentId'>
+            <tr v-for="(car,index) of carList" v-bind:key = 'car.carRentId'>
+                <td>{{car.car_rent_id}}</td>
                 <td>{{car.emp_apply_name}}</td>
-                <td>{{car.car_rent_info}}</td>
                 <td>{{car.emp_checkman_name}}</td>
-                <td>{{"车队派车"}}</td>
+                <td>{{car.car_rent_stime}}</td>
+                <td>{{car.car_rent_otime}}</td>
                 <td>{{car.car_apply_time}}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#planCarModal" @click="PlanCar(car.car_rent_id)">安排车辆</button>
-                </td>
+                <td>{{car.apply_state_name}}</td>
+                <td>{{car.car_rent_info}}</td>
+                <td>{{car.car_rent_line}}</td>
             </tr>
             </tbody>
-        </table>
-    </div>
 
+        </table>
+
+        <div class="col-md-offset-8 col-md-4" >
+            <button class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#addApplyModal">发起新的用车申请</button>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
 </div>
 
-<div class="modal fade" id="planCarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- 添加新用车申请模态框（Modal） -->
+<div class="modal fade" id="addApplyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content"  id="planCar">
+        <!--        下面这个div通过id与一个Vue实例绑定-->
+        <div class="modal-content" id="addApply">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">可安排车辆列表</h4>
+                <h4 class="modal-title" id="myModalLabelAdd">新建请假申请</h4>
             </div>
             <div class="modal-body" >
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <td>车辆编号</td>
-                        <td>车辆类型</td>
-                        <td>车辆牌照</td>
-                        <td>操作</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(car, index) of list" v-bind:key = 'car.carId'>
-                        <td>{{car.car_id}}</td>
-                        <td>{{car.car_type}}</td>
-                        <td>{{car.car_num}}</td>
-                        <td>
-                            <!-- 按钮触发模态框 -->
-<!--                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#queryCarModal" @click="QueryByIdCar(car.car_id)">查看图片</button>-->
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#planCarModal" @click="PlanThisCar(car.car_id)">派出</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <!--                这里的使用v-model实现双向数据绑定-->
+                用车原因：<input v-model="carRentInfo" placeholder="用车原因"><hr>
+                用车路线：<input v-model="carRentLine" placeholder="用车路线"><hr>
+                <div class="form-group">
+                    <label for="dtp_input2" class="col-md-2 control-label">开始日期</label>
+                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input   class="form-control" size="16" type="text"  readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <input  v-model="carRentStime"  type="hidden" id="dtp_input2"  /><br/>
+                </div>
+
+                <hr>
+                <div class="form-group">
+                    <label for="dtp_input3" class="col-md-2 control-label">结束日期</label>
+                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                        <input   class="form-control" size="16" type="text"  readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <input  v-model="carRentOtime"  type="hidden" id="dtp_input3"  /><br/>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <!--                给增加按钮添加单击事件-->
+                <button type="button" class="btn btn-primary" @click="addApplyRequest">增加</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-
 
 <script src="/Vue/js/jquery.js" type="text/javascript" charset="utf-8"></script>
 <script src="/Vue/js/vue.js"></script>
@@ -187,75 +197,90 @@
 <script src="/Vue/js/toastr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 <script src="/Vue/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.js"></script>
+<script src="/Vue/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
 <script>
-    var planCar = new Vue({
-        el:'#planCar',
-        data:{
-            list:[],
-            carRentId:null
-        },
-        methods:{
-            PlanThisCar:function (carId) {
-                console.log(this.list);
-                axios
-                    .put(host+'/api/car/updateState',{
-                        carId:carId,
-                        carRentId:this.carRentId
-                    })
-                    .then(function (response) {
-                        if(response.data==1){
-                            toastr.success('车辆派出');
-                            setTimeout(function(){
-                                window.location.href="queryCarState.html";
-                            },1000);
-                        }else{
-                            toastr.error('派车操作信息失败，请联系管理员');
-                            setTimeout(function(){
-                                window.location.href="queryCarState.html";
-                            },1000);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            }
-        }
-    });
-
-
     //派车记录
-    var carRent = new Vue({
+    var rentList = new Vue({
         el:'#carRentList' ,
         data:{
-            list:[],
-            car:null,
-            rentList:[]
+            carList:[]
         },
         methods:{
             query:function () {
                 axios
-                    .get(host+'/api/car/queryRentList')
-                    .then(response => (this.list=response.data))
+                    .get(host+'/api/emp/queryMyRent')
+                    .then(response => (this.carList=response.data))
                     .catch(function (error) { // 请求失败处理
                         console.log(error);
                     })
-            },
-            PlanCar:function(carRentId){
-                axios
-                    .get(host+'/api/car/queryPlan')
-                    // .then(response => (planCar.list=response.data))
-                    .then(function (response) {
-                            planCar.list=response.data;
-                            planCar.carRentId=carRentId;
-                    })
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error);
-                    })
-            },
+            }
         },
         mounted: function(){
             this.query();
         }
+    });
+    let addApplyRequest = new Vue({
+        el:'#addApply',
+        //data里面也可以写空字符串哦！
+        data:{
+            carRentLine:'',
+            carRentInfo:'',
+            carRentStime:'',
+            carRentOtime:''
+        },
+        methods:{
+            addApplyRequest:function (){
+                axios
+                    .post('/api/emp/carApply',{
+                        carRentLine:this.carRentLine,
+                        carRentInfo:this.carRentInfo,
+                        carRentStime: $('#dtp_input2').val(),
+                        carRentOtime: $('#dtp_input3').val()
+                    })
+                    .then(response => response.data==1?(toastr.success('成功')):toastr.error('失败'))
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                setTimeout(function () {
+                    window.location.href = "carApply.html";
+                },1000);
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_time').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
     });
 </script>
 </body>

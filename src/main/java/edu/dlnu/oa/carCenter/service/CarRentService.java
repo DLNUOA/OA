@@ -36,4 +36,13 @@ public interface CarRentService {
 
     //查询自己所有的车辆申请
     List<Map<String ,Object>> querySelf(int empApplyId);
+
+    //查询自己的用车申请
+    List<Map<String,Object>> queryMyRentList(int empApplyId);
+
+    //行政主管查看自己要审批的用车信息
+    List<Map<String,Object>> queryXingList(int empCheckmanId);
+
+    //通过审批
+    int updateXZ(int carRentId);
 }
