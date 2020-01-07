@@ -7,6 +7,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class RentList {
+    @JsonFormat(
+            pattern = "yyyy-MM-dd HH:mm:ss",
+            timezone = "FMT+8"
+    )
     private Integer rentId;
     private Integer rentEmpId;
     private Integer rentCarId;
@@ -48,7 +52,6 @@ public class RentList {
         this.rentLine = rentLine;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss", timezone = "GMT+8")
     public Date getRentStime() {
         return rentStime;
     }
@@ -57,7 +60,6 @@ public class RentList {
         this.rentStime = rentStime;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss", timezone = "GMT+8")
     public Date getRentOtime() {
         return rentOtime;
     }

@@ -14,7 +14,7 @@ public interface ComSendListMapper {
 
     //查询所有外派记录
     @Select("SELECT * FROM com_send_list")
-    List<ComSendList> query();
+    List<Map<String,Object>> query();
 
     //添加外派记录
     @Insert("INSERT INTO com_send_list VALUES(default, #{sendSpId}, #{sendComId}, #{sendPeopleName}, #{sendComName})")

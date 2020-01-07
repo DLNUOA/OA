@@ -64,12 +64,23 @@ public interface CarRentMapper {
     Map<String,Object> queryJob(String jobName);
 
     //个人中心租车提交申请
-    @Insert("INSERT INTO rent_car VALUES(default, #{carRentLine}, #{carRentInfo}, #{carApplyTime}, #{carRentStime}, #{carRentOtime}," +
-            "1,0,#{empApplyId},#{empCheckmanId})")
+    @Insert("INSERT INTO car_rent VALUES(default, #{carRentLine}, #{carRentInfo}, #{carApplyTime}, #{carRentStime}, #{carRentOtime}," +
+            "#{carId},#{carRentState},#{empApplyId},#{empCheckmanId})")
     int insertApply(Map<String, Object> apply);
 
     //个人中心查询自己的申请租车列表
     @Select("SELECT c.*, e.emp_name FROM car_rent c INNER JOIN emp e ON c.`emp_apply_id`=e.`emp_id` WHERE emp_apply_id=#{empApplyId}")
     List<Map<String,Object>> queryListSelf(int empApplyId);
 
+    //查看自己的用车申请
+    @Select("SELECT * FROM car_rent WHERE emp_apply_id=#{empApplyId}")
+    List<Map<String,Object>> queryMyList(int empApplyId);
+
+    //行政主管查看自己要审批的用车信息
+    @Select("SELECT c.*, e.emp_name FROM car_rent c INNER JOIN emp e ON c.`emp_apply_id`=e.`emp_id` WHERE emp_checkman_id=#{empCheckmanId}")
+    List<Map<String,Object>> queryXingZheng(int empCheckmanId);
+
+    //行政主管审批用车申请
+    @Update("UPDATE car_rent SET car_rent_state = 0 WHERE car_rent_id=#{carRentId}")
+    int updateRentS(int carRentId);
 }

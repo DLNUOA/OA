@@ -19,7 +19,7 @@ public class ComSendListServiceImpl implements ComSendListService {
     private ComSendListMapper mapper;
 
     @Override
-    public List<ComSendList> querySList() { return mapper.query();}
+    public List<Map<String,Object>> querySList() { return mapper.query();}
 
     @Override
     public int addList(Map<String,Object> csl) { return mapper.insert(csl);}
